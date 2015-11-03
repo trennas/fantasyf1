@@ -2,8 +2,8 @@ package net.ddns.f1.domain;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
@@ -12,30 +12,35 @@ import lombok.Data;
 public class Driver {
 	@EmbeddedId
 	private FullName name;
+//	@Id
+//	private String name;
+
 	private int price;
+	@ManyToOne(targetEntity = Car.class, fetch = FetchType.EAGER)
 	private Car car;
-	
+
+	public Driver() {
+	}
+
+	public Driver(final FullName name, final Car car, final int price) {
+		this.name = name;
+		this.car = car;
+		this.price = price;
+	}
+
 	@Override
-	public boolean equals(Object otherDriver) {
-		if(otherDriver instanceof Driver) {
-			if(this.getName().equalsIgnoreCase(((Driver) otherDriver).getName())) {
+	public boolean equals(final Object otherDriver) {
+		if (otherDriver instanceof Driver) {
+			if (this.getName().equals(
+					((Driver) otherDriver).getName())) {
 				return true;
-			}			
-		} 
+			}
+		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.name.hashCode();
-	}
-	
-	public String getName() {
-		return name.getForename() + " " + name.getSurname();
-	}
-	
-	@Override
-	public String toString() {
-		return getName();
 	}
 }

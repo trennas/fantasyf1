@@ -157,6 +157,7 @@
 		</sequence>
 		<attribute name="number" type="integer" use="optional"/>
 		<attribute name="position" type="integer" use="required"/>
+		<attribute name="positionText" type="string" use="required"/>
 		<attribute name="points" type="float" use="optional"/>
 	</complexType>
 	 <complexType name="LapType">

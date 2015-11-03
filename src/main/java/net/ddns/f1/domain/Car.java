@@ -3,8 +3,10 @@ package net.ddns.f1.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 
@@ -14,9 +16,20 @@ public class Car {
 	@Id
 	private String name;
 	private int price;
+	@OneToOne(targetEntity=Engine.class, fetch=FetchType.EAGER)
 	private Engine engine;
+	@OneToMany(targetEntity=Driver.class, mappedBy="car", fetch=FetchType.EAGER)
 	private List<Driver> drivers;
-	
+
+	public Car() {
+	}
+
+	public Car(final String name, final int price, final Engine engine) {
+		this.name = name;
+		this.price = price;
+		this.engine = engine;
+	}
+
 	@Override
 	public String toString() {
 		return getName();

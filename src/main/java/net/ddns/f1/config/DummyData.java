@@ -1,127 +1,90 @@
 package net.ddns.f1.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.FullName;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.domain.ValidationException;
+import net.ddns.f1.repository.CarRepository;
+import net.ddns.f1.repository.DriverRepository;
+import net.ddns.f1.repository.EngineRepository;
+import net.ddns.f1.repository.TeamRepository;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class DummyData {
-	
-	private static final Logger LOG = Logger
-			.getLogger(DummyData.class);
-	
-	public void createDummyData() {
-		Engine mercedesPower = new Engine();
-		mercedesPower.setName("Mercedes");
-		Engine ferrariPower = new Engine();
-		ferrariPower.setName("Ferrari");
-		Engine renault = new Engine();
-		renault.setName("Renault");
-		Engine honda = new Engine();
-		honda.setName("Honda");
-		
-		Car mercedes = new Car();
-		mercedes.setName("Mercedes");
-		mercedes.setEngine(mercedesPower);
-		Car ferrari = new Car();
-		ferrari.setName("Ferrari");
-		ferrari.setEngine(ferrariPower);
-		Car lotus = new Car();
-		lotus.setName("Lotus");
-		lotus.setEngine(mercedesPower);
-		Car williams = new Car();
-		williams.setName("Williams");
-		williams.setEngine(mercedesPower);
-		Car redBull = new Car();
-		redBull.setName("Red Bull");
-		redBull.setEngine(renault);
-		Car toroRosso = new Car();
-		toroRosso.setName("Toro Rosso");
-		toroRosso.setEngine(renault);
-		Car forceIndia = new Car();
-		forceIndia.setName("Force India");
-		forceIndia.setEngine(mercedesPower);
-		Car sauber = new Car();
-		sauber.setName("Sauber");
-		sauber.setEngine(ferrariPower);
-		Car mclaren = new Car();
-		mclaren.setName("Mclaren");
-		mclaren.setEngine(honda);
-		Car manor = new Car();
-		manor.setName("Manor");
-		manor.setEngine(ferrariPower);
-		
-		Driver hamilton = new Driver();
-		hamilton.setName(new FullName("Lewis Hamilton"));
-		hamilton.setCar(mercedes);
-		Driver rosberg = new Driver();
-		rosberg.setName(new FullName("Nico Rosberg"));
-		rosberg.setCar(mercedes);
-		Driver vettel = new Driver();
-		vettel.setName(new FullName("Sebastian Vettel"));
-		vettel.setCar(ferrari);
-		Driver kimi = new Driver();
-		kimi.setName(new FullName("Kimi Räikkönen"));
-		kimi.setCar(ferrari);
-		Driver ricciardo = new Driver();
-		ricciardo.setName(new FullName("Daniel Riccairdo"));
-		ricciardo.setCar(redBull);
-		Driver kvyat = new Driver();
-		kvyat.setName(new FullName("Daniil Kvyat"));
-		kvyat.setCar(redBull);
-		Driver massa = new Driver();
-		massa.setName(new FullName("Felipe Massa"));
-		massa.setCar(williams);
-		Driver bottas = new Driver();
-		bottas.setName(new FullName("Valtteri Bottas"));
-		bottas.setCar(williams);
-		Driver hulkenberg = new Driver();
-		hulkenberg.setName(new FullName("Nico Hulkenberg"));
-		hulkenberg.setCar(forceIndia);
-		Driver perez = new Driver();
-		perez.setName(new FullName("Sergio Perez"));
-		perez.setCar(forceIndia);
-		Driver max = new Driver();
-		max.setName(new FullName("Max Verstappen"));
-		max.setCar(toroRosso);
-		Driver sainz = new Driver();
-		sainz.setName(new FullName("Carlos Sainz"));
-		sainz.setCar(toroRosso);
-		Driver roman = new Driver();
-		roman.setName(new FullName("Romain Grosjean"));
-		roman.setCar(lotus);
-		Driver pastor = new Driver();
-		pastor.setName(new FullName("Pastor Maldonado"));
-		pastor.setCar(lotus);
-		Driver ericsson = new Driver();
-		ericsson.setName(new FullName("Marcus Ericsson"));
-		ericsson.setCar(sauber);
-		Driver nasr = new Driver();
-		nasr.setName(new FullName("Felipe Nasr"));
-		nasr.setCar(sauber);
-		Driver alonso = new Driver();
-		alonso.setName(new FullName("Fernando Alonso"));
-		alonso.setCar(mclaren);
-		Driver button = new Driver();
-		button.setName(new FullName("Jenson Button"));
-		button.setCar(mclaren);
-		Driver stevens = new Driver();
-		stevens.setName(new FullName("Will Stevens"));
-		stevens.setCar(manor);
-		Driver merhi = new Driver();
-		merhi.setName(new FullName("Roberto Merhi"));
-		merhi.setCar(manor);
-		
+
+	private static final Logger LOG = Logger.getLogger(DummyData.class);
+
+	@Autowired
+	DriverRepository driverRepo;
+	@Autowired
+	CarRepository carRepo;
+	@Autowired
+	EngineRepository engineRepo;
+	@Autowired
+	TeamRepository teamRepo;
+
+	@Transactional
+	@Bean
+	public int createDummyData() {
+		engineRepo.save(new Engine("Mercedes", 30));
+		engineRepo.save(new Engine("Ferrari", 20));
+		engineRepo.save(new Engine("Renault", 19));
+		engineRepo.save(new Engine("Honda", 14));
+
+		carRepo.save(new Car("Mercedes", 25, engineRepo.findEngineByName("Mercedes").get(0)));
+		carRepo.save(new Car("Red Bull", 20, engineRepo.findEngineByName("Renault").get(0)));
+		carRepo.save(new Car("Williams", 19, engineRepo.findEngineByName("Mercedes").get(0)));
+		carRepo.save(new Car("Ferrari", 18, engineRepo.findEngineByName("Ferrari").get(0)));
+		carRepo.save(new Car("Mclaren", 14, engineRepo.findEngineByName("Honda").get(0)));
+		carRepo.save(new Car("Force India", 13, engineRepo.findEngineByName("Mercedes").get(0)));
+		carRepo.save(new Car("Toro Rosso", 12, engineRepo.findEngineByName("Renault").get(0)));
+		carRepo.save(new Car("Lotus", 11, engineRepo.findEngineByName("Mercedes").get(0)));
+		carRepo.save(new Car("Sauber", 8, engineRepo.findEngineByName("Ferrari").get(0)));
+		carRepo.save(new Car("Manor", 2, engineRepo.findEngineByName("Ferrari").get(0)));
+
+		driverRepo.save(new Driver(new FullName("Lewis Hamilton"), carRepo.findCarByName("Mercedes").get(0), 27));
+		driverRepo.save(new Driver(new FullName("Nico Rosberg"), carRepo.findCarByName("Mercedes").get(0), 25));
+		driverRepo.save(new Driver(new FullName("Sebastian Vettel"), carRepo.findCarByName("Ferrari").get(0), 19));
+		driverRepo.save(new Driver(new FullName("Kimi Räikkönen"), carRepo.findCarByName("Ferrari").get(0), 17));
+		driverRepo.save(new Driver(new FullName("Daniel Ricciardo"), carRepo.findCarByName("Red Bull").get(0), 21));
+		driverRepo.save(new Driver(new FullName("Daniil Kvyat"), carRepo.findCarByName("Red Bull").get(0), 17));
+		driverRepo.save(new Driver(new FullName("Felipe Massa"), carRepo.findCarByName("Williams").get(0), 18));
+		driverRepo.save(new Driver(new FullName("Valtteri Bottas"), carRepo.findCarByName("Williams").get(0), 20));
+		driverRepo.save(new Driver(new FullName("Nico Hulkenberg"), carRepo.findCarByName("Force India").get(0), 14));
+		driverRepo.save(new Driver(new FullName("Sergio Perez"), carRepo.findCarByName("Force India").get(0), 13));
+		driverRepo.save(new Driver(new FullName("Max Verstappen"), carRepo.findCarByName("Toro Rosso").get(0), 7));
+		driverRepo.save(new Driver(new FullName("Carlos Sainz"), carRepo.findCarByName("Toro Rosso").get(0), 6));
+		driverRepo.save(new Driver(new FullName("Romain Grosjean"), carRepo.findCarByName("Lotus").get(0), 10));
+		driverRepo.save(new Driver(new FullName("Pastor Maldonado"), carRepo.findCarByName("Lotus").get(0), 8));
+		driverRepo.save(new Driver(new FullName("Marcus Ericsson"), carRepo.findCarByName("Sauber").get(0), 5));
+		driverRepo.save(new Driver(new FullName("Felipe Nasr"), carRepo.findCarByName("Sauber").get(0), 4));
+		driverRepo.save(new Driver(new FullName("Fernando Alonso"), carRepo.findCarByName("Mclaren").get(0), 16));
+		driverRepo.save(new Driver(new FullName("Jenson Button"), carRepo.findCarByName("Mclaren").get(0), 15));
+		driverRepo.save(new Driver(new FullName("Will Stevens"), carRepo.findCarByName("Manor").get(0), 1));
+		driverRepo.save(new Driver(new FullName("Roberto Merhi"), carRepo.findCarByName("Manor").get(0), 1));
+		driverRepo.save(new Driver(new FullName("Alexander Rossi"), carRepo.findCarByName("Manor").get(0), 1));
+
 		try {
-			Team mikesTeam = new Team("Fast But Bad Manors", new Driver[] {vettel, sainz}, manor, mercedesPower);
-		} catch (ValidationException e) {
+			final List<Driver> drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findDriverByName(new FullName("Sebastian Vettel")).get(0));
+			drivers.add(driverRepo.findDriverByName(new FullName("Carlos Sainz")).get(0));
+			final Car car = carRepo.findCarByName("Manor").get(0);
+			final Engine eng = engineRepo.findEngineByName("Mercedes").get(0);
+			teamRepo.save(new Team("Fast But Bad Manors", drivers, car, eng));
+		} catch (final ValidationException e) {
 			LOG.info("Team Invalid: " + e.getMessage());
 		}
+		return 0;
 	}
 }

@@ -15,11 +15,6 @@ public class MainController {
 	@RequestMapping("/")
 	@ResponseBody
 	public String mainPage() {
-		RestTemplate restTemplate = new RestTemplate();
-		String qualResults = restTemplate.getForObject("http://ergast.com/api/f1/current/last/qualifying", String.class);
-		String raceResults = restTemplate.getForObject("http://ergast.com/api/f1/current/last/results", String.class);
-		LOG.info(qualResults);
-		LOG.info(raceResults);
 		return "Welcome to FF1!";
 	}
 }
