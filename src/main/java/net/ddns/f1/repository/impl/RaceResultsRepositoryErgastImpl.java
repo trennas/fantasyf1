@@ -1,4 +1,3 @@
-package net.ddns.f1.service.impl;
 package net.ddns.f1.repository.impl;
 
 import java.util.ArrayList;
@@ -7,8 +6,7 @@ import java.util.List;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.DriverPosition;
 import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.repository.DriverRepository;
-import net.ddns.f1.service.ResultsService;
+import net.ddns.f1.repository.ReceResultsRepository;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +18,10 @@ import com.ergast.mrd._1.QualifyingResultType;
 import com.ergast.mrd._1.ResultType;
 
 @Service
-public class ResultsServiceErgastImpl implements ResultsService {
+public class RaceResultsRepositoryErgastImpl implements ReceResultsRepository {
 
 	private static final Logger LOG = Logger
-			.getLogger(ResultsServiceErgastImpl.class);
+			.getLogger(RaceResultsRepositoryErgastImpl.class);
 
 	@Autowired
 	DriverRepository driverRepo;
@@ -104,5 +102,10 @@ public class ResultsServiceErgastImpl implements ResultsService {
 					+ res.getDriver().get(0).getFamilyName());
 			return null;
 		}
+	}
+
+	@Override
+	public List<EventResult> getSeasonResults() {
+		return null;
 	}
 }

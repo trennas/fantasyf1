@@ -1,4 +1,4 @@
-package net.ddns.f1.service;
+package net.ddns.f1.repository.impl;
 
 import static org.junit.Assert.assertEquals;
 import net.ddns.f1.FantasyF1Application;
@@ -15,7 +15,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
-public class ResultsServiceErgastImplTest {
+public class RaceResultsRepositoryErgastImplTest {
 
 	@Autowired
 	RaceResultsRepositoryErgastImpl service;
