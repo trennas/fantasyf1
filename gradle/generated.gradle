@@ -1,0 +1,51 @@
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+ 
+configurations {
+    jaxb
+}
+ 
+task genJaxb {
+    ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+    ext.classesDir = "${buildDir}/classes/jaxb"
+    ext.schemaDir = "src/main/resources/schema/mrd/xsd"
+
+    outputs.dir classesDir
+
+    doLast() {
+        project.ant {
+            taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+                    classpath: configurations.jaxb.asPath
+            mkdir(dir: sourcesDir)
+            
+            mkdir(dir: classesDir)
+
+            xjc(destdir: sourcesDir) {
+                schema(dir: schemaDir, includes: '**/mrd.xsd')                   
+                produces(dir: sourcesDir, includes: "**/*.java")
+            }
+
+            javac(destdir: classesDir, source: 1.7, target: 1.7, debug: true,
+                    debugLevel: "lines,vars,source",
+                    classpath: configurations.jaxb.asPath) {
+                src(path: sourcesDir)
+                include(name: "**/*.java")
+                include(name: "*.java")
+            }
+
+            copy(todir: classesDir) {
+                fileset(dir: sourcesDir, erroronmissingdir: false) {
+                    exclude(name: "**/*.java")
+                }
+            }
+          
+        }
+    }
+}
+ 
+dependencies{
+    jaxb("com.sun.xml.bind:jaxb-xjc:2.2.4-1")
+    compile(files(genJaxb.classesDir).builtBy(genJaxb))
+}

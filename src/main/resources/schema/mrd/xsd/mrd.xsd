@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:mrd="http://ergast.com/mrd/1.4" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ergast.com/mrd/1.4" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<annotation>
+		<documentation>This schema provides a generic description of motor racing data and defines the XML response format used by the Ergast Developer API. This work is licenced under the Creative Commons Attribution-Share Alike Licence (http://creativecommons.org/licenses/by-sa/3.0/).</documentation>
+	</annotation>
+	<element name="MRData" type="mrd:MRDataType"/>
+	<complexType name="MRDataType">
+		<sequence>
+			<element name="SeasonTable" type="mrd:SeasonTableType" minOccurs="0"/>
+			<element name="RaceTable" type="mrd:RaceTableType" minOccurs="0"/>
+			<element name="StandingsTable" type="mrd:StandingsTableType" minOccurs="0"/>
+			<element name="DriverTable" type="mrd:DriverTableType" minOccurs="0"/>
+			<element name="ConstructorTable" type="mrd:ConstructorTableType" minOccurs="0"/>
+			<element name="CircuitTable" type="mrd:CircuitTableType" minOccurs="0"/>
+			<element name="StatusTable" type="mrd:StatusTableType" minOccurs="0"/>
+		</sequence>
+		<attribute name="series" type="string" use="optional"/>
+		<attribute name="url" type="string" use="optional"/>
+		<attribute name="limit" type="integer" use="optional"/>
+		<attribute name="offset" type="integer" use="optional"/>
+		<attribute name="total" type="integer" use="optional"/>
+	</complexType>
+	<complexType name="TableType" abstract="true">
+		<attribute name="season" type="integer" use="optional"/>
+		<attribute name="round" type="integer" use="optional"/>
+		<attribute name="circuitId" type="string" use="optional"/>
+		<attribute name="constructorId" type="string" use="optional"/>
+		<attribute name="driverId" type="string" use="optional"/>
+		<attribute name="grid" type="integer" use="optional"/>
+		<attribute name="position" type="integer" use="optional"/>
+		<attribute name="statusId" type="integer" use="optional"/>
+	</complexType>
+	<complexType name="SeasonTableType">
+		<complexContent>
+			<extension base="mrd:TableType">
+				<sequence>
+					<element name="Season" type="mrd:SeasonType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="RaceTableType">
+		<complexContent>
+			<extension base="mrd:TableType">
+				<sequence>
+					<element name="Race" type="mrd:RaceType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="DriverTableType">
+		<complexContent>
+			<extension base="mrd:TableType">
+				<sequence>
+					<element name="Driver" type="mrd:DriverType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="ConstructorTableType">
+		<complexContent>
+			<extension base="mrd:TableType">
+				<sequence>
+					<element name="Constructor" type="mrd:ConstructorType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="StandingsTableType">
+		<complexContent>
+			<extension base="mrd:TableType">
+				<sequence>
+					<element name="StandingsList" type="mrd:StandingsListType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="CircuitTableType">
+		<complexContent>
+			<extension base="mrd:TableType">
+				<sequence>
+					<element name="Circuit" type="mrd:CircuitType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="StatusTableType">
+		<complexContent>
+			<extension base="mrd:TableType">
+				<sequence>
+					<element name="Status" type="mrd:StatusType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="RaceType">
+		<sequence>
+			<element name="RaceName" type="string"/>
+			<choice>
+				<element name="Circuit" type="mrd:CircuitType"/>
+				<element name="CircuitIdRef" type="string"/>
+			</choice>
+			<element name="Date" type="date"/>
+			<element name="Time" type="time"/>
+			<element name="QualifyingList" type="mrd:QualifyingListType" minOccurs="0"/>
+			<element name="ResultsList" type="mrd:ResultsListType" minOccurs="0"/>
+			<element name="LapsList" type="mrd:LapsListType" minOccurs="0"/>
+			<element name="PitStopsList" type="mrd:PitStopsListType" minOccurs="0"/>
+		</sequence>
+		<attribute name="season" type="integer" use="required"/>
+		<attribute name="round" type="integer" use="required"/>
+		<attribute name="url" type="string" use="optional"/>
+	</complexType>
+	<complexType name="ResultsListType">
+		<sequence>
+			<element name="Result" type="mrd:ResultType" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<complexType name="QualifyingListType">
+		<sequence>
+			<element name="QualifyingResult" type="mrd:QualifyingResultType" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<complexType name="LapsListType">
+   <sequence>
+     <element name="Lap" type="mrd:LapType" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="PitStopsListType">
+    <sequence>
+     <element name="PitStop" type="mrd:PitStopType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+	<complexType name="StandingsListType">
+		<sequence>
+			<element name="DriverStanding" type="mrd:DriverStandingType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="ConstructorStanding" type="mrd:ConstructorStandingType" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="season" type="integer" use="required"/>
+		<attribute name="round" type="integer" use="optional"/>
+	</complexType>
+	<complexType name="ResultType">
+		<sequence>
+			<choice>
+				<element name="Driver" type="mrd:DriverType" maxOccurs="unbounded"/>
+				<element name="DriverIdRef" type="string" maxOccurs="unbounded"/>
+			</choice>
+			<choice>
+				<element name="Constructor" type="mrd:ConstructorType"/>
+				<element name="ConstructorIdRef" type="string"/>
+			</choice>
+			<element name="Grid" type="integer"/>
+			<element name="Laps" type="integer"/>
+			<element name="Status" type="mrd:StatusType"/>
+			<element name="Time" type="mrd:DurationType" minOccurs="0"/>
+			<element name="FastestLap" type="mrd:FastestLapType" minOccurs="0"/>
+		</sequence>
+		<attribute name="number" type="integer" use="optional"/>
+		<attribute name="position" type="integer" use="required"/>
+		<attribute name="points" type="float" use="optional"/>
+	</complexType>
+	 <complexType name="LapType">
+    <sequence>
+      <element name="Timing" type="mrd:TimingType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+    <attribute name="number" type="integer" use="required"/>
+  </complexType>
+	<complexType name="QualifyingResultType">
+		<sequence>
+			<choice>
+				<element name="Driver" type="mrd:DriverType"/>
+				<element name="DriverIdRef" type="string"/>
+			</choice>
+			<choice>
+				<element name="Constructor" type="mrd:ConstructorType"/>
+				<element name="ConstructorIdRef" type="string"/>
+			</choice>
+			<element name="Q1" type="mrd:DurationType"/>
+			<element name="Q2" type="mrd:DurationType" minOccurs="0"/>
+			<element name="Q3" type="mrd:DurationType" minOccurs="0"/>
+		</sequence>
+		<attribute name="number" type="integer" use="optional"/>
+		<attribute name="position" type="integer" use="required"/>
+	</complexType>
+	<complexType name="FastestLapType">
+		<sequence>
+			<element name="Time" type="mrd:DurationType"/>
+			<element name="AverageSpeed" type="mrd:SpeedType"/>
+		</sequence>
+		<attribute name="rank" type="integer" use="required"/>
+		<attribute name="lap" type="integer" use="required"/>
+	</complexType>
+	<complexType name="CircuitType">
+		<sequence>
+			<element name="CircuitName" type="string"/>
+			<element name="Location" type="mrd:LocationType"/>
+		</sequence>
+		<attribute name="circuitId" type="string" use="required"/>
+		<attribute name="url" type="string" use="optional"/>
+	</complexType>
+	<complexType name="DriverStandingType">
+		<sequence>
+			<choice>
+				<element name="Driver" type="mrd:DriverType"/>
+				<element name="DriverIdRef" type="string"/>
+			</choice>
+			<choice>
+				<element name="Constructor" type="mrd:ConstructorType" maxOccurs="unbounded"/>
+				<element name="ConstructorIdRef" type="string" maxOccurs="unbounded"/>
+			</choice>
+		</sequence>
+		<attribute name="position" type="integer" use="required"/>
+		<attribute name="points" type="float" use="required"/>
+		<attribute name="wins" type="integer" use="required"/>
+	</complexType>
+	<complexType name="ConstructorStandingType">
+		<sequence>
+			<choice>
+				<element name="Constructor" type="mrd:ConstructorType"/>
+				<element name="ConstructorIdRef" type="string"/>
+			</choice>
+		</sequence>
+		<attribute name="position" type="integer" use="required"/>
+		<attribute name="points" type="float" use="required"/>
+		<attribute name="wins" type="integer" use="required"/>
+	</complexType>
+	<complexType name="DriverType">
+		<sequence>
+      <element name="PermanentNumber" type="integer" minOccurs="0"/>
+			<element name="GivenName" type="string"/>
+			<element name="FamilyName" type="string"/>
+			<element name="DateOfBirth" type="date" minOccurs="0"/>
+			<element name="Nationality" type="string" minOccurs="0"/>
+		</sequence>
+		<attribute name="driverId" type="string" use="required"/>
+		<attribute name="url" type="string" use="optional"/>
+	</complexType>
+	<complexType name="ConstructorType">
+		<sequence>
+			<element name="Name" type="string"/>
+			<element name="Nationality" type="string" minOccurs="0"/>
+		</sequence>
+		<attribute name="constructorId" type="string" use="required"/>
+		<attribute name="url" type="string" use="optional"/>
+	</complexType>
+	<complexType name="LocationType">
+		<sequence>
+			<element name="Locality" type="string" maxOccurs="unbounded"/>
+			<element name="Country" type="string"/>
+		</sequence>
+		<attribute name="lat" type="float" use="optional"/>
+		<attribute name="long" type="float" use="optional"/>
+		<attribute name="alt" type="int" use="optional"/>
+	</complexType>
+	<complexType name="StatusType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="statusId" type="integer" use="required"/>
+				<attribute name="count" type="integer" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<complexType name="SeasonType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="url" type="string" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<complexType name="DurationType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="millis" type="integer" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<complexType name="SpeedType">
+		<simpleContent>
+			<extension base="float">
+				<attribute name="units" type="string" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<complexType name="TimingType">
+    <attribute name="driverId" type="string" use="required" />
+    <attribute name="position" type="integer" use="required" />
+    <attribute name="time" type="duration" use="required" />
+  </complexType>
+  <complexType name="PitStopType">
+    <attribute name="driverId" type="string" use="required" />
+    <attribute name="stop" type="integer" use="required" />
+    <attribute name="lap" type="integer" use="required" />
+    <attribute name="time" type="time" use="optional" />
+    <attribute name="duration" type="duration" use="optional" />
+  </complexType>
+</schema>
