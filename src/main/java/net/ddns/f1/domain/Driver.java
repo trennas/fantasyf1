@@ -1,8 +1,8 @@
 package net.ddns.f1.domain;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
@@ -10,19 +10,20 @@ import lombok.Data;
 @Data
 @Entity
 public class Driver {
-	@EmbeddedId
-	private FullName name;
-//	@Id
-//	private String name;
 
+	@Id
+	private int number;
+	private String name;
 	private int price;
+
 	@ManyToOne(targetEntity = Car.class, fetch = FetchType.EAGER)
 	private Car car;
 
 	public Driver() {
 	}
 
-	public Driver(final FullName name, final Car car, final int price) {
+	public Driver(final String name, final int number, final Car car, final int price) {
+		this.number = number;
 		this.name = name;
 		this.car = car;
 		this.price = price;
@@ -31,8 +32,7 @@ public class Driver {
 	@Override
 	public boolean equals(final Object otherDriver) {
 		if (otherDriver instanceof Driver) {
-			if (this.getName().equals(
-					((Driver) otherDriver).getName())) {
+			if (number == ((Driver) otherDriver).getNumber()) {
 				return true;
 			}
 		}

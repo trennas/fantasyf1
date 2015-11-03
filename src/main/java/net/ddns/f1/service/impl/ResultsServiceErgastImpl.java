@@ -6,7 +6,6 @@ import java.util.List;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.DriverPosition;
 import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.domain.FullName;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.service.ResultsService;
 
@@ -43,18 +42,13 @@ public class ResultsServiceErgastImpl implements ResultsService {
 
 		final EventResult result = new EventResult();
 
-		final Iterable<Driver> drivers = driverRepo.findAll();
-
-		final Driver fastestLapDriver = driverRepo.findDriverByName(
-				new FullName(fastestLap.getDriverTable().getDriver().get(0)
-						.getGivenName()
-						+ " "
-						+ fastestLap.getDriverTable().getDriver().get(0)
-								.getFamilyName())).get(0);
+		final Driver fastestLapDriver = driverRepo.findByNumber(fastestLap.getDriverTable().getDriver().get(0).getPermanentNumber().intValue()).get(0);
 		result.setFastestLapDriver(fastestLapDriver);
 
 		if (qual.getRaceTable().getRace().size() > 0) {
 			result.setVenue(qual.getRaceTable().getRace().get(0).getRaceName());
+			result.setRound(qual.getRaceTable().getRace().get(0).getRound().intValue());
+			result.setSeason(qual.getRaceTable().getRace().get(0).getSeason().intValue());
 
 			final List<DriverPosition> positions = new ArrayList<DriverPosition>();
 
@@ -78,9 +72,13 @@ public class ResultsServiceErgastImpl implements ResultsService {
 	}
 
 	private Driver findDriver(final QualifyingResultType res) {
-		final List<Driver> driversFound = driverRepo.findDriverByName(
-				new FullName(res.getDriver().getGivenName() + " "
-						+ res.getDriver().getFamilyName()));
+		int number;
+		if(res.getDriver().getPermanentNumber() != null) {
+			number = res.getDriver().getPermanentNumber().intValue();
+		} else {
+			number = res.getNumber().intValue();
+		}
+		final List<Driver> driversFound = driverRepo.findByNumber(number);
 		if(driversFound.size() > 0 ) {
 			return driversFound.get(0);
 		} else {
@@ -91,13 +89,17 @@ public class ResultsServiceErgastImpl implements ResultsService {
 	}
 
 	private Driver findDriver(final ResultType res) {
-		final List<Driver> driversFound = driverRepo.findDriverByName(
-				new FullName(res.getDriver().get(0).getGivenName() + " "
-						+ res.getDriver().get(0).getFamilyName()));
+		int number;
+		if(res.getDriver().get(0).getPermanentNumber() != null) {
+			number = res.getDriver().get(0).getPermanentNumber().intValue();
+		} else {
+			number = res.getNumber().intValue();
+		}
+		final List<Driver> driversFound = driverRepo.findByNumber(number);
 		if(driversFound.size() > 0 ) {
 			return driversFound.get(0);
 		} else {
-			LOG.info("Couldn't find driver: " + res.getDriver().get(0).getGivenName() + " "
+			LOG.info("Couldn't find driver: " + res.getDriver().get(0).getPermanentNumber().intValue() + " - " + res.getDriver().get(0).getGivenName() + " "
 					+ res.getDriver().get(0).getFamilyName());
 			return null;
 		}
