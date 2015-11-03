@@ -1,6 +1,6 @@
 package net.ddns.f1.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import net.ddns.f1.FantasyF1Application;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.service.impl.ResultsServiceErgastImpl;
@@ -16,14 +16,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
 public class ResultsServiceErgastImplTest {
-	
+
 	@Autowired
 	ResultsServiceErgastImpl service;
 
 	@Test
 	public void test() {
-		EventResult result = service.getEventResult(17);
-		assertEquals("Nico Rosberg", result.getFastestLapDriver().getName());
+		final EventResult result = service.getEventResult(17);
+		assertEquals("Nico Rosberg", result.getFastestLapDriver().getName().toString());
 	}
 
 }

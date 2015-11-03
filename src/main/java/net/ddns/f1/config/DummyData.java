@@ -61,8 +61,8 @@ public class DummyData {
 		driverRepo.save(new Driver(new FullName("Daniil Kvyat"), carRepo.findCarByName("Red Bull").get(0), 17));
 		driverRepo.save(new Driver(new FullName("Felipe Massa"), carRepo.findCarByName("Williams").get(0), 18));
 		driverRepo.save(new Driver(new FullName("Valtteri Bottas"), carRepo.findCarByName("Williams").get(0), 20));
-		driverRepo.save(new Driver(new FullName("Nico Hulkenberg"), carRepo.findCarByName("Force India").get(0), 14));
-		driverRepo.save(new Driver(new FullName("Sergio Perez"), carRepo.findCarByName("Force India").get(0), 13));
+		driverRepo.save(new Driver(new FullName("Nico Hülkenberg"), carRepo.findCarByName("Force India").get(0), 14));
+		driverRepo.save(new Driver(new FullName("Sergio Pérez"), carRepo.findCarByName("Force India").get(0), 13));
 		driverRepo.save(new Driver(new FullName("Max Verstappen"), carRepo.findCarByName("Toro Rosso").get(0), 7));
 		driverRepo.save(new Driver(new FullName("Carlos Sainz"), carRepo.findCarByName("Toro Rosso").get(0), 6));
 		driverRepo.save(new Driver(new FullName("Romain Grosjean"), carRepo.findCarByName("Lotus").get(0), 10));
