@@ -1,4 +1,4 @@
-package net.ddns.f1.repository;
+package net.ddns.f1.repository.impl;
 
 import java.util.List;
 

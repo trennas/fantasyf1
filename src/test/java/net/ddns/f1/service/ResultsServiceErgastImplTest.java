@@ -3,7 +3,7 @@ package net.ddns.f1.service;
 import static org.junit.Assert.assertEquals;
 import net.ddns.f1.FantasyF1Application;
 import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.service.impl.ResultsServiceErgastImpl;
+import net.ddns.f1.repository.impl.RaceResultsRepositoryErgastImpl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class ResultsServiceErgastImplTest {
 
 	@Autowired
-	ResultsServiceErgastImpl service;
+	RaceResultsRepositoryErgastImpl service;
 
 	@Test
 	public void test() {

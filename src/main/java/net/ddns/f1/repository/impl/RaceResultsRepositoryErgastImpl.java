@@ -1,4 +1,5 @@
 package net.ddns.f1.service.impl;
+package net.ddns.f1.repository.impl;
 
 import java.util.ArrayList;
 import java.util.List;

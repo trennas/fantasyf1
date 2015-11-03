@@ -1,7 +1,10 @@
-package net.ddns.f1.service;
+package net.ddns.f1.repository;
+
+import java.util.List;
 
 import net.ddns.f1.domain.EventResult;
 
-public interface ResultsService {
-	public EventResult getEventResult(int round);
+public interface ReceResultsRepository {
+	public EventResult getEventResult(final int round);
+	public List<EventResult> getSeasonResults();
 }
