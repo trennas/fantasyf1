@@ -7,11 +7,11 @@ import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.Team;
-import net.ddns.f1.domain.ValidationException;
 import net.ddns.f1.repository.impl.CarRepository;
 import net.ddns.f1.repository.impl.DriverRepository;
 import net.ddns.f1.repository.impl.EngineRepository;
-import net.ddns.f1.repository.impl.TeamRepository;
+import net.ddns.f1.service.impl.TeamService;
+import net.ddns.f1.service.impl.ValidationException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class DummyData {
 	@Autowired
 	EngineRepository engineRepo;
 	@Autowired
-	TeamRepository teamRepo;
+	TeamService teamService;
 
 	@Transactional
 	@Bean
@@ -80,7 +80,8 @@ public class DummyData {
 			drivers.add(driverRepo.findByNumber(55).get(0));
 			final Car car = carRepo.findCarByName("Manor").get(0);
 			final Engine eng = engineRepo.findEngineByName("Mercedes").get(0);
-			teamRepo.save(new Team("Fast But Bad Manors", drivers, car, eng));
+			final Team team = new Team("Fast But Bad Manors", drivers, car, eng);
+			teamService.addTeam(team);
 		} catch (final ValidationException e) {
 			LOG.info("Team Invalid: " + e.getMessage());
 		}

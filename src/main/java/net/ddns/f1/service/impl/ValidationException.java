@@ -1,4 +1,4 @@
-package net.ddns.f1.domain;
+package net.ddns.f1.service.impl;
 
 public class ValidationException extends Exception {
 

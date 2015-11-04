@@ -1,0 +1,20 @@
+.navbar-inverse, .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav>li>a {
+	background-color: #006666;
+	color: white;
+}
+
+.btn {
+opacity:0.6;
+filter:alpha(opacity=60); /* For IE8 and earlier */
+}
+
+.btn:hover {
+	filter: none;
+	opacity: 1;
+}
+
+.requiredField
+{
+  color:red;
+  font-weight:bold;
+}
