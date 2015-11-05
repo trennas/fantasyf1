@@ -11,17 +11,19 @@ import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class EventService {
+public class EventServiceImpl {
 	@Autowired
 	EventResultRepository eventRepo;
 
 	@Autowired
 	LiveResultsRepository liveRepo;
 
-	private static final Logger LOG = Logger.getLogger(EventService.class);
+	private static final Logger LOG = Logger.getLogger(EventServiceImpl.class);
 
+	@Transactional
 	public List<EventResult> getSeasonResults() {
 		final Iterable<EventResult> itr = eventRepo.findAll();
 		final List<EventResult> results = IteratorUtils.toList(itr.iterator());

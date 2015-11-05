@@ -1,7 +1,7 @@
 package net.ddns.f1.servuce.impl;
 
 import net.ddns.f1.FantasyF1Application;
-import net.ddns.f1.service.impl.EventService;
+import net.ddns.f1.service.impl.EventServiceImpl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class EventServiceTest {
 
 	@Autowired
-	private EventService serv;
+	private EventServiceImpl serv;
 
 	@Test
 	public void getSeasonResultsTest() {

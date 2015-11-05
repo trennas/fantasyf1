@@ -17,7 +17,7 @@ public class LeagueServiceImpl {
 	TeamRepository teamRepo;
 
 	@Autowired
-	EventService eventService;
+	EventServiceImpl eventService;
 
 	public List<Team> calculateLeagueStandings() {
 		return teamService.getAllTeams();
