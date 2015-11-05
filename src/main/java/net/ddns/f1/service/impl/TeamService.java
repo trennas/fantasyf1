@@ -4,8 +4,9 @@ import java.util.List;
 
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Team;
-import net.ddns.f1.repository.impl.TeamRepository;
+import net.ddns.f1.repository.TeamRepository;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,11 @@ public class TeamService {
 	private int budget;
 	@Value("${team-name-regex}")
 	private String teamNameRegex;
+
+	public List<Team> getAllTeams() {
+		final Iterable<Team> i = teamRepo.findAll();
+		return IteratorUtils.toList(i.iterator());
+	}
 
 	public void addTeam(final Team team) throws ValidationException {
 		validateTeam(team);

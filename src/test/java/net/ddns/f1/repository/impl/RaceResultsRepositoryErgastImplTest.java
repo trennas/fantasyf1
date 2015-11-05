@@ -3,7 +3,7 @@ package net.ddns.f1.repository.impl;
 import static org.junit.Assert.assertEquals;
 import net.ddns.f1.FantasyF1Application;
 import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.repository.impl.RaceResultsRepositoryErgastImpl;
+import net.ddns.f1.repository.impl.LatestRaceResultsRepositoryErgastImpl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +18,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class RaceResultsRepositoryErgastImplTest {
 
 	@Autowired
-	RaceResultsRepositoryErgastImpl service;
+	LatestRaceResultsRepositoryErgastImpl service;
 
 	@Test
 	public void test() {
-		final EventResult result = service.getEventResult(17);
+		final EventResult result = service.fetchEventResult(17);
 		assertEquals("Nico Rosberg", result.getFastestLapDriver().getName().toString());
 	}
 

@@ -7,9 +7,9 @@ import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.Team;
-import net.ddns.f1.repository.impl.CarRepository;
-import net.ddns.f1.repository.impl.DriverRepository;
-import net.ddns.f1.repository.impl.EngineRepository;
+import net.ddns.f1.repository.CarRepository;
+import net.ddns.f1.repository.DriverRepository;
+import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.service.impl.TeamService;
 import net.ddns.f1.service.impl.ValidationException;
 
