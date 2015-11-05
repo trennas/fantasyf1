@@ -1,10 +1,12 @@
 package net.ddns.f1.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
@@ -48,15 +50,93 @@ public class LeagueServiceImpl {
 	
 	private void calculateResult(EventResult result, List<Team> teams) {
 		for(Team team : teams) {
-			int points = 0;
-			Position driver1QualResult = result.getQualifyingOrder().get(team.getDrivers().get(0));
-			Position driver2QualResult = result.getQualifyingOrder().get(team.getDrivers().get(1));
+			if(result.getRound()==17) {
+				System.out.println("Mexico");
+			}
 			List<Driver> carDrivers = driverRepo.findByCar(team.getCar());
+			
+			List<Car> carsUsingEngine = carRepo.findByEngine(team.getEngine());
+			List<Driver> engineDrivers = new ArrayList<Driver>();
+			for(Car car : carsUsingEngine) {
+				List<Driver> drivers = driverRepo.findByCar(car);
+				for(Driver driver : drivers) {
+					engineDrivers.add(driver);
+				}
+			}
+			
+			int points = 0;
+
+			for(Driver driver : team.getDrivers()) {
+				Position pos = result.getQualifyingOrder().get(driver);
+				if(pos != null) {
+					if(pos.isClassified()) {
+						points += DRIVER_QUAL_POINTS.get(pos.getPosition());
+					}
+				}
+			}
+			
+			for(Driver driver : carDrivers) {
+				Position pos = result.getQualifyingOrder().get(driver);
+				if(pos != null) {
+					if(pos.isClassified()) {
+						points += CAR_QUAL_POINTS.get(pos.getPosition());
+					}
+				}
+			}
+			
+			for(Driver driver : engineDrivers) {
+				Position pos = result.getQualifyingOrder().get(driver);
+				if(pos != null) {
+					if(pos.isClassified()) {
+						points += ENGINE_QUAL_POINTS.get(pos.getPosition());
+					}
+				}
+			}
+			
+			if(result.isRaceComplete()) {
+				for(Driver driver : team.getDrivers()) {
+					Position pos = result.getRaceOrder().get(driver);
+					if(pos != null) {
+						if(pos.isClassified()) {
+							points += DRIVER_RACE_POINTS.get(pos.getPosition());
+						}
+						if(driver.equals(result.getFastestLapDriver())) {
+							points += FASTEST_LAP_BONUS;
+						}
+					}
+				}
+				
+				boolean bothCarsFinished = true;
+				for(Driver driver : carDrivers) {
+					Position pos = result.getRaceOrder().get(driver);
+					if(pos != null) {
+						if(pos.isClassified()) {
+							points += CAR_RACE_POINTS.get(pos.getPosition());
+						} else {
+							bothCarsFinished = false;
+						}
+					}
+				}
+				if(bothCarsFinished) {
+					points += BOTH_CARS_FINISHED_BONUS;
+				}
+				
+				for(Driver driver : engineDrivers) {
+					Position pos = result.getRaceOrder().get(driver);
+					if(pos != null) {
+						if(pos.isClassified()) {
+							points += ENGINE_RACE_POINTS.get(pos.getPosition());
+						}
+					}
+				}
+			}
+			team.getPointsPerEvent().put(result.getRound(), points);
+			team.setTotalPoints(team.getTotalPoints() + points);
 		}
 	}
 	
 	private static final Integer FASTEST_LAP_BONUS = 50;
-	private static final Integer BOTH_CARS_FINISH_BONUS = 50;
+	private static final Integer BOTH_CARS_FINISHED_BONUS = 50;
 	
 	private static final Map<Integer, Integer> DRIVER_QUAL_POINTS = new HashMap<Integer, Integer>();
 	static {

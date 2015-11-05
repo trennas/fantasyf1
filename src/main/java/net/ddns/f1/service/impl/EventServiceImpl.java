@@ -40,7 +40,7 @@ public class EventServiceImpl {
 			LOG.info("Found new live race results... updating");
 			while (result != null) {
 				eventRepo.save(result);
-				result = liveRepo.fetchEventResult(results.size() + 1);
+				result = liveRepo.fetchEventResult(result.getRound() + 1);
 			}
 		} else {
 			LOG.info("No new race results found");

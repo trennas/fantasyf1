@@ -1,7 +1,11 @@
 package net.ddns.f1.service.impl;
 
 import static org.junit.Assert.*;
+
+import java.util.List;
+
 import net.ddns.f1.FantasyF1Application;
+import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.EventResultRepository;
 
 import org.junit.Test;
@@ -20,7 +24,8 @@ public class LeagueServiceImplTest {
 
 	@Test
 	public void calculateLeagueStandingsTest() {
-		service.calculateLeagueStandings();
+		List<Team> standings = service.calculateLeagueStandings();
+		assertTrue(standings.size() > 0);
 	}
 
 }

@@ -1,6 +1,8 @@
 package net.ddns.f1.domain;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,7 +29,10 @@ public class Team  implements Comparable<Team> {
 	private Engine engine;
 
 	@Transient
-	private int points;
+	private long totalPoints;
+	
+	@Transient
+	private Map<Integer, Integer> pointsPerEvent = new HashMap<Integer, Integer>();
 
 	public Team() {
 	}
@@ -47,9 +52,9 @@ public class Team  implements Comparable<Team> {
 
 	@Override
 	public int compareTo(Team otherTeam) {
-		if (this.points > otherTeam.getPoints()) {
+		if (this.totalPoints > otherTeam.getTotalPoints()) {
 			return 1;
-		} else if (this.points < otherTeam.getPoints()) {
+		} else if (this.totalPoints < otherTeam.getTotalPoints()) {
 			return -1;
 		} else {
 			return 0;
