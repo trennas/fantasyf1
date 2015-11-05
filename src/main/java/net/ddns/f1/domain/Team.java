@@ -15,7 +15,7 @@ import net.ddns.f1.service.impl.ValidationException;
 
 @Entity
 @Data
-public class Team {
+public class Team  implements Comparable<Team> {
 	@Id
 	private String name;
 	@ManyToMany(targetEntity = Driver.class, fetch = FetchType.EAGER)
@@ -43,5 +43,16 @@ public class Team {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	@Override
+	public int compareTo(Team otherTeam) {
+		if (this.points > otherTeam.getPoints()) {
+			return 1;
+		} else if (this.points < otherTeam.getPoints()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 }
