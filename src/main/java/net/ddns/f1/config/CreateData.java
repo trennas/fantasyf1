@@ -79,7 +79,7 @@ public class CreateData {
 
 		try {
 			final List<Driver> drivers = new ArrayList<Driver>();
-			drivers.add(driverRepo.findByNumber(44).get(0));
+			drivers.add(driverRepo.findByNumber(5).get(0));
 			drivers.add(driverRepo.findByNumber(55).get(0));
 			final Car car = carRepo.findCarByName("Manor").get(0);
 			final Engine eng = engineRepo.findEngineByName("Mercedes").get(0);
