@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
-import javax.persistence.Transient;
 
 import lombok.Data;
 import net.ddns.f1.service.impl.ValidationException;
@@ -22,6 +22,7 @@ public class Team  implements Comparable<Team> {
 	private String name;	
 	private String owner;	
 	private String email;
+	private String password;
 	
 	@ManyToMany(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	@OrderColumn
@@ -31,20 +32,19 @@ public class Team  implements Comparable<Team> {
 	@OneToOne(targetEntity = Engine.class, fetch = FetchType.EAGER)
 	private Engine engine;
 
-	@Transient
-	private long totalPoints;
-	
-	@Transient
+	private long totalPoints;	
+	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Integer, Integer> pointsPerEvent = new HashMap<Integer, Integer>();
 
 	public Team() {
 	}
 
-	public Team(final String name, final String owner, final String email, final List<Driver> drivers, final Car car,
+	public Team(final String name, final String owner, final String email, final String password, final List<Driver> drivers, final Car car,
 			final Engine engine) throws ValidationException {
 		this.name = name;
 		this.owner = owner;
 		this.email = email;
+		this.password = password;
 		this.drivers = drivers;
 		this.car = car;
 		this.engine = engine;

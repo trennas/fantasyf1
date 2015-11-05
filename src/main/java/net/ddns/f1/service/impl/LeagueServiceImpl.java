@@ -14,12 +14,19 @@ import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.TeamRepository;
+import net.ddns.f1.repository.impl.LiveResultsRepositoryErgastImpl;
+import net.ddns.f1.service.impl.EventServiceImpl.SeasonResults;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LeagueServiceImpl {
+	
+	private static final Logger LOG = Logger
+			.getLogger(LeagueServiceImpl.class);
+	
 	@Autowired
 	TeamService teamService;
 
@@ -37,18 +44,29 @@ public class LeagueServiceImpl {
 
 	public List<Team> calculateLeagueStandings() {
 		List<Team> teams = teamService.getAllTeams();
-		List<EventResult> results = eventService.getSeasonResults();
+		SeasonResults seasonResults = eventService.getSeasonResults();
 		
-		for(EventResult result : results) {
-			calculateResult(result, teams);
+		if(seasonResults.isNewData()) {
+			calculateAllResults(seasonResults.getResults(), teams);
 		}
 		
-		Collections.sort(teams);
-		
+		Collections.sort(teams);		
 		return teams;
 	}
 	
-	private void calculateResult(EventResult result, List<Team> teams) {
+	private synchronized void calculateAllResults(List<EventResult> results, List<Team> teams) {
+		LOG.info("Recalculating scores...");
+		for(Team team : teams) {
+			team.setPointsPerEvent(new HashMap<Integer, Integer>());
+			team.setTotalPoints(0);
+		}
+		for(EventResult result : results) {
+			calculateResult(result, teams);
+		}
+		LOG.info("Scores recalculated.");
+	}
+	
+	private synchronized void calculateResult(EventResult result, List<Team> teams) {
 		for(Team team : teams) {
 			List<Driver> carDrivers = driverRepo.findByCar(team.getCar());
 			
@@ -129,6 +147,7 @@ public class LeagueServiceImpl {
 			}
 			team.getPointsPerEvent().put(result.getRound(), points);
 			team.setTotalPoints(team.getTotalPoints() + points);
+			teamRepo.save(team);
 		}
 	}
 	
