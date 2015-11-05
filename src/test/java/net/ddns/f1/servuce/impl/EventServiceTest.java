@@ -1,6 +1,10 @@
 package net.ddns.f1.servuce.impl;
 
+import java.util.List;
+
 import net.ddns.f1.FantasyF1Application;
+import net.ddns.f1.domain.EventResult;
+import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.service.impl.EventServiceImpl;
 
 import org.junit.Test;
@@ -17,10 +21,17 @@ public class EventServiceTest {
 
 	@Autowired
 	private EventServiceImpl serv;
+	
+	@Autowired
+	private EventResultRepository eventRepo;
 
 	@Test
 	public void getSeasonResultsTest() {
 		serv.getSeasonResults();
+		serv.getSeasonResults();
+		List<EventResult> results = eventRepo.findByRound(17);
+		results.get(0).setRaceComplete(false);
+		eventRepo.save(results.get(0));
 		serv.getSeasonResults();
 	}
 
