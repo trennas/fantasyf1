@@ -25,6 +25,8 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 	private static final Logger LOG = Logger
 			.getLogger(LiveResultsRepositoryErgastImpl.class);
+	
+	private static final String ERGAST_BASE_URL = "http://ergast.com/api/f1/current/";
 
 	@Autowired
 	DriverRepository driverRepo;
@@ -36,13 +38,13 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 	public EventResult fetchEventResult(final int round) {
 		final RestTemplate restTemplate = new RestTemplate();
 		final MRDataType qual = restTemplate
-				.getForObject("http://ergast.com/api/f1/current/" + round
+				.getForObject(ERGAST_BASE_URL + round
 						+ "/qualifying.xml", MRDataType.class);
 		final MRDataType race = restTemplate.getForObject(
-				"http://ergast.com/api/f1/current/" + round + "/results.xml",
+				ERGAST_BASE_URL + round + "/results.xml",
 				MRDataType.class);
 		final MRDataType fastestLap = restTemplate.getForObject(
-				"http://ergast.com/api/f1/2015/" + round
+				ERGAST_BASE_URL + round
 						+ "/fastest/1/drivers.xml", MRDataType.class);
 
 		if (qual.getRaceTable().getRace().size() > 0) {
