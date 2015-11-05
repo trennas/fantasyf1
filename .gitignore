@@ -5,6 +5,7 @@ gradle-app.setting
 *.tmp
 *.bak
 *.lck
+*.db
 *_graphics.xml
 ~$*.*
 classes/
