@@ -26,12 +26,12 @@ public class EventServiceImpl {
 	public synchronized List<EventResult> getSeasonResults() {
 		final Iterable<EventResult> itr = eventRepo.findAll();
 		final List<EventResult> results = IteratorUtils.toList(itr.iterator());
-		Collections.sort(results);
 
 		if(results.size() > 0) {
 			EventResult result = results.get(results.size()-1);
 			if(!result.isRaceComplete()) {
 				result = liveRepo.fetchEventResult(result.getRound());
+				eventRepo.save(result);
 			}
 		}
 		
@@ -39,8 +39,7 @@ public class EventServiceImpl {
 		if (result != null) {
 			LOG.info("Found new live race results... updating");
 			while (result != null) {
-				results.add(result);
-				eventRepo.save(results);
+				eventRepo.save(result);
 				result = liveRepo.fetchEventResult(results.size() + 1);
 			}
 		} else {

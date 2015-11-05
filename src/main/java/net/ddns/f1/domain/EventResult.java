@@ -1,6 +1,6 @@
 package net.ddns.f1.domain;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -20,10 +20,10 @@ public class EventResult implements Comparable<EventResult> {
 	private boolean raceComplete;
 	@ManyToOne(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	private Driver fastestLapDriver;
-	@ElementCollection
-	private List<DriverPosition> qualifyingOrder;
-	@ElementCollection
-	private List<DriverPosition> raceOrder;
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Map<Driver, Position> qualifyingOrder;
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Map<Driver, Position> raceOrder;
 
 	@Override
 	public int compareTo(final EventResult otherEvent) {

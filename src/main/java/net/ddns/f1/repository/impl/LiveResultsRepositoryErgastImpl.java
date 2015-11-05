@@ -1,11 +1,13 @@
 package net.ddns.f1.repository.impl;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
-import net.ddns.f1.domain.DriverPosition;
+import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
+import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.LiveResultsRepository;
 
@@ -26,6 +28,9 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 	@Autowired
 	DriverRepository driverRepo;
+	
+	@Autowired
+	CarRepository carRepo;
 
 	@Override
 	public EventResult fetchEventResult(final int round) {
@@ -49,34 +54,33 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 					+ result.getVenue());
 
 			result.setRound(qual.getRaceTable().getRace().get(0).getRound().intValue());
-			result.setSeason(qual.getRaceTable().getRace().get(0).getSeason().intValue());
-
-			final List<DriverPosition> positions = new ArrayList<DriverPosition>();
-
+			result.setSeason(qual.getRaceTable().getRace().get(0).getSeason().intValue());			
+			result.setQualifyingOrder(new HashMap<Driver, Position>());
 			for (final QualifyingResultType res : qual.getRaceTable().getRace()
 					.get(0).getQualifyingList().getQualifyingResult()) {
+				boolean classified = res.getQ1() != null;
 				final Driver driver = findDriver(res);
-				positions.add(new DriverPosition(driver, res
+				result.getQualifyingOrder().put(driver, new Position(res
 						.getPosition()
-						.intValue(), res.getQ1() != null));
+						.intValue(), classified));
 			}
 
 			if (race.getRaceTable().getRace().size() > 0) {
 				LOG.info("Retrieving race results for round " + round + " "
 						+ result.getVenue());
+				result.setRaceOrder(new HashMap<Driver, Position>());
 				for (final ResultType res : race.getRaceTable().getRace()
 						.get(0).getResultsList().getResult()) {
+					boolean classified = res.getPositionText().matches("[0-9]{1,2}");
 					final Driver driver = findDriver(res);
-					positions.add(new DriverPosition(driver, res.getPosition()
-							.intValue(), res.getPositionText().matches(
-							"[0-9]{1,2}")));
+					result.getRaceOrder().put(driver, new Position(res.getPosition()
+							.intValue(), classified));
 				}
 
 				final Driver fastestLapDriver = driverRepo.findByNumber(
 						fastestLap.getDriverTable().getDriver().get(0)
 								.getPermanentNumber().intValue()).get(0);
 				result.setFastestLapDriver(fastestLapDriver);
-
 				result.setRaceComplete(true);
 			}
 			return result;
@@ -98,7 +102,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 		} else {
 			LOG.info("Couldn't find driver: " + res.getDriver().getGivenName() + " "
 					+ res.getDriver().getFamilyName());
-			return null;
+			return driverRepo.findByNumber(0).get(0);
 		}
 	}
 
@@ -113,9 +117,9 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 		if(driversFound.size() > 0 ) {
 			return driversFound.get(0);
 		} else {
-			LOG.info("Couldn't find driver: " + res.getDriver().get(0).getPermanentNumber().intValue() + " - " + res.getDriver().get(0).getGivenName() + " "
+			LOG.info("Couldn't find driver: " + res.getDriver().get(0).getGivenName() + " "
 					+ res.getDriver().get(0).getFamilyName());
-			return null;
+			return driverRepo.findByNumber(0).get(0);
 		}
 	}
 }

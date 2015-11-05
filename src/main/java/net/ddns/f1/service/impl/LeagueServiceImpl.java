@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.ddns.f1.domain.Driver;
+import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Team;
+import net.ddns.f1.repository.CarRepository;
+import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.TeamRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,12 @@ public class LeagueServiceImpl {
 
 	@Autowired
 	TeamRepository teamRepo;
+	
+	@Autowired
+	CarRepository carRepo;
+	
+	@Autowired
+	DriverRepository driverRepo;
 
 	@Autowired
 	EventServiceImpl eventService;
@@ -38,7 +48,10 @@ public class LeagueServiceImpl {
 	
 	private void calculateResult(EventResult result, List<Team> teams) {
 		for(Team team : teams) {
-			
+			int points = 0;
+			Position driver1QualResult = result.getQualifyingOrder().get(team.getDrivers().get(0));
+			Position driver2QualResult = result.getQualifyingOrder().get(team.getDrivers().get(1));
+			List<Driver> carDrivers = driverRepo.findByCar(team.getCar());
 		}
 	}
 	
