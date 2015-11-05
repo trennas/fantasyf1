@@ -19,7 +19,10 @@ import net.ddns.f1.service.impl.ValidationException;
 @Data
 public class Team  implements Comparable<Team> {
 	@Id
-	private String name;
+	private String name;	
+	private String owner;	
+	private String email;
+	
 	@ManyToMany(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	@OrderColumn
 	private List<Driver> drivers;
@@ -37,9 +40,11 @@ public class Team  implements Comparable<Team> {
 	public Team() {
 	}
 
-	public Team(final String name, final List<Driver> drivers, final Car car,
+	public Team(final String name, final String owner, final String email, final List<Driver> drivers, final Car car,
 			final Engine engine) throws ValidationException {
 		this.name = name;
+		this.owner = owner;
+		this.email = email;
 		this.drivers = drivers;
 		this.car = car;
 		this.engine = engine;

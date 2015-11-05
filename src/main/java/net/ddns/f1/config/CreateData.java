@@ -73,7 +73,7 @@ public class CreateData {
 		driverRepo.save(new Driver("Felipe Nasr", 12, carRepo.findByName("Sauber").get(0), 4));
 		driverRepo.save(new Driver("Fernando Alonso", 14, carRepo.findByName("Mclaren").get(0), 16));
 		driverRepo.save(new Driver("Jenson Button", 22, carRepo.findByName("Mclaren").get(0), 15));
-		driverRepo.save(new Driver("Will Stevzens", 28, carRepo.findByName("Manor").get(0), 1));
+		driverRepo.save(new Driver("Will Stevens", 28, carRepo.findByName("Manor").get(0), 1));
 		driverRepo.save(new Driver("Roberto Merhi", 98, carRepo.findByName("Manor").get(0), 1));
 		
 		// Drivers who temporarily drove
@@ -81,13 +81,54 @@ public class CreateData {
 		driverRepo.save(new Driver("Alexander Rossi", 53, carRepo.findByName("Manor").get(0), 1));
 
 		try {
-			final List<Driver> drivers = new ArrayList<Driver>();
-			drivers.add(driverRepo.findByNumber(5).get(0));
-			drivers.add(driverRepo.findByNumber(55).get(0));
-			final Car car = carRepo.findByName("Manor").get(0);
-			final Engine eng = engineRepo.findByName("Mercedes").get(0);
-			final Team team = new Team("Fast But Bad Manors", drivers, car, eng);
+			List<Driver> drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+			drivers.add(driverRepo.findByName("Felipe Nasr").get(0));
+			Team team = new Team("Arrowmaker", "Pete Garratt", "peter.garratt@baesystems.com", drivers, carRepo.findByName("Sauber").get(0), engineRepo.findByName("Renault").get(0));
 			teamService.addTeam(team);
+			
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+			drivers.add(driverRepo.findByName("Daniil Kvyat").get(0));
+			team = new Team("Brawlsy's Lifters", "Alan Bates", "alan.bates2@baesystems.com", drivers, carRepo.findByName("Manor").get(0), engineRepo.findByName("Honda").get(0));
+			teamService.addTeam(team);
+			
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+			drivers.add(driverRepo.findByName("Will Stevens").get(0));
+			team = new Team("Can't be any worse than last year!", "Andy Rousell", "andrew.rousell@baesystems.com", drivers, carRepo.findByName("Sauber").get(0), engineRepo.findByName("Mercedes").get(0));
+			teamService.addTeam(team);
+			
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+			drivers.add(driverRepo.findByName("Nico Hülkenberg").get(0));
+			team = new Team("Dodgy Sparkplugs", "Matt Horsley", "matt@durge.org", drivers, carRepo.findByName("Manor").get(0), engineRepo.findByName("Renault").get(0));
+			teamService.addTeam(team);
+			
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+			drivers.add(driverRepo.findByName("Carlos Sainz").get(0));
+			team = new Team("Fast But Bad Manors", "Mike Trenaman", "mike.trenaman@gmail.com", drivers, carRepo.findByName("Manor").get(0), engineRepo.findByName("Mercedes").get(0));
+			teamService.addTeam(team);
+			
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+			team = new Team("FIRO de formaggio", "Gary Comer", "gary.comer@baesystems.com", drivers, carRepo.findByName("Manor").get(0), engineRepo.findByName("Honda").get(0));
+			teamService.addTeam(team);
+			
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+			drivers.add(driverRepo.findByName("Pastor Maldonado").get(0));
+			team = new Team("Fishy Fliers", "Dave Mccune", "david.mccune@baesystems.com", drivers, carRepo.findByName("Force India").get(0), engineRepo.findByName("Honda").get(0));
+			teamService.addTeam(team);
+			
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Daniel Ricciardo").get(0));
+			drivers.add(driverRepo.findByName("Will Stevens").get(0));
+			team = new Team("Sweet & Sauber", "Jane Trenaman", "jane.trenaman@yahoo.co.uk", drivers, carRepo.findByName("Sauber").get(0), engineRepo.findByName("Mercedes").get(0));
+			teamService.addTeam(team);
+			
 		} catch (final ValidationException e) {
 			LOG.info("Team Invalid: " + e.getMessage());
 		}
