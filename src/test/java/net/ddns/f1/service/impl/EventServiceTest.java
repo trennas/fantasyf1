@@ -27,11 +27,7 @@ public class EventServiceTest {
 
 	@Test
 	public void getSeasonResultsTest() {
-		serv.getSeasonResults();
-		serv.getSeasonResults();
-		List<EventResult> results = eventRepo.findByRound(17);
-		results.get(0).setRaceComplete(false);
-		eventRepo.save(results.get(0));
+		serv.getSeasonResults();		
 		serv.getSeasonResults();
 	}
 

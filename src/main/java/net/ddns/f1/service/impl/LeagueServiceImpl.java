@@ -10,9 +10,11 @@ import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
+import net.ddns.f1.domain.StandInDriver;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
+import net.ddns.f1.repository.StandInDriverRepository;
 import net.ddns.f1.repository.TeamRepository;
 
 import org.apache.log4j.Logger;
@@ -36,6 +38,9 @@ public class LeagueServiceImpl {
 	
 	@Autowired
 	DriverRepository driverRepo;
+	
+	@Autowired
+	StandInDriverRepository standInDriverRepo;
 
 	@Autowired
 	EventServiceImpl eventService;
@@ -85,6 +90,17 @@ public class LeagueServiceImpl {
 					if(pos.isClassified()) {
 						points += DRIVER_QUAL_POINTS.get(pos.getPosition());
 					}
+				} else {
+					// Has the driver been replaced?
+					List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
+					if(standInDrivers.size() == 1) {						
+						pos = result.getQualifyingOrder().get(standInDrivers.get(0).getStandInDriver());
+						if(pos != null) {
+							if(pos.isClassified()) {
+								points += DRIVER_QUAL_POINTS.get(pos.getPosition());
+							}
+						}
+					}
 				}
 			}
 			
@@ -115,6 +131,17 @@ public class LeagueServiceImpl {
 						}
 						if(driver.equals(result.getFastestLapDriver())) {
 							points += FASTEST_LAP_BONUS;
+						}
+					} else {
+						// Has the driver been replaced?
+						List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
+						if(standInDrivers.size() == 1) {						
+							pos = result.getRaceOrder().get(standInDrivers.get(0).getStandInDriver());
+							if(pos != null) {
+								if(pos.isClassified()) {
+									points += DRIVER_RACE_POINTS.get(pos.getPosition());
+								}
+							}
 						}
 					}
 				}

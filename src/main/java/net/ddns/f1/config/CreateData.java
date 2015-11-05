@@ -1,15 +1,19 @@
 package net.ddns.f1.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
+import net.ddns.f1.domain.StandInDriver;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
+import net.ddns.f1.repository.StandInDriverRepository;
 import net.ddns.f1.service.impl.TeamService;
 import net.ddns.f1.service.impl.ValidationException;
 
@@ -28,6 +32,8 @@ public class CreateData {
 
 	@Autowired
 	DriverRepository driverRepo;
+	@Autowired
+	StandInDriverRepository standInDriverRepo;
 	@Autowired
 	CarRepository carRepo;
 	@Autowired
@@ -75,12 +81,18 @@ public class CreateData {
 		driverRepo.save(new Driver("Jenson Button", 22, carRepo.findByName("Mclaren").get(0), 15));
 		driverRepo.save(new Driver("Will Stevens", 28, carRepo.findByName("Manor").get(0), 1));
 		driverRepo.save(new Driver("Roberto Merhi", 98, carRepo.findByName("Manor").get(0), 1));
+		driverRepo.save(new Driver("Kevin Magnussen", 20, carRepo.findByName("Mclaren").get(0), 0));
+		driverRepo.save(new Driver("Alexander Rossi", 53, carRepo.findByName("Manor").get(0), 0));
 		
-		// Drivers who temporarily drove
-		driverRepo.save(new Driver("Kevin Magnussen", 20, carRepo.findByName("Mclaren").get(0), 15));
-		driverRepo.save(new Driver("Alexander Rossi", 53, carRepo.findByName("Manor").get(0), 1));
+		standInDriverRepo.save(new StandInDriver(1, driverRepo.findByName("Kevin Magnussen").get(0), driverRepo.findByName("Fernando Alonso").get(0)));		
+		standInDriverRepo.save(new StandInDriver(13, driverRepo.findByName("Alexander Rossi").get(0), driverRepo.findByName("Roberto Merhi").get(0)));
+		standInDriverRepo.save(new StandInDriver(14, driverRepo.findByName("Alexander Rossi").get(0), driverRepo.findByName("Roberto Merhi").get(0)));
+		standInDriverRepo.save(new StandInDriver(16, driverRepo.findByName("Alexander Rossi").get(0), driverRepo.findByName("Roberto Merhi").get(0)));
+		standInDriverRepo.save(new StandInDriver(17, driverRepo.findByName("Alexander Rossi").get(0), driverRepo.findByName("Roberto Merhi").get(0)));
+		standInDriverRepo.save(new StandInDriver(18, driverRepo.findByName("Alexander Rossi").get(0), driverRepo.findByName("Roberto Merhi").get(0)));
+		standInDriverRepo.save(new StandInDriver(19, driverRepo.findByName("Alexander Rossi").get(0), driverRepo.findByName("Roberto Merhi").get(0)));
 
-		try {
+		try {			
 			List<Driver> drivers = new ArrayList<Driver>();
 			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
 			drivers.add(driverRepo.findByName("Felipe Nasr").get(0));
