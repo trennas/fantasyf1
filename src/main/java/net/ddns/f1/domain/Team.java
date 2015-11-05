@@ -58,9 +58,9 @@ public class Team  implements Comparable<Team> {
 	@Override
 	public int compareTo(Team otherTeam) {
 		if (this.totalPoints > otherTeam.getTotalPoints()) {
-			return 1;
-		} else if (this.totalPoints < otherTeam.getTotalPoints()) {
 			return -1;
+		} else if (this.totalPoints < otherTeam.getTotalPoints()) {
+			return 1;
 		} else {
 			return 0;
 		}

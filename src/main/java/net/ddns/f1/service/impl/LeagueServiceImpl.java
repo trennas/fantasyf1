@@ -50,9 +50,6 @@ public class LeagueServiceImpl {
 	
 	private void calculateResult(EventResult result, List<Team> teams) {
 		for(Team team : teams) {
-			if(result.getRound()==17) {
-				System.out.println("Mexico");
-			}
 			List<Driver> carDrivers = driverRepo.findByCar(team.getCar());
 			
 			List<Car> carsUsingEngine = carRepo.findByEngine(team.getEngine());
