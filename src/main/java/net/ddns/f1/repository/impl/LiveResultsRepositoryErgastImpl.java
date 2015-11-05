@@ -2,8 +2,6 @@ package net.ddns.f1.repository.impl;
 
 import java.util.HashMap;
 import java.util.List;
-
-import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
