@@ -1,5 +1,6 @@
 package net.ddns.f1.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import lombok.Getter;
@@ -30,41 +31,43 @@ public class EventServiceImpl {
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
-		
-	public class SeasonResults {
-		@Getter @Setter List<EventResult> results;
-		@Getter @Setter boolean newData = false;
-	}
 
-	public synchronized SeasonResults getSeasonResults() {
-		SeasonResults seasonResults = new SeasonResults();
+	public synchronized boolean checkForNewResults() {
+		boolean newResults = false;
 		final Iterable<EventResult> itr = eventRepo.findAll();
-		seasonResults.setResults(IteratorUtils.toList(itr.iterator()));
+		List<EventResult> results = IteratorUtils.toList(itr.iterator());
 		
 		if(System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
+			timeOfLastResultCheck = System.currentTimeMillis();
 			LOG.info("Checking for new race results...");
-			if(seasonResults.getResults().size() > 0) {
-				EventResult result = seasonResults.getResults().get(seasonResults.getResults().size()-1);
+			if(results.size() > 0) {
+				EventResult result = results.get(results.size()-1);
 				if(!result.isRaceComplete()) {
 					result = liveRepo.fetchEventResult(result.getRound());
 					eventRepo.save(result);
-					seasonResults.setNewData(true);
+					newResults = true;
 				}
 			}
 			
-			EventResult result = liveRepo.fetchEventResult(seasonResults.getResults().size() + 1);
+			EventResult result = liveRepo.fetchEventResult(results.size() + 1);
 			if (result != null) {
 				LOG.info("Found new live race results... updating");
 				while (result != null) {
 					eventRepo.save(result);
 					result = liveRepo.fetchEventResult(result.getRound() + 1);
 				}
-				seasonResults.setNewData(true);
+				newResults = true;
 			} else {
 				LOG.info("No new race results found");
 			}
 		}
+		return newResults;
+	}
 
-		return seasonResults;
+	public synchronized List<EventResult> getSeasonResults() {
+		final Iterable<EventResult> itr = eventRepo.findAll();
+		List<EventResult> results = IteratorUtils.toList(itr.iterator());
+		Collections.sort(results);
+		return results;
 	}
 }
