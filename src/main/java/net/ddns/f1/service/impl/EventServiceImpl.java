@@ -29,6 +29,13 @@ public class EventServiceImpl {
 		final List<EventResult> results = IteratorUtils.toList(itr.iterator());
 		Collections.sort(results);
 
+		if(results.size() > 0) {
+			EventResult result = results.get(results.size()-1);
+			if(!result.isRaceComplete()) {
+				result = liveRepo.fetchEventResult(result.getRound());
+			}
+		}
+		
 		EventResult result = liveRepo.fetchEventResult(results.size() + 1);
 		if (result != null) {
 			LOG.info("Found new live race results... updating");
