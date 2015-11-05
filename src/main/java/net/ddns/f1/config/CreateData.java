@@ -22,9 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @Profile("create")
-public class DummyData {
+public class CreateData {
 
-	private static final Logger LOG = Logger.getLogger(DummyData.class);
+	private static final Logger LOG = Logger.getLogger(CreateData.class);
 
 	@Autowired
 	DriverRepository driverRepo;
@@ -38,6 +38,7 @@ public class DummyData {
 	@Transactional
 	@Bean
 	public int createDummyData() {
+		LOG.info("Creating League Data...");
 		engineRepo.save(new Engine("Mercedes", 30));
 		engineRepo.save(new Engine("Ferrari", 20));
 		engineRepo.save(new Engine("Renault", 19));
@@ -87,6 +88,7 @@ public class DummyData {
 		} catch (final ValidationException e) {
 			LOG.info("Team Invalid: " + e.getMessage());
 		}
+		LOG.info("Complete.");
 		return 0;
 	}
 }

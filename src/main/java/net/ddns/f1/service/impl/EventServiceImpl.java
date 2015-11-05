@@ -24,7 +24,7 @@ public class EventServiceImpl {
 	private static final Logger LOG = Logger.getLogger(EventServiceImpl.class);
 
 	@Transactional
-	public List<EventResult> getSeasonResults() {
+	public synchronized List<EventResult> getSeasonResults() {
 		final Iterable<EventResult> itr = eventRepo.findAll();
 		final List<EventResult> results = IteratorUtils.toList(itr.iterator());
 		Collections.sort(results);
