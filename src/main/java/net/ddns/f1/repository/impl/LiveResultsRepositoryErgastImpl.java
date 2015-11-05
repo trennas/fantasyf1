@@ -7,7 +7,7 @@ import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.DriverPosition;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.repository.DriverRepository;
-import net.ddns.f1.repository.LatestReceResultsRepository;
+import net.ddns.f1.repository.LiveResultsRepository;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import com.ergast.mrd._1.QualifyingResultType;
 import com.ergast.mrd._1.ResultType;
 
 @Service
-public class LatestRaceResultsRepositoryErgastImpl implements LatestReceResultsRepository {
+public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 	private static final Logger LOG = Logger
-			.getLogger(LatestRaceResultsRepositoryErgastImpl.class);
+			.getLogger(LiveResultsRepositoryErgastImpl.class);
 
 	@Autowired
 	DriverRepository driverRepo;
@@ -40,13 +40,14 @@ public class LatestRaceResultsRepositoryErgastImpl implements LatestReceResultsR
 				"http://ergast.com/api/f1/2015/" + round
 						+ "/fastest/1/drivers.xml", MRDataType.class);
 
-		final EventResult result = new EventResult();
-
-		final Driver fastestLapDriver = driverRepo.findByNumber(fastestLap.getDriverTable().getDriver().get(0).getPermanentNumber().intValue()).get(0);
-		result.setFastestLapDriver(fastestLapDriver);
-
 		if (qual.getRaceTable().getRace().size() > 0) {
+			final EventResult result = new EventResult();
+			result.setRaceComplete(false);
+
 			result.setVenue(qual.getRaceTable().getRace().get(0).getRaceName());
+			LOG.info("Retrieving qualifying results for round " + round + " "
+					+ result.getVenue());
+
 			result.setRound(qual.getRaceTable().getRace().get(0).getRound().intValue());
 			result.setSeason(qual.getRaceTable().getRace().get(0).getSeason().intValue());
 
@@ -60,17 +61,28 @@ public class LatestRaceResultsRepositoryErgastImpl implements LatestReceResultsR
 						.intValue(), res.getQ1() != null));
 			}
 
-			for (final ResultType res : race.getRaceTable().getRace().get(0)
-					.getResultsList().getResult()) {
-				final Driver driver = findDriver(res);
-				positions.add(new DriverPosition(driver, res
-						.getPosition()
-						.intValue(), res.getPositionText()
-						.matches("[0-9]{1,2}")));
+			if (race.getRaceTable().getRace().size() > 0) {
+				LOG.info("Retrieving race results for round " + round + " "
+						+ result.getVenue());
+				for (final ResultType res : race.getRaceTable().getRace()
+						.get(0).getResultsList().getResult()) {
+					final Driver driver = findDriver(res);
+					positions.add(new DriverPosition(driver, res.getPosition()
+							.intValue(), res.getPositionText().matches(
+							"[0-9]{1,2}")));
+				}
+
+				final Driver fastestLapDriver = driverRepo.findByNumber(
+						fastestLap.getDriverTable().getDriver().get(0)
+								.getPermanentNumber().intValue()).get(0);
+				result.setFastestLapDriver(fastestLapDriver);
+
+				result.setRaceComplete(true);
 			}
+			return result;
 		}
 
-		return result;
+		return null;
 	}
 
 	private Driver findDriver(final QualifyingResultType res) {

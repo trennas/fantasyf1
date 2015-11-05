@@ -1,9 +1,7 @@
-package net.ddns.f1.repository.impl;
+package net.ddns.f1.servuce.impl;
 
-import static org.junit.Assert.assertEquals;
 import net.ddns.f1.FantasyF1Application;
-import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.repository.impl.LatestRaceResultsRepositoryErgastImpl;
+import net.ddns.f1.service.impl.EventService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,15 +13,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
-public class RaceResultsRepositoryErgastImplTest {
+public class EventServiceTest {
 
 	@Autowired
-	LatestRaceResultsRepositoryErgastImpl service;
+	private EventService serv;
 
 	@Test
-	public void test() {
-		final EventResult result = service.fetchEventResult(17);
-		assertEquals("Nico Rosberg", result.getFastestLapDriver().getName().toString());
+	public void getSeasonResultsTest() {
+		serv.getSeasonResults();
+		serv.getSeasonResults();
 	}
 
 }

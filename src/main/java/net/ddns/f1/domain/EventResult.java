@@ -17,6 +17,7 @@ public class EventResult implements Comparable<EventResult> {
 	private int round;
 	private String venue;
 	private int season;
+	private boolean raceComplete;
 	@ManyToOne(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	private Driver fastestLapDriver;
 	@ElementCollection
