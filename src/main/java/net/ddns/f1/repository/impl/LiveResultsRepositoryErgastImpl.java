@@ -95,13 +95,18 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 		} else {
 			number = res.getNumber().intValue();
 		}
-		final List<Driver> driversFound = driverRepo.findByNumber(number);
+		List<Driver> driversFound = driverRepo.findByNumber(number);
 		if(driversFound.size() > 0 ) {
 			return driversFound.get(0);
 		} else {
-			LOG.info("Couldn't find driver: " + res.getDriver().getGivenName() + " "
-					+ res.getDriver().getFamilyName());
-			return driverRepo.findByNumber(0).get(0);
+			driversFound = driverRepo.findByName(res.getDriver().getGivenName() + " " + res.getDriver().getFamilyName());
+			if(driversFound.size() > 0 ) {
+				return driversFound.get(0);
+			} else {
+				LOG.error("Couldn't find driver: " + res.getDriver().getGivenName() + " "
+						+ res.getDriver().getFamilyName());
+				return null;
+			}
 		}
 	}
 }
