@@ -6,8 +6,6 @@ import java.util.List;
 
 import net.ddns.f1.FantasyF1Application;
 import net.ddns.f1.domain.Team;
-import net.ddns.f1.repository.EventResultRepository;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

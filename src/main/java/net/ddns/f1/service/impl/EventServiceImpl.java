@@ -44,8 +44,10 @@ public class EventServiceImpl {
 				EventResult result = results.get(results.size()-1);
 				if(!result.isRaceComplete()) {
 					result = liveRepo.fetchEventResult(result.getRound());
-					eventRepo.save(result);
-					newResults = true;
+					if(result.isRaceComplete()) {
+						eventRepo.save(result);
+						newResults = true;
+					}
 				}
 			}
 			
