@@ -12,167 +12,24 @@
 		window.location.href = url;
 	}
 </script>
-<script th:src="@{/js/jquery.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/validation.js}"></script>
-<script th:src="@{/js/payment.js}"></script>
-<script th:src="@{/js/address.js}"></script>
-<script th:src="@{/js/autoNumeric.js}"></script>
-<title>Make a Payment</title>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/angular-cookies.js"></script>
+<script src="js/ff1.js"></script>
+
+<title>Fantasy F1 League</title>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 	  	<script src="js/html5shiv.min.js"></script>
 	  	<script src="js/respond.min.js"></script>
 		<![endif]-->
 </head>
-<body>
+<body ng-app="ff1App" ng-init="search();"
+		ng-controller="controller">		
 	<div th:replace="header :: header" />
-	<div id="container" class="container">
-		<div class="panel panel-default center-block" style="max-width: 700px;">
-			<div class="panel-heading clearfix">
-				<div class="panel-title">
-					<div class="col-xs-3 dropdown">
-						<button class="btn btn-default dropdown-toggle" type="button"
-							id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-							Payment Type
-							<span class="caret"></span>
-						</button>
-						<ul id="paymentType" class="dropdown-menu" role="menu"
-							aria-labelledby="dropdownMenu1">
-							<li role="presentation" data-form="PRO_PREM"
-								><a
-								href="#">Premium Payment</a></li>
-							<li role="presentation" data-form="PRO_CLAIM"
-								><a
-								href="#">Overpaid Claim Payment</a></li>
-							<li role="presentation" data-form="PRO_COM"
-								><a
-								href="#">Commission Debt</a></li>
-						</ul>
-					</div>					
-					<div class="panel-title col-xs-offset-1 col-xs-8">
-						<h4 class="conditionalField PRO_PREM_Field">Premium Payment: Card Holder Details</h4>
-						<h4 class="conditionalField PRO_CLAIM_Field">Overpaid Claim Payment</h4>
-						<h4 class="conditionalField PRO_COM_Field">Commission Debt Payment</h4>
-					</div>
-				</div>
-			</div>
-			<div class="panel-body">
-				<form autocomplete="off" id="paymentForm" th:object="${payment}"
-					class="form-horizontal" method="post" th:action="@{/}">
-					<input type="hidden" id="paymentTypeField" name="paymentType" th:field="*{paymentType}"/>
-					
-					<div class="row">						
-						<div class="form-group conditionalField PRO_PREM_Field PRO_CLAIM_Field">
-							<label class="control-label col-xs-4"
-								th:text="#{premium.first-name} + ':'" for="txtFirstName">First
-								Name :</label>
-							<div class="col-xs-6">
-								<input type="text" id="txtFirstName" class="form-control"
-									th:field="*{firstName}" />
-								<div class="firstNameInvalidRow errorRow" hidden="true"><p class="firstNameInvalidText text-danger" >Invalid Entry</p></div>
-							</div>
-							<p class="col-xs-1 firstNameRequiredField requiredField" hidden="true">*</p>
-						</div>
-						<div class="form-group conditionalField PRO_PREM_Field PRO_CLAIM_Field">
-							<label class="control-label col-xs-4"
-								th:text="#{premium.surname} + ':'" for="txtSurname">Surname
-								:</label>
-							<div class="col-xs-6">
-								<input type="text" id="txtSurname" class="form-control"
-									th:field="*{surname}" />
-								<div class="surnameInvalidRow errorRow" hidden="true"><p class="surnameInvalidText text-danger" >Invalid Entry</p></div>
-							</div>
-							<p class="col-xs-1 surnameRequiredField requiredField" hidden="true">*</p>
-						</div>
-						<div class="form-group conditionalField PRO_PREM_Field PRO_CLAIM_Field">
-							<label class="control-label col-xs-4"
-								   th:text="#{premium.policy-holder-name} + ':'" for="txtPolicyHolderName">Policyholder Name :</label>
-							<div class="col-xs-6">
-								<input type="text" id="txtPolicyHolderName" class="form-control"
-									   th:field="*{policyHolderName}" />
-								<div class="policyHolderNameInvalidRow errorRow" hidden="true"><p class="policyHolderNameInvalidText text-danger" >Invalid Entry</p></div>
-							</div>
-							<p class="col-xs-1 policyHolderNameRequiredField requiredField" hidden="true">*</p>
-						</div>
-						<div class="form-group conditionalField PRO_PREM_Field PRO_CLAIM_Field">
-							<div class="control-label col-xs-4">
-								<label>Policy ID :</label>
-							</div>
-							<div class="col-xs-6">
-							<div class="col-xs-4" style="padding-left: 0;">
-								<input type="text" id="txtPolicyNumber"
-									th:field="*{policyNumber}" class="form-control" />
-							</div>
-							<div class="col-xs-4">
-								<input type="text" id="txtPolicyIndex"
-									th:field="*{policyIndex}" class="form-control" />
-							</div>
-							<div class="col-xs-4">
-								<input type="text" id="txtPolicyCheckLetter"
-									th:field="*{policyCheckLetter}" class="form-control" />
-							</div>
-							<input type="text" id="txtPolicyId" hidden="true" />
-							<div class="policyIdInvalidRow errorRow" hidden="true"><p class="policyIdInvalidText text-danger" >Invalid Entry</p></div>
-							</div>
-							<p class="col-xs-1 policyIdRequiredField requiredField" hidden="true">*</p>
-						</div>
-						<div class="form-group conditionalField PRO_COM_Field">
-							<label class="control-label col-xs-4"
-								th:text="#{commission.network-name} + ':'" for="txtNetworkName">Network
-								Name :</label>
-							<div class="col-xs-6">
-								<input type="text" id="txtNetworkName" class="form-control"
-									th:field="*{networkName}" />
-								<div class="networkNameInvalidRow errorRow" hidden="true"><p class="networkNameInvalidText text-danger" >Invalid Entry</p></div>
-							</div>
-							<p class="col-xs-1 networkNameRequiredField requiredField" hidden="true">*</p>
-						</div>
-						<div class="form-group conditionalField PRO_COM_Field">
-							<label class="control-label col-xs-4"
-								th:text="#{commission.agency-name} + ':'" for="txtAgencyName">Agency
-								Name :</label>
-							<div class="col-xs-6">
-								<input type="text" id="txtAgencyName" class="form-control"
-									th:field="*{agencyName}" />
-								<div class="agencyNameInvalidRow errorRow" hidden="true"><p class="agencyNameInvalidText text-danger" >Invalid Entry</p></div>
-							</div>
-							<p class="col-xs-1 agencyNameRequiredField requiredField" hidden="true">*</p>
-						</div>
-						<div class="form-group conditionalField PRO_COM_Field">
-							<label class="control-label col-xs-4"
-								th:text="#{commission.agency-number} + ':'"
-								for="txtAgencyNumber">Agency Number :</label>
-							<div class="col-xs-6">
-								<input type="text" id="txtAgencyNumber" class="form-control"
-									th:field="*{agencyNumber}" />
-								<div class="agencyNumberInvalidRow errorRow" hidden="true"><p class="agencyNumberInvalidText text-danger" >Invalid Entry</p></div>
-							</div>
-							<p class="col-xs-1 agencyNumberRequiredField requiredField" hidden="true">*</p>
-						</div>
-						<div th:replace="address::address"></div>
-						
-						<div class="form-group">
-							<label for="txtAmount" class="col-xs-4 control-label">Amount <span
-								class="label label-default"> &pound;</span> :
-							</label>
-							<div class="col-xs-6">
-								<input id="txtAmount" class="form-control" type="text" th:field="*{amount}" />
-								<div class="amountInvalidRow errorRow" hidden="true"><p class="amountInvalidText text-danger" >Invalid Entry</p></div>
-							</div>
-							<p class="col-xs-1 amountRequiredField requiredField" hidden="true">*</p>
-						</div>
-						<div class="form-group">
-							<div class="col-xs-offset-4 col-xs-4">
-								<input id="takePaymentButton" disabled="disabled" class="btn btn-success validatedSubmitButton" type="submit"
-									value="Take Payment" />
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+	
 	<div th:replace="footer :: footer" />
 </body>
 </html>
