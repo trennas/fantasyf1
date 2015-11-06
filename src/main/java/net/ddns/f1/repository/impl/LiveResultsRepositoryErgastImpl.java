@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ergast.mrd._1.MRDataType;
-import com.ergast.mrd._1.QualifyingResultType;
 import com.ergast.mrd._1.ResultType;
 
 @Service
@@ -56,7 +55,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			result.setRound(qual.getRaceTable().getRace().get(0).getRound().intValue());
 			result.setSeason(qual.getRaceTable().getRace().get(0).getSeason().intValue());			
 			result.setQualifyingOrder(new HashMap<Driver, Position>());
-			for (final QualifyingResultType res : qual.getRaceTable().getRace()
+			for (final ResultType res : qual.getRaceTable().getRace()
 					.get(0).getQualifyingList().getQualifyingResult()) {
 				boolean classified = res.getQ1() != null;
 				final Driver driver = findDriver(res);
@@ -89,7 +88,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 		return null;
 	}
 
-	private Driver findDriver(final QualifyingResultType res) {
+	private Driver findDriver(final ResultType res) {
 		int number;
 		if(res.getDriver().getPermanentNumber() != null) {
 			number = res.getDriver().getPermanentNumber().intValue();
@@ -102,23 +101,6 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 		} else {
 			LOG.info("Couldn't find driver: " + res.getDriver().getGivenName() + " "
 					+ res.getDriver().getFamilyName());
-			return driverRepo.findByNumber(0).get(0);
-		}
-	}
-
-	private Driver findDriver(final ResultType res) {
-		int number;
-		if(res.getDriver().get(0).getPermanentNumber() != null) {
-			number = res.getDriver().get(0).getPermanentNumber().intValue();
-		} else {
-			number = res.getNumber().intValue();
-		}
-		final List<Driver> driversFound = driverRepo.findByNumber(number);
-		if(driversFound.size() > 0 ) {
-			return driversFound.get(0);
-		} else {
-			LOG.info("Couldn't find driver: " + res.getDriver().get(0).getGivenName() + " "
-					+ res.getDriver().get(0).getFamilyName());
 			return driverRepo.findByNumber(0).get(0);
 		}
 	}

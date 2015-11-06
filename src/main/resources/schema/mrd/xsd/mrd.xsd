@@ -118,7 +118,8 @@
 	</complexType>
 	<complexType name="QualifyingListType">
 		<sequence>
-			<element name="QualifyingResult" type="mrd:QualifyingResultType" minOccurs="0" maxOccurs="unbounded"/>
+			<!--element name="QualifyingResult" type="mrd:QualifyingResultType" minOccurs="0" maxOccurs="unbounded"/-->
+			<element name="QualifyingResult" type="mrd:ResultType" minOccurs="0" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
 	<complexType name="LapsListType">
@@ -139,7 +140,15 @@
 		<attribute name="season" type="integer" use="required"/>
 		<attribute name="round" type="integer" use="optional"/>
 	</complexType>
-	<complexType name="ResultType">
+
+	<complexType name="LapType">
+	    <sequence>
+	      <element name="Timing" type="mrd:TimingType" minOccurs="0" maxOccurs="unbounded"/>
+	    </sequence>
+	    <attribute name="number" type="integer" use="required"/>
+  	</complexType>
+
+	<!--complexType name="ResultType">
 		<sequence>
 			<choice>
 				<element name="Driver" type="mrd:DriverType" maxOccurs="unbounded"/>
@@ -161,12 +170,43 @@
 		<attribute name="points" type="float" use="optional"/>
 	</complexType>
 	 <complexType name="LapType">
-    <sequence>
-      <element name="Timing" type="mrd:TimingType" minOccurs="0" maxOccurs="unbounded"/>
-    </sequence>
-    <attribute name="number" type="integer" use="required"/>
-  </complexType>
-	<complexType name="QualifyingResultType">
+	<sequence>
+	  <element name="Timing" type="mrd:TimingType" minOccurs="0" maxOccurs="unbounded"/>
+	</sequence>
+	<attribute name="number" type="integer" use="required"/>
+  </complexType-->
+
+
+	<complexType name="ResultType">
+		<sequence>
+			<choice>
+				<!--element name="Driver" type="mrd:DriverType" maxOccurs="unbounded"/-->
+				<!--element name="DriverIdRef" type="string" maxOccurs="unbounded"/-->
+				<element name="Driver" type="mrd:DriverType"/>
+				<element name="DriverIdRef" type="string"/>
+			</choice>
+			<choice>
+				<element name="Constructor" type="mrd:ConstructorType"/>
+				<element name="ConstructorIdRef" type="string"/>
+			</choice>
+
+			<element name="Q1" type="mrd:DurationType" minOccurs="0"/>
+			<element name="Q2" type="mrd:DurationType" minOccurs="0"/>
+			<element name="Q3" type="mrd:DurationType" minOccurs="0"/>
+
+			<element name="Grid" type="integer"/>
+			<element name="Laps" type="integer"/>
+			<element name="Status" type="mrd:StatusType"/>
+			<element name="Time" type="mrd:DurationType" minOccurs="0"/>
+			<element name="FastestLap" type="mrd:FastestLapType" minOccurs="0"/>
+		</sequence>
+		<attribute name="number" type="integer" use="optional"/>
+		<attribute name="position" type="integer" use="required"/>
+		<attribute name="positionText" type="string" use="optional"/>
+		<attribute name="points" type="float" use="optional"/>
+	</complexType>
+
+	<!--complexType name="QualifyingResultType">
 		<sequence>
 			<choice>
 				<element name="Driver" type="mrd:DriverType"/>
@@ -182,7 +222,8 @@
 		</sequence>
 		<attribute name="number" type="integer" use="optional"/>
 		<attribute name="position" type="integer" use="required"/>
-	</complexType>
+	</complexType-->
+
 	<complexType name="FastestLapType">
 		<sequence>
 			<element name="Time" type="mrd:DurationType"/>
