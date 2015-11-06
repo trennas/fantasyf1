@@ -3,7 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-<link rel="stylesheet" th:href="@{/css/main.css}" />
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+<link rel="stylesheet" href="css/spinner.css" type="text/css" />
 <script>
 	// Weblogic doesn't add trailing / to URL and this breaks AngularJS.
 	var url = window.location.href;
@@ -26,10 +27,37 @@
 	  	<script src="js/respond.min.js"></script>
 		<![endif]-->
 </head>
-<body ng-app="ff1App" ng-init="search();"
+<body ng-app="ff1App" ng-init="getLeagueTable();"
 		ng-controller="controller">		
 	<div th:replace="header :: header" />
-	
+	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
+	League Table
+	<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Team Name</th>
+        <th>Owner</th>
+        <th>Driver 1</th>
+        <th>Driver 2</th>
+        <th>Car</th>
+        <th>Engine</th>
+        <th>Last Race</th>
+        <th>Overall</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="team in teams">
+        <td>{{team.name}}</td>
+        <td>{{team.owner}}</td>
+        <td>{{team.drivers[0].name}}</td>
+        <td>{{team.drivers[1].name}}</td>
+        <td>{{team.car.name}}</td>
+        <td>{{team.engine.name}}</td>
+        <td>Last Race</td>
+        <td>{{team.totalPoints}}</td>
+      </tr>
+    </tbody>
+  </table>
 	<div th:replace="footer :: footer" />
 </body>
 </html>

@@ -1,6 +1,6 @@
 package net.ddns.f1.domain;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class Team  implements Comparable<Team> {
 
 	private long totalPoints;	
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Map<Integer, Integer> pointsPerEvent = new HashMap<Integer, Integer>();
+	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();
 
 	public Team() {
 	}

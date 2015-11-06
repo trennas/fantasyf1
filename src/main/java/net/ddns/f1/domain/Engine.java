@@ -15,9 +15,7 @@ public class Engine {
 	@Id
 	private String name;
 	private int price;
-	@ManyToOne(targetEntity=Car.class, fetch=FetchType.EAGER)
-	private List<Car> cars;
-
+	
 	public Engine() {
 	}
 

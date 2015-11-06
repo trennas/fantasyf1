@@ -2,11 +2,14 @@ package net.ddns.f1.web;
 
 import java.util.List;
 
+import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Team;
+import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
 import net.ddns.f1.service.impl.LeagueServiceImpl;
 import net.ddns.f1.service.impl.TeamService;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -27,7 +30,9 @@ public class MainController {
 	private TeamRepository teamRepo;
 	@Autowired
 	private TeamService teamService;
-
+	@Autowired
+	private EventResultRepository resultRepo;
+	
 	@RequestMapping("/")
 	public String mainPage() {
 		return "league";
@@ -43,5 +48,17 @@ public class MainController {
 	@ResponseBody
 	public Team getTeam(String name) {
 		return teamRepo.findTeamByName(name).get(0);
+	}
+	
+	@RequestMapping("/events")
+	@ResponseBody
+	public List<EventResult> events() {
+		return IteratorUtils.toList(resultRepo.findAll().iterator());
+	}
+	
+	@RequestMapping("/event")
+	@ResponseBody
+	public List<EventResult> event(int round) {
+		return resultRepo.findByRound(round);
 	}
 }
