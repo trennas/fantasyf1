@@ -1,6 +1,6 @@
 var app = angular.module('ff1App', [ 'ngCookies' ]);
 app.controller('controller',
-function($scope, $http) {    
+function($scope, $http, $location) {    
     $scope.teams = [];
     $scope.events = [];
     $scope.event;
@@ -38,6 +38,14 @@ function($scope, $http) {
                 alert("Status: " + status);
             });
     };
+    
+    $scope.getUnspecifiedEvent = function() {
+    	$('#spinner').show();
+    	//http://localhost:8080/race/#/!/?round=3
+    	var round = ($location.search()).round;
+    	$scope.getEvent(round);
+    	$('#spinner').hide();
+    }
     
     $scope.getLength = function(obj) {
         return Object.keys(obj).length;

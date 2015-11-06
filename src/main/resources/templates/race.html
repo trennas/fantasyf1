@@ -31,58 +31,34 @@
 	<div th:replace="header :: header" />
 	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
 	
-	<div ng-init="getLeagueTable();">League Table
+  <div ng-init="getUnspecifiedEvent();">{{event.venue}}
+  Qualifying
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
-	        <th>Team Name</th>
-	        <th>Owner</th>
-	        <th>Driver 1</th>
-	        <th>Driver 2</th>
-	        <th>Car</th>
-	        <th>Engine</th>
-	        <th>Last Race</th>
-	        <th>Overall</th>
+	        <th>Position</th>
+	        <th>Driver</th>
+	        <th>Classified</th>
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr ng-repeat="team in teams">
-	        <td>{{team.name}}</td>
-	        <td>{{team.owner}}</td>
-	        <td>{{team.drivers[0].name}}</td>
-	        <td>{{team.drivers[1].name}}</td>
-	        <td>{{team.car.name}}</td>
-	        <td>{{team.engine.name}}</td>
-	        <td>{{team.pointsPerEvent[getLength(team.pointsPerEvent)]}}</td>
-	        <td>{{team.totalPoints}}</td>
+	      <tr ng-repeat="position in event.qualifyingOrder">
+	        <td>{{position.position}}</td>
+	        <td>JJ Letto</td>
+	        <td>{{position.classified}}</td>
 	      </tr>
 	    </tbody>
 	  </table>
-  </div>
-  
-  <div ng-init="getEvents();">Races
-		<table class="table table-striped">
+	  
+	  <table class="table table-striped">
 	    <thead>
 	      <tr>
-	        <th>Round</th>
-	        <th>Circuit</th>
 	        <th>Remarks</th>
-	        <th>Race Complete</th>
-	        <th>Fastest Lap</th>
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr ng-repeat="event in events">
-	        <td>{{event.round}}</td>
-	        <td>{{event.venue}}</td>
-	        <td><span ng-if="event.remarks" data-toggle="modal" data-target="#myModal" ng-click="getEvent(event.round)" class="glyphicon glyphicon-list-alt">
-		       
-			</span></td>
-	        <td>
-	        	<span ng-if="event.raceComplete" class="glyphicon glyphicon-ok"></span>
-	        	<span ng-if="!event.raceComplete" class="glyphicon glyphicon-remove"></span>
-	        </td>
-	        <td>{{event.fastestLapDriver.name}}</td>
+	      <tr ng-repeat="remark in event.remarks">
+	        <td>{{remark}}</td>
 	      </tr>
 	    </tbody>
 	  </table>

@@ -7,6 +7,7 @@ import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
+import net.ddns.f1.service.impl.EventServiceImpl;
 import net.ddns.f1.service.impl.LeagueServiceImpl;
 import net.ddns.f1.service.impl.TeamService;
 
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -33,10 +35,17 @@ public class MainController {
 	private TeamService teamService;
 	@Autowired
 	private EventResultRepository resultRepo;
+	@Autowired
+	private EventServiceImpl eventService;
 	
 	@RequestMapping("/")
 	public String mainPage() {
 		return "league";
+	}
+	
+	@RequestMapping("/race")
+	public String mainPage(Integer round, Model model) {
+		return "race";
 	}
 	
 	@RequestMapping("/teams")
@@ -54,12 +63,10 @@ public class MainController {
 	@RequestMapping("/events")
 	@ResponseBody
 	public List<EventResult> events() {
-		List<EventResult> results = IteratorUtils.toList(resultRepo.findAll().iterator());
-		Collections.sort(results);
-		return results;
+		return eventService.getSeasonResults();
 	}
 	
-	@RequestMapping("/event")
+	@RequestMapping({"/event", "/race/event"})
 	@ResponseBody
 	public EventResult event(int round) {
 		return resultRepo.findByRound(round).get(0);

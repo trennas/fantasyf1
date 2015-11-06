@@ -51,6 +51,8 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			final EventResult result = new EventResult();
 			result.setRemarks(new ArrayList<String>());
 			result.setRaceComplete(false);
+			
+			boolean q3Complete = false;
 
 			result.setVenue(qual.getRaceTable().getRace().get(0).getRaceName());
 			LOG.info("Retrieving qualifying results for round " + round + " "
@@ -72,6 +74,9 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 						fastestQ1Time = millis;
 					}
 				}
+				if(res.getQ3() != null) {
+					q3Complete = true;
+				}
 				
 				final Driver driver = findDriver(res, result);
 				qualResultDriverMap.put(res,  driver);
@@ -87,15 +92,18 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				Position pos = result.getQualifyingOrder().get(driver);				
 				if(res.getQ1() == null) {
 					pos.setClassified(false);
-					result.getRemarks().add(driver.getName() + " did not set a qualifying time.");
+					result.getRemarks().add(driver.getName() + " did not set a qualifying time");
 				} else {
 					long millis = durationToMillis(res.getQ1().getValue());
 					if(millis*100 > classifiedTime) {
 						pos.setClassified(false); // Q1 outside 107%
-						result.getRemarks().add(driver.getName() + " not classified in qualifying as his Q1 time was outside 107% of the fastest Q1 time.");
+						result.getRemarks().add(driver.getName() + " not classified in qualifying (Q1 time was outside 107%)");
 					}
-				}
-					
+				}					
+			}
+			
+			if(!q3Complete) {
+				result.getRemarks().add("Qualifying was not completed in full");
 			}
 
 			if (race.getRaceTable().getRace().size() > 0) {
@@ -115,6 +123,8 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 								.getPermanentNumber().intValue()).get(0);
 				result.setFastestLapDriver(fastestLapDriver);
 				result.setRaceComplete(true);
+			} else {
+				result.getRemarks().add("Awaiting Race Results");
 			}
 			return result;
 		}
