@@ -1,7 +1,10 @@
 package net.ddns.f1.repository.impl;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
@@ -55,13 +58,40 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			result.setRound(qual.getRaceTable().getRace().get(0).getRound().intValue());
 			result.setSeason(qual.getRaceTable().getRace().get(0).getSeason().intValue());			
 			result.setQualifyingOrder(new HashMap<Driver, Position>());
+			
+			long fastestQ1Time = 0;
+			
+			Map<ResultType, Driver> qualResultDriverMap = new HashMap<ResultType, Driver>();
+			
 			for (final ResultType res : qual.getRaceTable().getRace()
 					.get(0).getQualifyingList().getQualifyingResult()) {
-				boolean classified = res.getQ1() != null;
+				if(res.getQ1() != null) {
+					long millis = durationToMillis(res.getQ1().getValue());
+					if (fastestQ1Time == 0 || millis < fastestQ1Time) {
+						fastestQ1Time = millis;
+					}
+				}
+				
 				final Driver driver = findDriver(res);
+				qualResultDriverMap.put(res,  driver);
 				result.getQualifyingOrder().put(driver, new Position(res
 						.getPosition()
-						.intValue(), classified));
+						.intValue(), true));
+			}
+			
+			final long classifiedTime = fastestQ1Time * 107;
+			for (final ResultType res : qual.getRaceTable().getRace()
+					.get(0).getQualifyingList().getQualifyingResult()) {				
+				Position pos = result.getQualifyingOrder().get(qualResultDriverMap.get(res));				
+				if(res.getQ1() == null) {
+					pos.setClassified(false);
+				} else {
+					long millis = durationToMillis(res.getQ1().getValue());
+					if(millis*100 > classifiedTime) {
+						pos.setClassified(false); // Q1 outside 107%
+					}
+				}
+					
 			}
 
 			if (race.getRaceTable().getRace().size() > 0) {
@@ -108,5 +138,17 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				return null;
 			}
 		}
+	}
+	
+	private long durationToMillis(String duration) {
+		//sample input: 2:03.194
+		duration = duration.replaceAll("\\.", ":");
+		String[] tokens = duration.split(":");
+		int minutes = Integer.parseInt(tokens[0]);
+		int seconds = Integer.parseInt(tokens[1]);
+		int milliseconds = Integer.parseInt(tokens[2]);
+		long millis = (((minutes*60) + seconds) * 1000) + milliseconds;
+		return millis;
+		
 	}
 }
