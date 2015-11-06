@@ -85,7 +85,7 @@ public class LeagueServiceImpl {
 			int points = 0;
 
 			for(Driver driver : team.getDrivers()) {
-				Position pos = result.getQualifyingOrder().get(driver);
+				Position pos = result.getQualifyingOrder().get(driver.getName());
 				if(pos != null) {
 					if(pos.isClassified()) {
 						points += DRIVER_QUAL_POINTS.get(pos.getPosition());
@@ -94,7 +94,7 @@ public class LeagueServiceImpl {
 					// Has the driver been replaced?
 					List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
 					if(standInDrivers.size() == 1) {						
-						pos = result.getQualifyingOrder().get(standInDrivers.get(0).getStandInDriver());
+						pos = result.getQualifyingOrder().get(standInDrivers.get(0).getStandInDriver().getName());
 						if(pos != null) {
 							if(pos.isClassified()) {
 								points += DRIVER_QUAL_POINTS.get(pos.getPosition());
@@ -105,7 +105,7 @@ public class LeagueServiceImpl {
 			}
 			
 			for(Driver driver : carDrivers) {
-				Position pos = result.getQualifyingOrder().get(driver);
+				Position pos = result.getQualifyingOrder().get(driver.getName());
 				if(pos != null) {
 					if(pos.isClassified()) {
 						points += CAR_QUAL_POINTS.get(pos.getPosition());
@@ -114,7 +114,7 @@ public class LeagueServiceImpl {
 			}
 			
 			for(Driver driver : engineDrivers) {
-				Position pos = result.getQualifyingOrder().get(driver);
+				Position pos = result.getQualifyingOrder().get(driver.getName());
 				if(pos != null) {
 					if(pos.isClassified()) {
 						points += ENGINE_QUAL_POINTS.get(pos.getPosition());
@@ -124,7 +124,7 @@ public class LeagueServiceImpl {
 			
 			if(result.isRaceComplete()) {
 				for(Driver driver : team.getDrivers()) {
-					Position pos = result.getRaceOrder().get(driver);
+					Position pos = result.getRaceOrder().get(driver.getName());
 					if(pos != null) {
 						if(pos.isClassified()) {
 							points += DRIVER_RACE_POINTS.get(pos.getPosition());
@@ -136,7 +136,7 @@ public class LeagueServiceImpl {
 						// Has the driver been replaced?
 						List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
 						if(standInDrivers.size() == 1) {						
-							pos = result.getRaceOrder().get(standInDrivers.get(0).getStandInDriver());
+							pos = result.getRaceOrder().get(standInDrivers.get(0).getStandInDriver().getName());
 							if(pos != null) {
 								if(pos.isClassified()) {
 									points += DRIVER_RACE_POINTS.get(pos.getPosition());
@@ -148,7 +148,7 @@ public class LeagueServiceImpl {
 				
 				boolean bothCarsFinished = true;
 				for(Driver driver : carDrivers) {
-					Position pos = result.getRaceOrder().get(driver);
+					Position pos = result.getRaceOrder().get(driver.getName());
 					if(pos != null) {
 						if(pos.isClassified()) {
 							points += CAR_RACE_POINTS.get(pos.getPosition());
@@ -162,7 +162,7 @@ public class LeagueServiceImpl {
 				}
 				
 				for(Driver driver : engineDrivers) {
-					Position pos = result.getRaceOrder().get(driver);
+					Position pos = result.getRaceOrder().get(driver.getName());
 					if(pos != null) {
 						if(pos.isClassified()) {
 							points += ENGINE_RACE_POINTS.get(pos.getPosition());

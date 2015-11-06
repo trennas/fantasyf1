@@ -1,7 +1,11 @@
 package net.ddns.f1.domain;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -22,9 +26,9 @@ public class EventResult implements Comparable<EventResult> {
 	@ManyToOne(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	private Driver fastestLapDriver;
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Map<Driver, Position> qualifyingOrder;
+	private Map<String, Position> qualifyingOrder;
 	@ElementCollection(fetch = FetchType.EAGER)
-	private Map<Driver, Position> raceOrder;
+	private Map<String, Position> raceOrder;
 	@ElementCollection
 	private List<String> remarks;
 

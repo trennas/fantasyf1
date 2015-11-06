@@ -42,9 +42,9 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr ng-repeat="position in event.qualifyingOrder">
+	      <tr ng-repeat="(driver, position) in event.qualifyingOrder">
 	        <td>{{position.position}}</td>
-	        <td>JJ Letto</td>
+	        <td>{{driver}}</td>
 	        <td>{{position.classified}}</td>
 	      </tr>
 	    </tbody>

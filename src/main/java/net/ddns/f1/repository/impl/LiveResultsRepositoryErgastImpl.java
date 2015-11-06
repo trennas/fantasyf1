@@ -2,6 +2,7 @@ package net.ddns.f1.repository.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 			result.setRound(qual.getRaceTable().getRace().get(0).getRound().intValue());
 			result.setSeason(qual.getRaceTable().getRace().get(0).getSeason().intValue());			
-			result.setQualifyingOrder(new HashMap<Driver, Position>());
+			result.setQualifyingOrder(new LinkedHashMap<String, Position>());
 			
 			long fastestQ1Time = 0;
 			
@@ -80,7 +81,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				
 				final Driver driver = findDriver(res, result);
 				qualResultDriverMap.put(res,  driver);
-				result.getQualifyingOrder().put(driver, new Position(res
+				result.getQualifyingOrder().put(driver.getName(), new Position(res
 						.getPosition()
 						.intValue(), true));
 			}
@@ -89,7 +90,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			for (final ResultType res : qual.getRaceTable().getRace()
 					.get(0).getQualifyingList().getQualifyingResult()) {
 				Driver driver = qualResultDriverMap.get(res);
-				Position pos = result.getQualifyingOrder().get(driver);				
+				Position pos = result.getQualifyingOrder().get(driver.getName());				
 				if(res.getQ1() == null) {
 					pos.setClassified(false);
 					result.getRemarks().add(driver.getName() + " did not set a qualifying time");
@@ -109,12 +110,12 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			if (race.getRaceTable().getRace().size() > 0) {
 				LOG.info("Retrieving race results for round " + round + " "
 						+ result.getVenue());
-				result.setRaceOrder(new HashMap<Driver, Position>());
+				result.setRaceOrder(new LinkedHashMap<String, Position>());
 				for (final ResultType res : race.getRaceTable().getRace()
 						.get(0).getResultsList().getResult()) {
 					boolean classified = res.getPositionText().matches("[0-9]{1,2}");
 					final Driver driver = findDriver(res, result);
-					result.getRaceOrder().put(driver, new Position(res.getPosition()
+					result.getRaceOrder().put(driver.getName(), new Position(res.getPosition()
 							.intValue(), classified));
 				}
 
