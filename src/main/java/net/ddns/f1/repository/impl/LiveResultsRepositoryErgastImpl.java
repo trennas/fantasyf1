@@ -1,6 +1,6 @@
 package net.ddns.f1.repository.impl;
 
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +49,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 		if (qual.getRaceTable().getRace().size() > 0) {
 			final EventResult result = new EventResult();
+			result.setRemarks(new ArrayList<String>());
 			result.setRaceComplete(false);
 
 			result.setVenue(qual.getRaceTable().getRace().get(0).getRaceName());
@@ -72,7 +73,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 					}
 				}
 				
-				final Driver driver = findDriver(res);
+				final Driver driver = findDriver(res, result);
 				qualResultDriverMap.put(res,  driver);
 				result.getQualifyingOrder().put(driver, new Position(res
 						.getPosition()
@@ -81,14 +82,17 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			
 			final long classifiedTime = fastestQ1Time * 107;
 			for (final ResultType res : qual.getRaceTable().getRace()
-					.get(0).getQualifyingList().getQualifyingResult()) {				
-				Position pos = result.getQualifyingOrder().get(qualResultDriverMap.get(res));				
+					.get(0).getQualifyingList().getQualifyingResult()) {
+				Driver driver = qualResultDriverMap.get(res);
+				Position pos = result.getQualifyingOrder().get(driver);				
 				if(res.getQ1() == null) {
 					pos.setClassified(false);
+					result.getRemarks().add(driver.getName() + " did not set a qualifying time.");
 				} else {
 					long millis = durationToMillis(res.getQ1().getValue());
 					if(millis*100 > classifiedTime) {
 						pos.setClassified(false); // Q1 outside 107%
+						result.getRemarks().add(driver.getName() + " not classified in qualifying as his Q1 time was outside 107% of the fastest Q1 time.");
 					}
 				}
 					
@@ -101,7 +105,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				for (final ResultType res : race.getRaceTable().getRace()
 						.get(0).getResultsList().getResult()) {
 					boolean classified = res.getPositionText().matches("[0-9]{1,2}");
-					final Driver driver = findDriver(res);
+					final Driver driver = findDriver(res, result);
 					result.getRaceOrder().put(driver, new Position(res.getPosition()
 							.intValue(), classified));
 				}
@@ -118,7 +122,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 		return null;
 	}
 
-	private Driver findDriver(final ResultType res) {
+	private Driver findDriver(final ResultType res, final EventResult eventResult) {
 		int number;
 		if(res.getDriver().getPermanentNumber() != null) {
 			number = res.getDriver().getPermanentNumber().intValue();
@@ -133,8 +137,10 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			if(driversFound.size() > 0 ) {
 				return driversFound.get(0);
 			} else {
-				LOG.error("Couldn't find driver: " + res.getDriver().getGivenName() + " "
-						+ res.getDriver().getFamilyName());
+				String message = "Driver: " + res.getDriver().getGivenName() + " "
+						+ res.getDriver().getFamilyName() + " in results list could not be found.";
+				LOG.error(message);
+				eventResult.getRemarks().add(message);
 				return null;
 			}
 		}
