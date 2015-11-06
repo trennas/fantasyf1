@@ -1,8 +1,11 @@
 .navbar-inverse, .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav>li>a
 	{
-	background-color: #006666;
+	/*background-color: #8d1111;*/
+	background-color: #332e2e;	
+	
 	color: white;
 }
+
 
 .btn {
 	opacity: 0.6;

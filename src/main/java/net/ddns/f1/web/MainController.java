@@ -1,5 +1,6 @@
 package net.ddns.f1.web;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.ddns.f1.domain.EventResult;
@@ -53,12 +54,19 @@ public class MainController {
 	@RequestMapping("/events")
 	@ResponseBody
 	public List<EventResult> events() {
-		return IteratorUtils.toList(resultRepo.findAll().iterator());
+		List<EventResult> results = IteratorUtils.toList(resultRepo.findAll().iterator());
+		Collections.sort(results);
+		return results;
 	}
 	
 	@RequestMapping("/event")
 	@ResponseBody
-	public List<EventResult> event(int round) {
-		return resultRepo.findByRound(round);
+	public EventResult event(int round) {
+		return resultRepo.findByRound(round).get(0);
+	}
+	
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
 	}
 }

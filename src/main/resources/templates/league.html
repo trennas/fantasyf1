@@ -27,37 +27,98 @@
 	  	<script src="js/respond.min.js"></script>
 		<![endif]-->
 </head>
-<body ng-app="ff1App" ng-init="getLeagueTable();"
-		ng-controller="controller">		
+<body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header" />
 	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
-	League Table
-	<table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Team Name</th>
-        <th>Owner</th>
-        <th>Driver 1</th>
-        <th>Driver 2</th>
-        <th>Car</th>
-        <th>Engine</th>
-        <th>Last Race</th>
-        <th>Overall</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="team in teams">
-        <td>{{team.name}}</td>
-        <td>{{team.owner}}</td>
-        <td>{{team.drivers[0].name}}</td>
-        <td>{{team.drivers[1].name}}</td>
-        <td>{{team.car.name}}</td>
-        <td>{{team.engine.name}}</td>
-        <td>Last Race</td>
-        <td>{{team.totalPoints}}</td>
-      </tr>
-    </tbody>
-  </table>
-	<div th:replace="footer :: footer" />
+	
+	<div ng-init="getLeagueTable();">League Table
+		<table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Team Name</th>
+	        <th>Owner</th>
+	        <th>Driver 1</th>
+	        <th>Driver 2</th>
+	        <th>Car</th>
+	        <th>Engine</th>
+	        <th>Last Race</th>
+	        <th>Overall</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="team in teams">
+	        <td>{{team.name}}</td>
+	        <td>{{team.owner}}</td>
+	        <td>{{team.drivers[0].name}}</td>
+	        <td>{{team.drivers[1].name}}</td>
+	        <td>{{team.car.name}}</td>
+	        <td>{{team.engine.name}}</td>
+	        <td>{{team.pointsPerEvent[getLength(team.pointsPerEvent)]}}</td>
+	        <td>{{team.totalPoints}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+  </div>
+  
+  <div ng-init="getEvents();">Races
+		<table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Round</th>
+	        <th>Circuit</th>
+	        <th>Remarks</th>
+	        <th>Race Complete</th>
+	        <th>Fastest Lap</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="event in events">
+	        <td>{{event.round}}</td>
+	        <td>{{event.venue}}</td>
+	        <td><span ng-if="event.remarks" data-toggle="modal" data-target="#myModal" ng-click="getEvent(event.round)" class="glyphicon glyphicon-list-alt">
+		       
+			</span></td>
+	        <td>
+	        	<span ng-if="event.raceComplete" class="glyphicon glyphicon-ok"></span>
+	        	<span ng-if="!event.raceComplete" class="glyphicon glyphicon-remove"></span>
+	        </td>
+	        <td>{{event.fastestLapDriver.name}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+  </div>
+  
+  <!-- Remarks Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Remarks for {{event.venue}}</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped">
+				    <thead>
+				      <tr>
+				        <th>Remarks</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr ng-repeat="remark in event.remarks">
+				        <td>{{remark}}</td>
+				      </tr>
+				    </tbody>
+				 </table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-primary btn-sm"
+					data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+  </div>
+  
+  <div th:replace="footer :: footer" />
 </body>
 </html>
