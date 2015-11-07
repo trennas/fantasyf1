@@ -75,9 +75,10 @@
 	      <tr ng-repeat="event in events">
 	        <td>{{event.round}}</td>
 	        <td>{{event.venue}}</td>
-	        <td><span ng-if="event.remarks.length > 0" data-toggle="modal" data-target="#myModal" ng-click="getEvent(event.round)" class="glyphicon glyphicon-list-alt">
-		       
-			</span></td>
+	        <td><a href="#" ng-if="event.remarks.length > 0" data-toggle="modal" data-target="#myModal" ng-click="getEvent(event.round)">
+	        	<span class="glyphicon glyphicon-list-alt"/>
+	        	</a>
+	        </td>
 	        <td>
 	        	<span ng-if="event.raceComplete" class="glyphicon glyphicon-ok"></span>
 	        	<span ng-if="!event.raceComplete" class="glyphicon glyphicon-remove"></span>
