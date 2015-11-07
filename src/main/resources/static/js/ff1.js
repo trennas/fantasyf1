@@ -3,6 +3,9 @@ app.controller('controller',
 function($scope, $http, $location) {    
     $scope.teams = [];
     $scope.events = [];
+    $scope.drivers = [];
+    $scope.cars = [];
+    $scope.engines = [];
     $scope.event;
     
     $scope.getLeagueTable = function() {
@@ -27,6 +30,36 @@ function($scope, $http, $location) {
                 alert("Status: " + status);
             });
         $('#spinner').hide();
+    };
+    
+    $scope.getDrivers = function() {
+        $http.get('drivers')
+            .success(function(response) {
+                $scope.drivers = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.getCars = function() {
+        $http.get('cars')
+            .success(function(response) {
+                $scope.cars = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.getEngines = function() {
+        $http.get('engines')
+            .success(function(response) {
+                $scope.engines = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
     };
     
     $scope.getEvent = function(round) {

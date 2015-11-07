@@ -31,8 +31,10 @@
 	<div th:replace="header :: header" />
 	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
 	
-  <div ng-init="getUnspecifiedEvent();">{{event.venue}}
-  Qualifying
+  <div ng-init="getUnspecifiedEvent();">
+  <h1><span class="label label-default">{{event.venue}}</span></h1>
+  <h2><span class="label label-primary">Qualifying Order</span></h2>
+  
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -49,7 +51,7 @@
 	      </tr>
 	    </tbody>
 	  </table>
-Race
+	<h2><span class="label label-success">Race Order</span></h2>
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -67,6 +69,7 @@ Race
 	    </tbody>
 	  </table>
 	  
+	  <h3><span class="label label-warning">Remarks</span></h3>
 	  <table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -79,6 +82,50 @@ Race
 	      </tr>
 	      <tr ng-repeat="remark in event.remarks">
 	        <td>{{remark}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  
+	  <h3><span class="label label-info">Points</span></h3>
+	  <table class="table table-striped" ng-init="getDrivers();">
+	    <thead>
+	      <tr>
+	        <th>Driver</th>
+	        <th>Points</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="driver in drivers">
+	        <td>{{driver.name}}</td>
+	        <td>{{driver.pointsPerEvent[event.round]}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  <table class="table table-striped" ng-init="getCars();">
+	    <thead>
+	      <tr>
+	        <th>Car</th>
+	        <th>Points</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="car in cars">
+	        <td>{{car.name}}</td>
+	        <td>{{car.pointsPerEvent[event.round]}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  <table class="table table-striped" ng-init="getEngines();">
+	    <thead>
+	      <tr>
+	        <th>Engine</th>
+	        <th>Points</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="engine in engines">
+	        <td>{{engine.name}}</td>
+	        <td>{{engine.pointsPerEvent[event.round]}}</td>
 	      </tr>
 	    </tbody>
 	  </table>

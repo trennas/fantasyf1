@@ -3,8 +3,14 @@ package net.ddns.f1.web;
 import java.util.Collections;
 import java.util.List;
 
+import net.ddns.f1.domain.Car;
+import net.ddns.f1.domain.Driver;
+import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Team;
+import net.ddns.f1.repository.CarRepository;
+import net.ddns.f1.repository.DriverRepository;
+import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
 import net.ddns.f1.service.impl.EventServiceImpl;
@@ -36,6 +42,12 @@ public class MainController {
 	@Autowired
 	private EventResultRepository resultRepo;
 	@Autowired
+	private DriverRepository driverRepo;
+	@Autowired
+	private CarRepository carRepo;
+	@Autowired
+	private EngineRepository engineRepo;
+	@Autowired
 	private EventServiceImpl eventService;
 	
 	@RequestMapping("/")
@@ -64,6 +76,24 @@ public class MainController {
 	@ResponseBody
 	public List<EventResult> events() {
 		return eventService.getSeasonResults();
+	}
+	
+	@RequestMapping({"/drivers", "/race/drivers"})
+	@ResponseBody
+	public List<Driver> drivers() {
+		return IteratorUtils.toList(driverRepo.findAll().iterator());
+	}
+	
+	@RequestMapping({"/cars", "/race/cars"})
+	@ResponseBody
+	public List<Car> cars() {
+		return IteratorUtils.toList(carRepo.findAll().iterator());
+	}
+	
+	@RequestMapping({"/engines", "/race/engines"})
+	@ResponseBody
+	public List<Engine> engines() {
+		return IteratorUtils.toList(engineRepo.findAll().iterator());
 	}
 	
 	@RequestMapping({"/event", "/race/event"})
