@@ -49,6 +49,23 @@
 	      </tr>
 	    </tbody>
 	  </table>
+Race
+		<table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Position</th>
+	        <th>Driver</th>
+	        <th>Classified</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="(driver, position) in event.raceOrder">
+	        <td>{{position.position}}</td>
+	        <td>{{driver}}</td>
+	        <td>{{position.classified}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
 	  
 	  <table class="table table-striped">
 	    <thead>
@@ -57,6 +74,9 @@
 	      </tr>
 	    </thead>
 	    <tbody>
+	      <tr>
+	        <td>Fastest Lap: {{event.fastestLapDriver.name}}</td>
+	      </tr>
 	      <tr ng-repeat="remark in event.remarks">
 	        <td>{{remark}}</td>
 	      </tr>
@@ -64,36 +84,7 @@
 	  </table>
   </div>
   
-  <!-- Remarks Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Remarks for {{event.venue}}</h4>
-			</div>
-			<div class="modal-body">
-				<table class="table table-striped">
-				    <thead>
-				      <tr>
-				        <th>Remarks</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				      <tr ng-repeat="remark in event.remarks">
-				        <td>{{remark}}</td>
-				      </tr>
-				    </tbody>
-				 </table>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default btn-primary btn-sm"
-					data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-  </div>
+  
   
   <div th:replace="footer :: footer" />
 </body>
