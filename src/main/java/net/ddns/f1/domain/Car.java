@@ -1,5 +1,9 @@
 package net.ddns.f1.domain;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -15,6 +19,10 @@ public class Car {
 	private int price;
 	@OneToOne(targetEntity=Engine.class, fetch=FetchType.EAGER)
 	private Engine engine;
+	
+	private long totalPoints;	
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();
 
 	public Car() {
 	}

@@ -3,17 +3,20 @@ package net.ddns.f1.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
+import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.StandInDriver;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
+import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.repository.StandInDriverRepository;
 import net.ddns.f1.repository.TeamRepository;
 
@@ -35,6 +38,9 @@ public class LeagueServiceImpl {
 	
 	@Autowired
 	CarRepository carRepo;
+	
+	@Autowired
+	EngineRepository engineRepo;
 	
 	@Autowired
 	DriverRepository driverRepo;
@@ -70,10 +76,91 @@ public class LeagueServiceImpl {
 	}
 	
 	private synchronized void calculateResult(EventResult result, List<Team> teams) {
-		for(Team team : teams) {
-			List<Driver> carDrivers = driverRepo.findByCar(team.getCar());
+		Iterator<Driver> driversItr = driverRepo.findAll().iterator();
+		
+		while(driversItr.hasNext()) {
+			int points = 0;
+			Driver driver = driversItr.next();
+			Position pos = result.getQualifyingOrder().get(driver.getName());
+			if(pos != null) {
+				if(pos.isClassified()) {
+					points += DRIVER_QUAL_POINTS.get(pos.getPosition());
+				}
+			} else {
+				// Has the driver been replaced?
+				List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
+				if(standInDrivers.size() == 1) {						
+					pos = result.getQualifyingOrder().get(standInDrivers.get(0).getStandInDriver().getName());
+					if(pos != null) {
+						if(pos.isClassified()) {
+							points += DRIVER_QUAL_POINTS.get(pos.getPosition());
+						}
+					}
+				}
+			}
 			
-			List<Car> carsUsingEngine = carRepo.findByEngine(team.getEngine());
+			pos = result.getRaceOrder().get(driver.getName());
+			if(pos != null) {
+				if(pos.isClassified()) {
+					points += DRIVER_RACE_POINTS.get(pos.getPosition());
+				}
+				if(driver.equals(result.getFastestLapDriver())) {
+					points += FASTEST_LAP_BONUS;
+				}
+			} else {
+				// Has the driver been replaced?
+				List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
+				if(standInDrivers.size() == 1) {						
+					pos = result.getRaceOrder().get(standInDrivers.get(0).getStandInDriver().getName());
+					if(pos != null) {
+						if(pos.isClassified()) {
+							points += DRIVER_RACE_POINTS.get(pos.getPosition());
+						}
+						if(standInDrivers.get(0).getStandInDriver().equals(result.getFastestLapDriver())) {
+							points += FASTEST_LAP_BONUS;
+						}
+					}
+				}
+			}
+			driver.getPointsPerEvent().put(result.getRound(), points);
+			driver.setTotalPoints(driver.getTotalPoints() + points);
+		}
+		
+		Iterator<Car> carItr = carRepo.findAll().iterator();
+		while(carItr.hasNext()) {			
+			Car car = carItr.next();
+			int points = 0;
+			List<Driver> carDrivers = driverRepo.findByCar(car);
+			boolean bothCarsFinished = true;
+			
+			for(Driver driver : carDrivers) {
+				Position pos = result.getQualifyingOrder().get(driver.getName());
+				if(pos != null) {
+					if(pos.isClassified()) {
+						points += CAR_QUAL_POINTS.get(pos.getPosition());
+					}
+				}
+				pos = result.getRaceOrder().get(driver.getName());
+				if(pos != null) {
+					if(pos.isClassified()) {
+						points += CAR_RACE_POINTS.get(pos.getPosition());
+					} else {
+						bothCarsFinished = false;
+					}
+				}
+			}
+			if(bothCarsFinished) {
+				points += BOTH_CARS_FINISHED_BONUS;
+			}
+			car.getPointsPerEvent().put(result.getRound(), points);
+			car.setTotalPoints(car.getTotalPoints() + points);
+		}
+		
+		Iterator<Engine> engineItr = engineRepo.findAll().iterator();
+		while(engineItr.hasNext()) {			
+			Engine engine = engineItr.next();
+			
+			List<Car> carsUsingEngine = carRepo.findByEngine(engine);
 			List<Driver> engineDrivers = new ArrayList<Driver>();
 			for(Car car : carsUsingEngine) {
 				List<Driver> drivers = driverRepo.findByCar(car);
@@ -83,35 +170,6 @@ public class LeagueServiceImpl {
 			}
 			
 			int points = 0;
-
-			for(Driver driver : team.getDrivers()) {
-				Position pos = result.getQualifyingOrder().get(driver.getName());
-				if(pos != null) {
-					if(pos.isClassified()) {
-						points += DRIVER_QUAL_POINTS.get(pos.getPosition());
-					}
-				} else {
-					// Has the driver been replaced?
-					List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
-					if(standInDrivers.size() == 1) {						
-						pos = result.getQualifyingOrder().get(standInDrivers.get(0).getStandInDriver().getName());
-						if(pos != null) {
-							if(pos.isClassified()) {
-								points += DRIVER_QUAL_POINTS.get(pos.getPosition());
-							}
-						}
-					}
-				}
-			}
-			
-			for(Driver driver : carDrivers) {
-				Position pos = result.getQualifyingOrder().get(driver.getName());
-				if(pos != null) {
-					if(pos.isClassified()) {
-						points += CAR_QUAL_POINTS.get(pos.getPosition());
-					}
-				}
-			}
 			
 			for(Driver driver : engineDrivers) {
 				Position pos = result.getQualifyingOrder().get(driver.getName());
@@ -120,56 +178,24 @@ public class LeagueServiceImpl {
 						points += ENGINE_QUAL_POINTS.get(pos.getPosition());
 					}
 				}
-			}
-			
-			if(result.isRaceComplete()) {
-				for(Driver driver : team.getDrivers()) {
-					Position pos = result.getRaceOrder().get(driver.getName());
-					if(pos != null) {
-						if(pos.isClassified()) {
-							points += DRIVER_RACE_POINTS.get(pos.getPosition());
-						}
-						if(driver.equals(result.getFastestLapDriver())) {
-							points += FASTEST_LAP_BONUS;
-						}
-					} else {
-						// Has the driver been replaced?
-						List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
-						if(standInDrivers.size() == 1) {						
-							pos = result.getRaceOrder().get(standInDrivers.get(0).getStandInDriver().getName());
-							if(pos != null) {
-								if(pos.isClassified()) {
-									points += DRIVER_RACE_POINTS.get(pos.getPosition());
-								}
-							}
-						}
-					}
-				}
 				
-				boolean bothCarsFinished = true;
-				for(Driver driver : carDrivers) {
-					Position pos = result.getRaceOrder().get(driver.getName());
-					if(pos != null) {
-						if(pos.isClassified()) {
-							points += CAR_RACE_POINTS.get(pos.getPosition());
-						} else {
-							bothCarsFinished = false;
-						}
-					}
-				}
-				if(bothCarsFinished) {
-					points += BOTH_CARS_FINISHED_BONUS;
-				}
-				
-				for(Driver driver : engineDrivers) {
-					Position pos = result.getRaceOrder().get(driver.getName());
-					if(pos != null) {
-						if(pos.isClassified()) {
-							points += ENGINE_RACE_POINTS.get(pos.getPosition());
-						}
+				pos = result.getRaceOrder().get(driver.getName());
+				if(pos != null) {
+					if(pos.isClassified()) {
+						points += ENGINE_RACE_POINTS.get(pos.getPosition());
 					}
 				}
 			}
+			engine.getPointsPerEvent().put(result.getRound(), points);
+			engine.setTotalPoints(engine.getTotalPoints() + points);			
+		}
+		
+		for(Team team : teams) {
+			int points = 0;
+			points += team.getDrivers().get(0).getPointsPerEvent().get(result.getRound());
+			points += team.getDrivers().get(1).getPointsPerEvent().get(result.getRound());
+			points += team.getCar().getPointsPerEvent().get(result.getRound());
+			points += team.getEngine().getPointsPerEvent().get(result.getRound());
 			team.getPointsPerEvent().put(result.getRound(), points);
 			team.setTotalPoints(team.getTotalPoints() + points);
 			teamRepo.save(team);

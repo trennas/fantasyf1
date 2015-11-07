@@ -1,11 +1,12 @@
 package net.ddns.f1.domain;
 
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
@@ -15,6 +16,10 @@ public class Engine {
 	@Id
 	private String name;
 	private int price;
+	
+	private long totalPoints;	
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();
 	
 	public Engine() {
 	}
