@@ -62,11 +62,16 @@ public class MainController {
 	}
 	
 	@RequestMapping("/race")
-	public String mainPage(Integer round, Model model) {
+	public String mainPage(Integer round) {
 		return "race";
 	}
 	
-	@RequestMapping({"/teams", "/race/teams"})
+	@RequestMapping("/editresult")
+	public String editResult(Integer round) {
+		return "editresult";
+	}
+	
+	@RequestMapping({"/teams", "/{subpage}/teams"})
 	@ResponseBody
 	public List<Team> getTeams() {
 		return leagueService.calculateLeagueStandings();
@@ -84,7 +89,7 @@ public class MainController {
 		return eventService.getSeasonResults();
 	}
 	
-	@RequestMapping({"/drivers", "/race/drivers"})
+	@RequestMapping({"/drivers", "/{subpage}/drivers"})
 	@ResponseBody
 	public List<Driver> drivers() {
 		List<Driver> drivers = driverRepo.findByStandin(false);
@@ -92,25 +97,25 @@ public class MainController {
 		return drivers;
 	}
 	
-	@RequestMapping({"/driver", "/race/driver"})
+	@RequestMapping({"/driver", "/{subpage}/driver"})
 	@ResponseBody
 	public Driver driver(String name) {
 		return driverRepo.findByName(name).get(0);
 	}
 	
-	@RequestMapping({"/car", "/race/car"})
+	@RequestMapping({"/car", "/{subpage}/car"})
 	@ResponseBody
 	public Car car(String name) {
 		return carRepo.findByName(name).get(0);
 	}
 	
-	@RequestMapping({"/engine", "/race/engine"})
+	@RequestMapping({"/engine", "/{subpage}/engine"})
 	@ResponseBody
 	public Engine engine(String name) {
 		return engineRepo.findByName(name).get(0);
 	}
 
-	@RequestMapping({"/cars", "/race/cars"})
+	@RequestMapping({"/cars", "/{subpage}/cars"})
 	@ResponseBody
 	public List<Car> cars() {
 		List<Car> cars = IteratorUtils.toList(carRepo.findAll().iterator());
@@ -118,7 +123,7 @@ public class MainController {
 		return cars;
 	}
 	
-	@RequestMapping({"/engines", "/race/engines"})
+	@RequestMapping({"/engines", "/{subpage}/engines"})
 	@ResponseBody
 	public List<Engine> engines() {
 		List<Engine> engines = IteratorUtils.toList(engineRepo.findAll().iterator());
@@ -126,7 +131,7 @@ public class MainController {
 		return engines;
 	}
 	
-	@RequestMapping({"/event", "/race/event"})
+	@RequestMapping({"/event", "/{subpage}/event"})
 	@ResponseBody
 	public EventResult event(int round) {		
 		EventResult result = resultRepo.findByRound(round).get(0);
