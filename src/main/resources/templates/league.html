@@ -31,7 +31,10 @@
 	<div th:replace="header :: header" />
 	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
 	
-	<div ng-init="getLeagueTable();">League Table
+	<div ng-init="getLeagueTable();">
+		
+		<h1><span class="label label-primary">League Table</span></h1>
+	
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -60,7 +63,8 @@
 	  </table>
   </div>
   
-  <div ng-init="getEvents();">Races
+  <div ng-init="getEvents();">
+  	<h2><span class="label label-success">Race Results</span></h2>
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -89,36 +93,7 @@
 	  </table>
   </div>
   
-  <!-- Remarks Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Remarks for {{event.venue}}</h4>
-			</div>
-			<div class="modal-body">
-				<table class="table table-striped">
-				    <thead>
-				      <tr>
-				        <th>Remarks</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				      <tr ng-repeat="remark in event.remarks">
-				        <td>{{remark}}</td>
-				      </tr>
-				    </tbody>
-				 </table>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default btn-primary btn-sm"
-					data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-  </div>
+  <div th:replace="modals :: modals" />
   
   <div th:replace="footer :: footer" />
 </body>
