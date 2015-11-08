@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.ddns.f1.domain.EventResult;
+import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.LiveResultsRepository;
 

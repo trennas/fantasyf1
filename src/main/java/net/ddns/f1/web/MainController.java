@@ -84,6 +84,24 @@ public class MainController {
 		return driverRepo.findByStandin(false);
 	}
 	
+	@RequestMapping({"/driver", "/race/driver"})
+	@ResponseBody
+	public Driver driver(String name) {
+		return driverRepo.findByName(name).get(0);
+	}
+	
+	@RequestMapping({"/car", "/race/car"})
+	@ResponseBody
+	public Car car(String name) {
+		return carRepo.findByName(name).get(0);
+	}
+	
+	@RequestMapping({"/engine", "/race/engine"})
+	@ResponseBody
+	public Engine engine(String name) {
+		return engineRepo.findByName(name).get(0);
+	}
+	
 	@RequestMapping({"/cars", "/race/cars"})
 	@ResponseBody
 	public List<Car> cars() {

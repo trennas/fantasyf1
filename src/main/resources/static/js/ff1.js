@@ -7,6 +7,9 @@ function($scope, $http, $location) {
     $scope.cars = [];
     $scope.engines = [];
     $scope.event;
+    $scope.driver;
+    $scope.car;
+    $scope.engine;    
     
     $scope.getLeagueTable = function() {
         $('#spinner').show();
@@ -30,6 +33,36 @@ function($scope, $http, $location) {
                 alert("Status: " + status);
             });
         $('#spinner').hide();
+    };
+    
+    $scope.getDriver = function(name) {
+        $http.get('driver?name=' + name)
+            .success(function(response) {
+                $scope.driver = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.getCar = function(name) {
+        $http.get('car?name=' + name)
+            .success(function(response) {
+                $scope.car = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.getEngine = function(name) {
+        $http.get('engine?name=' + name)
+            .success(function(response) {
+                $scope.engine = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
     };
     
     $scope.getDrivers = function() {

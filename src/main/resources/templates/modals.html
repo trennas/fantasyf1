@@ -7,8 +7,113 @@
 
 <body>
 
+<!-- Driver Modal -->
+  <div class="modal fade" id="driverModal" role="dialog" th:fragment="modals">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">{{driver.name}}</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped">				
+					<thead>
+				      <tr>
+				        <th>Name</th>
+				        <th>Car</th>
+				        <th>Fastest Laps</th>
+				        <th>Points</th>				        
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr>
+				        <td>{{driver.name}}</td>
+				        <td>{{driver.car.name}}</td>
+				        <td>{{driver.fastestLaps}}</td>
+				        <td>{{driver.totalPoints}}</td>
+				      </tr>				
+				    </tbody>
+				 </table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-primary btn-sm"
+					data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+  </div>
+  
+  <!-- Car Modal -->
+  <div class="modal fade" id="carModal" role="dialog" th:fragment="modals">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">{{car.name}}</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped">				
+					<thead>
+				      <tr>
+				        <th>Name</th>
+				        <th>Engine</th>
+				        <th>Points</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr>
+				        <td>{{car.name}}</td>
+				        <td>{{car.engine.name}}</td>
+				        <td>{{car.totalPoints}}</td>
+				      </tr>				
+				    </tbody>
+				 </table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-primary btn-sm"
+					data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+  </div>
+  
+  <!-- Engine Modal -->
+  <div class="modal fade" id="engineModal" role="dialog" th:fragment="modals">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">{{engine.name}}</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped">				
+					<thead>
+				      <tr>
+				        <th>Name</th>
+				        <th>Points</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr>
+				        <td>{{engine.name}}</td>
+				        <td>{{engine.totalPoints}}</td>
+				      </tr>				
+				    </tbody>
+				 </table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-primary btn-sm"
+					data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+  </div>
+
   <!-- Remarks Modal -->
-  <div class="modal fade" id="myModal" role="dialog" th:fragment="modals">
+  <div class="modal fade" id="remarksModal" role="dialog" th:fragment="modals">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">

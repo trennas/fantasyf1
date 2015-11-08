@@ -105,6 +105,8 @@ public class LeagueServiceImpl {
 				}
 				if(driver.equals(result.getFastestLapDriver())) {
 					points += FASTEST_LAP_BONUS;
+					driver.setFastestLaps(driver.getFastestLaps()+1);
+					driverRepo.save(driver);
 				}
 			} else {
 				// Is there a stand in driver?
@@ -114,6 +116,9 @@ public class LeagueServiceImpl {
 					if(pos != null) {
 						if(pos.isClassified()) {
 							points += DRIVER_RACE_POINTS.get(pos.getPosition());
+						}
+						if(standInDriver.equals(result.getFastestLapDriver())) {
+							points += FASTEST_LAP_BONUS;
 						}
 						result.getRemarks().add(driver.getName() + " scores race points from stand-in " + standInDriver.getName());
 						resultRepo.save(result);

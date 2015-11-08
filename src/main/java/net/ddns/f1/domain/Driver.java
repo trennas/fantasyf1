@@ -19,11 +19,11 @@ public class Driver {
 	private int number;
 	private String name;
 	private int price;
-	private boolean standin;
+	private boolean standin;	
 
 	@ManyToOne(targetEntity = Car.class, fetch = FetchType.EAGER)
 	private Car car;
-	
+	private int fastestLaps;
 	private long totalPoints;	
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();
