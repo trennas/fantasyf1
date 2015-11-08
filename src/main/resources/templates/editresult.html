@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" ng-app="ff1App" ng-controller="controller" ng-init="getUnspecifiedEvent();">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+<link rel="stylesheet" th:href="@{/css/spinner.css}" type="text/css" />
+<script>
+	// Weblogic doesn't add trailing / to URL and this breaks AngularJS.
+	var url = window.location.href;
+	url = url.replace(/\/?(\?|#|$)/, '/$1');
+	if(window.location.href != url) {
+		window.location.href = url;
+	}
+</script>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/angular.min.js}"></script>
+<script th:src="@{/js/angular-cookies.js}"></script>
+<script th:src="@{/js/ff1.js}"></script>
+
+<title>{{event.venue}} Results</title>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+	  	<script src="js/html5shiv.min.js"></script>
+	  	<script src="js/respond.min.js"></script>
+		<![endif]-->
+</head>
+<body>		
+	<div th:replace="header :: header" />
+	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
+  <h1><span class="label label-default">{{event.venue}}</span></h1>
+  <h2><span class="label label-primary">Qualifying Order</span></h2>
+  <div class="form-group" ng-init="getDrivers();">
+		<table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Position</th>
+	        <th>Driver</th>
+	        <th>Classified</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="(driver, position) in event.qualifyingOrder">
+	        <td><select class="form-control" ng-model="position.position" ng-options="n for n in [] | range:1:20"></select></td>
+	        <td>				
+				{{driver}}
+			</td>
+	        <td>
+		        <select class="form-control" ng-model="position.classified" ng-options="o.v as o.n for o in [{ n: 'No', v: false }, { n: 'Yes', v: true }]"></select>
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+	
+	<h2><span class="label label-success">Race Order</span></h2>
+		<table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Position</th>
+	        <th>Driver</th>
+	        <th>Classified</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="(driver, position) in event.raceOrder">
+	        <td><select class="form-control" ng-model="position.position" ng-options="n for n in [] | range:1:20"></select></td>
+	        <td>				
+				{{driver}}
+			</td>
+	        <td>
+		        <select class="form-control" ng-model="position.classified" ng-options="o.v as o.n for o in [{ n: 'No', v: false }, { n: 'Yes', v: true }]"></select>
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  
+	  <h3><span class="label label-warning">Fastest Lap</span></h3>
+	  <table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Fastest Lap</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr>
+	        <td><select class="form-control" ng-model="event.fastestLapDriver.name" ng-options="driver.name as driver.name for driver in drivers"></select></td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  
+	  <h3><span class="label label-warning">Remarks</span></h3>
+	  <table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Remarks</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="remark in event.remarks">
+	        <td><input type="text" class="form-control" ng-model="remark"/></td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  <button type="button" class="btn btn-success" ng-click="saveResult(event);">Save</button>
+	  {{status}}
+  </div>
+  <div th:replace="modals :: modals" />
+  
+  <div th:replace="footer :: footer" />
+</body>
+</html>

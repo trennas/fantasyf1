@@ -11,6 +11,7 @@ function($scope, $http, $location) {
     $scope.driver;
     $scope.car;
     $scope.engine;    
+    $scope.status;
     
     $scope.getTeams = function() {
         $('#spinner').show();
@@ -22,6 +23,16 @@ function($scope, $http, $location) {
                 alert("Status: " + status);
             });
         $('#spinner').hide();
+    };
+    
+    $scope.saveResult = function(result) {
+        $http.post('saveResult', result)
+            .success(function(response) {
+                $scope.status = "Success";
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
     };
     
     $scope.getEvents = function() {
@@ -127,4 +138,14 @@ function($scope, $http, $location) {
     $scope.getLength = function(obj) {
         return Object.keys(obj).length;
     }
+});
+
+app.filter('range', function() {
+  return function(input, min, max) {
+    min = parseInt(min); //Make string input int
+    max = parseInt(max);
+    for (var i=min; i<max; i++)
+      input.push(i);
+    return input;
+  };
 });

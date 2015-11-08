@@ -61,6 +61,10 @@ public class LeagueServiceImpl {
 		return teams;
 	}
 	
+	public synchronized void recalculateAllResults() {
+		calculateAllResults(teamService.getAllTeams());
+	}
+	
 	private synchronized void calculateAllResults(List<Team> teams) {
 		LOG.info("Recalculating scores...");
 		List<EventResult> results = eventService.getSeasonResults();

@@ -29,7 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -69,6 +71,15 @@ public class MainController {
 	@RequestMapping("/editresult")
 	public String editResult(Integer round) {
 		return "editresult";
+	}
+	
+	@RequestMapping(value = {"/saveResult", "/{subpage}/saveResult"}, method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean saveResult(@RequestBody EventResult result) {
+		result.setFastestLapDriver(driverRepo.findByName(result.getFastestLapDriver().getName()).get(0));
+		resultRepo.save(result);
+		leagueService.recalculateAllResults();
+		return true;
 	}
 	
 	@RequestMapping({"/teams", "/{subpage}/teams"})
