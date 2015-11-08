@@ -135,25 +135,24 @@ public class LeagueServiceImpl {
 			Car car = carItr.next();
 			int points = 0;
 			List<Driver> carDrivers = driverRepo.findByCar(car);
-			boolean bothCarsFinished = true;
-			
+
+			int numCarsFinished = 0;
 			for(Driver driver : carDrivers) {
 				Position pos = result.getQualifyingOrder().get(driver.getName());
 				if(pos != null) {
 					if(pos.isClassified()) {
-						points += CAR_QUAL_POINTS.get(pos.getPosition());
-					}
-				}
+						points += CAR_QUAL_POINTS.get(pos.getPosition());					}
+				}				
+
 				pos = result.getRaceOrder().get(driver.getName());
 				if(pos != null) {
 					if(pos.isClassified()) {
 						points += CAR_RACE_POINTS.get(pos.getPosition());
-					} else {
-						bothCarsFinished = false;
+						numCarsFinished++;
 					}
 				}
 			}
-			if(bothCarsFinished) {
+			if(numCarsFinished >= 2) {
 				points += BOTH_CARS_FINISHED_BONUS;
 			}
 			car.getPointsPerEvent().put(result.getRound(), points);
