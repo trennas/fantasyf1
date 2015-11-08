@@ -66,7 +66,7 @@ public class MainController {
 		return "race";
 	}
 	
-	@RequestMapping("/teams")
+	@RequestMapping({"/teams", "/race/teams"})
 	@ResponseBody
 	public List<Team> getTeams() {
 		return leagueService.calculateLeagueStandings();

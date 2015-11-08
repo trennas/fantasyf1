@@ -127,6 +127,21 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	  
+	  <table class="table table-striped" ng-init="getTeams();">
+	    <thead>
+	      <tr>
+	        <th>Team</th>
+	        <th>Points</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="team in teams">
+	        <td>{{team.name}}</td>
+	        <td>{{team.pointsPerEvent[event.round]}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
 
   
   <div th:replace="modals :: modals" />

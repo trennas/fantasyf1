@@ -12,7 +12,7 @@ function($scope, $http, $location) {
     $scope.car;
     $scope.engine;    
     
-    $scope.getLeagueTable = function() {
+    $scope.getTeams = function() {
         $('#spinner').show();
         $http.get('teams')
             .success(function(response) {
