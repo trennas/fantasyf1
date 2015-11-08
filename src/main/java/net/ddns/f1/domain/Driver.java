@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Driver {
+public class Driver implements Comparable<Driver> {
 
 	@Id
 	private int number;
@@ -52,5 +52,10 @@ public class Driver {
 	@Override
 	public int hashCode() {
 		return this.name.hashCode();
+	}
+
+	@Override
+	public int compareTo(Driver o) {
+		return this.name.compareToIgnoreCase(o.getName());
 	}
 }

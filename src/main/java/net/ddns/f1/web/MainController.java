@@ -1,12 +1,18 @@
 package net.ddns.f1.web;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.EventResult;
+import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
@@ -81,7 +87,9 @@ public class MainController {
 	@RequestMapping({"/drivers", "/race/drivers"})
 	@ResponseBody
 	public List<Driver> drivers() {
-		return driverRepo.findByStandin(false);
+		List<Driver> drivers = driverRepo.findByStandin(false);
+		Collections.sort(drivers);
+		return drivers;
 	}
 	
 	@RequestMapping({"/driver", "/race/driver"})
@@ -105,19 +113,47 @@ public class MainController {
 	@RequestMapping({"/cars", "/race/cars"})
 	@ResponseBody
 	public List<Car> cars() {
-		return IteratorUtils.toList(carRepo.findAll().iterator());
+		List<Car> cars = IteratorUtils.toList(carRepo.findAll().iterator());
+		Collections.sort(cars);
+		return cars;
 	}
 	
 	@RequestMapping({"/engines", "/race/engines"})
 	@ResponseBody
 	public List<Engine> engines() {
-		return IteratorUtils.toList(engineRepo.findAll().iterator());
+		List<Engine> engines = IteratorUtils.toList(engineRepo.findAll().iterator());
+		Collections.sort(engines);
+		return engines;
 	}
 	
 	@RequestMapping({"/event", "/race/event"})
 	@ResponseBody
-	public EventResult event(int round) {
-		return resultRepo.findByRound(round).get(0);
+	public EventResult event(int round) {		
+		EventResult result = resultRepo.findByRound(round).get(0);
+		result.setQualifyingOrder(sortPositions(result.getQualifyingOrder()));
+		result.setRaceOrder(sortPositions(result.getRaceOrder()));
+		return result;		
+	}
+	
+	private LinkedHashMap<String, Position> sortPositions(Map<String, Position> map) {		
+		Iterator<String> itr = map.keySet().iterator();
+		Map<Integer, String> positionSortedDrivers = new HashMap<Integer, String>();
+		int last = 0;
+		while(itr.hasNext()) {
+			String driverName = itr.next();
+			int position = map.get(driverName).getPosition();
+			if(position > last) {
+				last = position;
+			}
+			positionSortedDrivers.put(position, driverName);
+		}
+				
+		LinkedHashMap<String, Position> output = new LinkedHashMap<String, Position>();
+		for(int i = 1; i <= last; i++) {
+			String driverName = positionSortedDrivers.get(i);
+			output.put(driverName, map.get(driverName));
+		}
+		return output;
 	}
 	
 	@RequestMapping("/login")

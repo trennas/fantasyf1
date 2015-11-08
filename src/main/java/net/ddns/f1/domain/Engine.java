@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Engine {
+public class Engine implements Comparable<Engine> {
 	@Id
 	private String name;
 	private int price;
@@ -47,5 +47,10 @@ public class Engine {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	@Override
+	public int compareTo(Engine o) {
+		return this.name.compareToIgnoreCase(o.getName());
 	}
 }
