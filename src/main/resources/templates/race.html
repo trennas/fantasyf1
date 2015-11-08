@@ -44,7 +44,7 @@
 	    <tbody>
 	      <tr ng-repeat="(driver, position) in event.qualifyingOrder">
 	        <td>{{position.position}}</td>
-	        <td>{{driver}}</td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver)">{{driver}}</a></td>
 	        <td>{{position.classified}}</td>
 	      </tr>
 	    </tbody>
@@ -61,7 +61,7 @@
 	    <tbody>
 	      <tr ng-repeat="(driver, position) in event.raceOrder">
 	        <td>{{position.position}}</td>
-	        <td>{{driver}}</td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver)">{{driver}}</a></td>
 	        <td>{{position.classified}}</td>
 	      </tr>
 	    </tbody>
@@ -76,7 +76,7 @@
 	    </thead>
 	    <tbody>
 	      <tr>
-	        <td>Fastest Lap: {{event.fastestLapDriver.name}}</td>
+	        <td>Fastest Lap: <a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(event.fastestLapDriver.name)">{{event.fastestLapDriver.name}}</a></td>
 	      </tr>
 	      <tr ng-repeat="remark in event.remarks">
 	        <td>{{remark}}</td>
@@ -94,7 +94,7 @@
 	    </thead>
 	    <tbody>
 	      <tr ng-repeat="driver in drivers">
-	        <td>{{driver.name}}</td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver.name)">{{driver.name}}</a></td>
 	        <td>{{driver.pointsPerEvent[event.round]}}</td>
 	      </tr>
 	    </tbody>

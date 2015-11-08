@@ -6,6 +6,18 @@
 	color: white;
 }
 
+.a-unstyled { color: #333; }
+.a-unstyled:link { color: #333; }
+.a-unstyled:visited { color: #333; }
+.a-unstyled:hover { color: #000; }
+.a-unstyled:active { color: #333; }
+
+.navbar-inverse .a-unstyled { color: #969696; }
+.navbar-inverse .a-unstyled:link { color: #969696; }
+.navbar-inverse .a-unstyled:visited { color: #969696; }
+.navbar-inverse .a-unstyled:hover { color: #FFF; }
+.navbar-inverse .a-unstyled:active { color: #969696; }
+
 
 .btn {
 	opacity: 0.6;

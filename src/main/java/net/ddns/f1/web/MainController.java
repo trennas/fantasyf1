@@ -68,8 +68,8 @@ public class MainController {
 	
 	@RequestMapping("/team")
 	@ResponseBody
-	public Team getTeam(String name) {
-		return teamRepo.findByName(name).get(0);
+	public Team getTeam(Integer id) {
+		return teamRepo.findById(id).get(0);
 	}
 	
 	@RequestMapping("/events")

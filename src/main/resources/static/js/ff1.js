@@ -36,8 +36,8 @@ function($scope, $http, $location) {
         $('#spinner').hide();
     };
     
-    $scope.getTeam = function(name) {
-        $http.get('team?name=' + name)
+    $scope.getTeam = function(id) {
+        $http.get('team?id=' + id)
             .success(function(response) {
                 $scope.team = response;
             })
