@@ -69,7 +69,7 @@ public class MainController {
 	@RequestMapping("/team")
 	@ResponseBody
 	public Team getTeam(String name) {
-		return teamRepo.findTeamByName(name).get(0);
+		return teamRepo.findByName(name).get(0);
 	}
 	
 	@RequestMapping("/events")
@@ -101,7 +101,7 @@ public class MainController {
 	public Engine engine(String name) {
 		return engineRepo.findByName(name).get(0);
 	}
-	
+
 	@RequestMapping({"/cars", "/race/cars"})
 	@ResponseBody
 	public List<Car> cars() {

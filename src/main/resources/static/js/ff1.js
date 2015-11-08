@@ -7,6 +7,7 @@ function($scope, $http, $location) {
     $scope.cars = [];
     $scope.engines = [];
     $scope.event;
+    $scope.team;
     $scope.driver;
     $scope.car;
     $scope.engine;    
@@ -33,6 +34,16 @@ function($scope, $http, $location) {
                 alert("Status: " + status);
             });
         $('#spinner').hide();
+    };
+    
+    $scope.getTeam = function(name) {
+        $http.get('team?name=' + name)
+            .success(function(response) {
+                $scope.team = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
     };
     
     $scope.getDriver = function(name) {

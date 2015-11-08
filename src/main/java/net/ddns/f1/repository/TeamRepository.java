@@ -7,5 +7,5 @@ import net.ddns.f1.domain.Team;
 import org.springframework.data.repository.CrudRepository;
 
 public interface TeamRepository extends CrudRepository<Team, String> {
-	List<Team> findTeamByName(final String name);
+	List<Team> findByName(final String name);
 }

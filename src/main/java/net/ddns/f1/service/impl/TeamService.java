@@ -39,7 +39,7 @@ public class TeamService {
 			throw new ValidationException(
 					"Name must match the following regex: " + teamNameRegex);
 		} else {
-			final List<Team> existingTeams = teamRepo.findTeamByName(team
+			final List<Team> existingTeams = teamRepo.findByName(team
 					.getName());
 			if (existingTeams.size() > 0) {
 				throw new ValidationException(

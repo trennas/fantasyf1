@@ -50,7 +50,7 @@
 	    </thead>
 	    <tbody>
 	      <tr ng-repeat="team in teams">
-	        <td>{{team.name}}</td>
+	        <td data-toggle="modal" data-target="#teamModal" ng-click="getTeam(team.name)">{{team.name}}</td>
 	        <td>{{team.owner}}</td>
 	        <td data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[0].name)">{{team.drivers[0].name}}</td>
 	        <td data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[1].name)">{{team.drivers[1].name}}</td>	        
