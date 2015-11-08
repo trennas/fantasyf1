@@ -81,7 +81,7 @@ public class MainController {
 	@RequestMapping({"/drivers", "/race/drivers"})
 	@ResponseBody
 	public List<Driver> drivers() {
-		return IteratorUtils.toList(driverRepo.findAll().iterator());
+		return driverRepo.findByStandin(false);
 	}
 	
 	@RequestMapping({"/cars", "/race/cars"})

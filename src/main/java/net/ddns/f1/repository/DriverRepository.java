@@ -11,4 +11,6 @@ public interface DriverRepository extends CrudRepository<Driver, Integer> {
 	List<Driver> findByNumber(final Integer number);	
 	List<Driver> findByName(final String name);
 	List<Driver> findByCar(final Car car);
+	List<Driver> findByStandin(final Boolean standin);
+	List<Driver> findByCarAndStandin(final Car car, final Boolean standin);
 }

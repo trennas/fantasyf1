@@ -19,6 +19,7 @@ public class Driver {
 	private int number;
 	private String name;
 	private int price;
+	private boolean standin;
 
 	@ManyToOne(targetEntity = Car.class, fetch = FetchType.EAGER)
 	private Car car;
@@ -30,11 +31,12 @@ public class Driver {
 	public Driver() {
 	}
 
-	public Driver(final String name, final int number, final Car car, final int price) {
+	public Driver(final String name, final int number, final Car car, final int price, final boolean standin) {
 		this.number = number;
 		this.name = name;
 		this.car = car;
 		this.price = price;
+		this.standin = standin;
 	}
 
 	@Override

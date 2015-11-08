@@ -55,7 +55,7 @@ public class EventServiceImpl {
 			if (result != null) {
 				LOG.info("Found new live race results... updating");
 				while (result != null) {
-					eventRepo.save(result);
+					eventRepo.save(result);					
 					result = liveRepo.fetchEventResult(result.getRound() + 1);
 				}
 				newResults = true;

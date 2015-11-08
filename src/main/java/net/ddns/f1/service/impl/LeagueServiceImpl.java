@@ -12,12 +12,11 @@ import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.domain.StandInDriver;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
-import net.ddns.f1.repository.StandInDriverRepository;
+import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
 
 import org.apache.log4j.Logger;
@@ -44,12 +43,12 @@ public class LeagueServiceImpl {
 	
 	@Autowired
 	DriverRepository driverRepo;
-	
-	@Autowired
-	StandInDriverRepository standInDriverRepo;
 
 	@Autowired
 	EventServiceImpl eventService;
+	
+	@Autowired
+	EventResultRepository resultRepo;
 
 	public List<Team> calculateLeagueStandings() {
 		List<Team> teams = teamService.getAllTeams();		
@@ -71,30 +70,30 @@ public class LeagueServiceImpl {
 		}
 		for(EventResult result : results) {
 			calculateResult(result, teams);
-		}
+		}		
 		LOG.info("Scores recalculated.");
 	}
 	
 	private synchronized void calculateResult(EventResult result, List<Team> teams) {
-		Iterator<Driver> driversItr = driverRepo.findAll().iterator();
-		
-		while(driversItr.hasNext()) {
+		for(Driver driver : driverRepo.findByStandin(false)) {
 			int points = 0;
-			Driver driver = driversItr.next();
 			Position pos = result.getQualifyingOrder().get(driver.getName());
 			if(pos != null) {
 				if(pos.isClassified()) {
 					points += DRIVER_QUAL_POINTS.get(pos.getPosition());
-				}
+				}			
 			} else {
-				// Has the driver been replaced?
-				List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
-				if(standInDrivers.size() == 1) {						
-					pos = result.getQualifyingOrder().get(standInDrivers.get(0).getStandInDriver().getName());
+				// Is there a stand in driver?
+				List<Driver> standIns = driverRepo.findByCarAndStandin(driver.getCar(), true);
+				for(Driver standInDriver : standIns) {
+					pos = result.getQualifyingOrder().get(standInDriver.getName());
 					if(pos != null) {
 						if(pos.isClassified()) {
 							points += DRIVER_QUAL_POINTS.get(pos.getPosition());
 						}
+						result.getRemarks().add(driver.getName() + " scores qualifying points from stand-in " + standInDriver.getName());
+						resultRepo.save(result);
+						break;
 					}
 				}
 			}
@@ -108,17 +107,17 @@ public class LeagueServiceImpl {
 					points += FASTEST_LAP_BONUS;
 				}
 			} else {
-				// Has the driver been replaced?
-				List<StandInDriver> standInDrivers = standInDriverRepo.findByRoundAndStandingInFor(result.getRound(), driver);
-				if(standInDrivers.size() == 1) {						
-					pos = result.getRaceOrder().get(standInDrivers.get(0).getStandInDriver().getName());
+				// Is there a stand in driver?
+				List<Driver> standIns = driverRepo.findByCarAndStandin(driver.getCar(), true);
+				for(Driver standInDriver : standIns) {
+					pos = result.getRaceOrder().get(standInDriver.getName());
 					if(pos != null) {
 						if(pos.isClassified()) {
 							points += DRIVER_RACE_POINTS.get(pos.getPosition());
 						}
-						if(standInDrivers.get(0).getStandInDriver().equals(result.getFastestLapDriver())) {
-							points += FASTEST_LAP_BONUS;
-						}
+						result.getRemarks().add(driver.getName() + " scores race points from stand-in " + standInDriver.getName());
+						resultRepo.save(result);
+						break;
 					}
 				}
 			}
@@ -192,8 +191,9 @@ public class LeagueServiceImpl {
 		
 		for(Team team : teams) {
 			int points = 0;
-			points += team.getDrivers().get(0).getPointsPerEvent().get(result.getRound());
-			points += team.getDrivers().get(1).getPointsPerEvent().get(result.getRound());
+			for(Driver driver : team.getDrivers()) {
+				points += driver.getPointsPerEvent().get(result.getRound());
+			}
 			points += team.getCar().getPointsPerEvent().get(result.getRound());
 			points += team.getEngine().getPointsPerEvent().get(result.getRound());
 			team.getPointsPerEvent().put(result.getRound(), points);
