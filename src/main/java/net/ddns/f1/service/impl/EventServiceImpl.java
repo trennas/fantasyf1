@@ -5,7 +5,9 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.ddns.f1.domain.Correction;
 import net.ddns.f1.domain.EventResult;
+import net.ddns.f1.repository.CorrectionRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.LiveResultsRepository;
@@ -28,10 +30,25 @@ public class EventServiceImpl {
 
 	@Autowired
 	LiveResultsRepository liveRepo;
+	
+	@Autowired
+	CorrectionRepository correctionRepo;
 
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
+	
+	private void actionCorrections(EventResult result) {
+		List<Correction> corrections = correctionRepo.findByRound(result.getRound());
+		if(corrections.size() > 0) {
+			LOG.info("Applying corrections to event: " + result.getVenue());
+			for(Correction correction : corrections) {
+				result.getQualifyingOrder().put(correction.getDriver(), correction.getPositions().get(0));
+				result.getRaceOrder().put(correction.getDriver(), correction.getPositions().get(1));
+				eventRepo.save(result);
+			}
+		}
+	}
 
 	public synchronized boolean checkForNewResults() {
 		boolean newResults = false;
@@ -46,6 +63,7 @@ public class EventServiceImpl {
 				if(!result.isRaceComplete()) {
 					result = liveRepo.fetchEventResult(result.getRound());
 					if(result.isRaceComplete()) {
+						actionCorrections(result);
 						eventRepo.save(result);
 						newResults = true;
 					}
@@ -56,6 +74,7 @@ public class EventServiceImpl {
 			if (result != null) {
 				LOG.info("Found new live race results... updating");
 				while (result != null) {
+					actionCorrections(result);
 					eventRepo.save(result);					
 					result = liveRepo.fetchEventResult(result.getRound() + 1);
 				}

@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.ddns.f1.domain.Car;
+import net.ddns.f1.domain.Correction;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.CarRepository;
+import net.ddns.f1.repository.CorrectionRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.service.impl.TeamService;
@@ -34,6 +36,8 @@ public class CreateData {
 	CarRepository carRepo;
 	@Autowired
 	EngineRepository engineRepo;
+	@Autowired
+	CorrectionRepository correctionRepo;
 	@Autowired
 	TeamService teamService;
 
@@ -80,6 +84,8 @@ public class CreateData {
 		
 		driverRepo.save(new Driver("Kevin Magnussen", 20, carRepo.findByName("Mclaren").get(0), 0, true));
 		driverRepo.save(new Driver("Alexander Rossi", 53, carRepo.findByName("Manor").get(0), 0, true));
+		
+		correctionRepo.save(new Correction(16, "Carlos Sainz", 20, true, 7, true));
 
 		try {			
 			List<Driver> drivers = new ArrayList<Driver>();
