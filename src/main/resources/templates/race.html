@@ -31,7 +31,8 @@
 	<div th:replace="header :: header" />
 	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
   <h1><span class="label label-default">{{event.venue}}</span></h1>
-  <a class="a-unstyled" th:href="@{/editresult#?round={{event.round}}}"><button type="button" class="btn btn-success">Edit Result</button></a>
+
+  <a sec:authorize="isAuthenticated()" class="a-unstyled" th:href="@{/editresult#?round={{event.round}}}"><button type="button" class="btn btn-success">Edit Result</button></a>
   
   <h2><span class="label label-primary">Qualifying Order</span></h2>
   
@@ -69,6 +70,20 @@
 	    </tbody>
 	  </table>
 	  
+	  <h3><span class="label label-danger">Fastest Lap</span></h3>
+	  <table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Driver</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(event.fastestLapDriver.name)">{{event.fastestLapDriver.name}}</a></td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  
 	  <h3><span class="label label-warning">Remarks</span></h3>
 	  <table class="table table-striped">
 	    <thead>
@@ -77,9 +92,6 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr>
-	        <td>Fastest Lap: <a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(event.fastestLapDriver.name)">{{event.fastestLapDriver.name}}</a></td>
-	      </tr>
 	      <tr ng-repeat="remark in event.remarks">
 	        <td>{{remark}}</td>
 	      </tr>
@@ -110,7 +122,7 @@
 	    </thead>
 	    <tbody>
 	      <tr ng-repeat="car in cars">
-	        <td>{{car.name}}</td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(car.name)">{{car.name}}</a></td>
 	        <td>{{car.pointsPerEvent[event.round]}}</td>
 	      </tr>
 	    </tbody>
@@ -124,7 +136,7 @@
 	    </thead>
 	    <tbody>
 	      <tr ng-repeat="engine in engines">
-	        <td>{{engine.name}}</td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(engine.name)">{{engine.name}}</a></td>
 	        <td>{{engine.pointsPerEvent[event.round]}}</td>
 	      </tr>
 	    </tbody>
@@ -139,7 +151,7 @@
 	    </thead>
 	    <tbody>
 	      <tr ng-repeat="team in teams">
-	        <td>{{team.name}}</td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#teamModal" ng-click="getTeam(team.id)">{{team.name}}</a></td>
 	        <td>{{team.pointsPerEvent[event.round]}}</td>
 	      </tr>
 	    </tbody>

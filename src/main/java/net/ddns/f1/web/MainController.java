@@ -107,7 +107,7 @@ public class MainController implements ErrorController {
 		return leagueService.calculateLeagueStandings();
 	}
 	
-	@RequestMapping("/team")
+	@RequestMapping({"/team", "/{subpage}/team"})
 	@ResponseBody
 	public Team getTeam(Integer id) {
 		return teamRepo.findById(id).get(0);
