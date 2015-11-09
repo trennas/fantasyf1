@@ -1,6 +1,5 @@
 package net.ddns.f1.web;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,11 +80,11 @@ public class MainController implements ErrorController {
 	
 	@RequestMapping(value = {"/{editresult}/saveResult"}, method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean saveResult(@RequestBody EventResult result) {
+	public EventResult saveResult(@RequestBody EventResult result) {
 		result.setFastestLapDriver(driverRepo.findByName(result.getFastestLapDriver().getName()).get(0));
 		resultRepo.save(result);
 		leagueService.recalculateAllResults();
-		return true;
+		return result;
 	}
 	
 	@RequestMapping("/{editresult}/refreshResult")

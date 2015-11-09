@@ -43,6 +43,7 @@ function($scope, $http, $location) {
         $('#spinner').show();
         $http.post('saveResult', result)
             .success(function(response) {
+                $scope.event = response;
                 $scope.status = "Success";
                 $('#spinner').hide();
             })
