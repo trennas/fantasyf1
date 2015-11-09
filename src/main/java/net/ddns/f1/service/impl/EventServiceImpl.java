@@ -3,12 +3,9 @@ package net.ddns.f1.service.impl;
 import java.util.Collections;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.ddns.f1.domain.Correction;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.repository.CorrectionRepository;
-import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.LiveResultsRepository;
 
@@ -17,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EventServiceImpl {
@@ -37,18 +33,6 @@ public class EventServiceImpl {
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
-	
-	private void actionCorrections(EventResult result) {
-		List<Correction> corrections = correctionRepo.findByRound(result.getRound());
-		if(corrections.size() > 0) {
-			LOG.info("Applying corrections to event: " + result.getVenue());
-			for(Correction correction : corrections) {
-				result.getQualifyingOrder().put(correction.getDriver(), correction.getPositions().get(0));
-				result.getRaceOrder().put(correction.getDriver(), correction.getPositions().get(1));
-				eventRepo.save(result);
-			}
-		}
-	}
 
 	public synchronized boolean checkForNewResults() {
 		boolean newResults = false;
@@ -91,5 +75,17 @@ public class EventServiceImpl {
 		List<EventResult> results = IteratorUtils.toList(itr.iterator());
 		Collections.sort(results);
 		return results;
+	}
+	
+	private void actionCorrections(EventResult result) {
+		List<Correction> corrections = correctionRepo.findByRound(result.getRound());
+		if(corrections.size() > 0) {
+			LOG.info("Applying corrections to event: " + result.getVenue());
+			for(Correction correction : corrections) {
+				result.getQualifyingOrder().put(correction.getDriver(), correction.getPositions().get(0));
+				result.getRaceOrder().put(correction.getDriver(), correction.getPositions().get(1));
+				eventRepo.save(result);
+			}
+		}
 	}
 }
