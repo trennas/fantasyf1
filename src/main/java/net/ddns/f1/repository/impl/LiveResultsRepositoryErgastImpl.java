@@ -95,6 +95,12 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 						.intValue(), true));
 			}
 			
+			for(Driver driver : driverRepo.findByStandin(false)) {
+				if(!qualResultDriverMap.containsValue(driver)) {
+					result.addRemark(driver.getName() + " did not participate in qualifying");
+				}
+			}
+			
 			final long classifiedTime = fastestQ1Time * 107;
 			for (final ResultType res : qual.getRaceTable().getRace()
 					.get(0).getQualifyingList().getQualifyingResult()) {

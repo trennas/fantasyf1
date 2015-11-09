@@ -86,7 +86,8 @@ public class MainController implements ErrorController {
 		leagueService.recalculateAllResults();
 		EventResult savedResult = resultRepo.findByRound(result.getRound()).get(0);
 		savedResult.setRemarks(result.getRemarks());
-		return savedResult;
+		resultRepo.save(savedResult);
+		return event(savedResult.getRound());
 	}
 	
 	@RequestMapping("/{editresult}/refreshResult")
