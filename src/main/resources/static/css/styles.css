@@ -6,12 +6,23 @@
 	color: white;
 }
 
+.a-unstyledheader { color: #FFF; }
+.a-unstyledheader:link { color: #FFF; }
+.a-unstyledheader:visited { color: #FFF; }
+.a-unstyledheader:hover { color: #000; }
+.a-unstyledheader:active { color: #FFF; }
+.navbar-inverse .a-unstyledheader { color: #FFF; }
+.navbar-inverse .a-unstyledheader:link { color: #FFF; }
+.navbar-inverse .a-unstyledheader:visited { color: #FFF; }
+.navbar-inverse .a-unstyledheader:hover { color: #FFF; }
+.navbar-inverse .a-unstyledheader:active { color: #FFF; }
+
+
 .a-unstyled { color: #333; }
 .a-unstyled:link { color: #333; }
 .a-unstyled:visited { color: #333; }
 .a-unstyled:hover { color: #000; }
 .a-unstyled:active { color: #333; }
-
 .navbar-inverse .a-unstyled { color: #969696; }
 .navbar-inverse .a-unstyled:link { color: #969696; }
 .navbar-inverse .a-unstyled:visited { color: #969696; }
