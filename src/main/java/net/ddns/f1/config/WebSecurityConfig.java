@@ -2,7 +2,6 @@ package net.ddns.f1.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +16,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Value("${auth.role-expression}")
 	private String roleExpression;
+	
+	@Value("${auth.admin-expression}")
+	private String adminExpression;
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -62,7 +64,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .logout()
 		 .logoutRequestMatcher(
 		 new AntPathRequestMatcher("/logout", "GET"))
-		 .permitAll().and().authorizeRequests().antMatchers("/")
+		 .permitAll()
+		 .and().authorizeRequests().antMatchers("/editresult")
+		 .access(this.adminExpression)
+		 .and().authorizeRequests().antMatchers("/")
 		 .access(this.roleExpression);
 		 http.headers()
 		 .addHeaderWriter(
