@@ -95,7 +95,8 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 						.intValue(), true));
 			}
 			
-			for(Driver driver : driverRepo.findByStandin(false)) {
+			List<Driver> drivers = driverRepo.findByStandin(false);
+			for(Driver driver : drivers) {
 				if(!qualResultDriverMap.containsValue(driver)) {
 					result.addRemark(driver.getName() + " did not participate in qualifying");
 				}
@@ -126,10 +127,12 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				LOG.info("Retrieving race results for round " + round + " "
 						+ result.getVenue());
 				result.setRaceOrder(new LinkedHashMap<String, Position>());
+				Map<ResultType, Driver> raceResultDriverMap = new HashMap<ResultType, Driver>();
 				for (final ResultType res : race.getRaceTable().getRace()
 						.get(0).getResultsList().getResult()) {
 					boolean classified = res.getPositionText().matches("[0-9]{1,2}");
 					final Driver driver = findDriver(res, result);
+					raceResultDriverMap.put(res,  driver);
 					result.getRaceOrder().put(driver.getName(), new Position(res.getPosition()
 							.intValue(), classified));
 				}
@@ -139,6 +142,13 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 								.getPermanentNumber().intValue()).get(0);
 				result.setFastestLapDriver(fastestLapDriver);
 				result.setRaceComplete(true);
+				
+				for(Driver driver : drivers) {
+					if(!raceResultDriverMap.containsValue(driver)) {
+						result.addRemark(driver.getName() + " did not participate in the race");
+					}
+				}
+				
 			} else {
 				result.addRemark("Awaiting Race Results");
 			}
