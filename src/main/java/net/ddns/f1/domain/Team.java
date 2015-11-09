@@ -19,7 +19,7 @@ import net.ddns.f1.service.impl.ValidationException;
 
 @Entity
 @Data
-public class Team  implements Comparable<Team> {
+public class Team  implements Comparable<Team>, PointScorer {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	int id;
 	private String name;	

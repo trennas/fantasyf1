@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Driver implements Comparable<Driver> {
+public class Driver implements Comparable<Driver>, PointScorer {
 
 	@Id
 	private int number;

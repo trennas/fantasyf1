@@ -10,6 +10,7 @@ import java.util.Map;
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
+import net.ddns.f1.domain.PointScorer;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Team;
@@ -68,14 +69,36 @@ public class LeagueServiceImpl {
 	private synchronized void calculateAllResults(List<Team> teams) {
 		LOG.info("Recalculating scores...");
 		List<EventResult> results = eventService.getSeasonResults();
-		for(Team team : teams) {
-			team.setPointsPerEvent(new HashMap<Integer, Integer>());
-			team.setTotalPoints(0);
-		}
+		resetAllScores(teams);		
 		for(EventResult result : results) {
 			calculateResult(result, teams);
 		}		
 		LOG.info("Scores recalculated.");
+	}
+	
+	private void resetAllScores(List<Team> teams) {
+		for(Team team : teams) {
+			resetPointsScorer(team);
+		}
+		List<Driver> drivers = driverRepo.findByStandin(false);
+		for(Driver driver : drivers) {
+			driver.setFastestLaps(0);
+			resetPointsScorer(driver);			
+		}
+		
+		Iterator<Car> carItr = carRepo.findAll().iterator();
+		while(carItr.hasNext()) {
+			resetPointsScorer(carItr.next());			
+		}
+		
+		Iterator<Engine> engineItr = engineRepo.findAll().iterator();
+		while(engineItr.hasNext()) {
+			resetPointsScorer(engineItr.next());			
+		}
+	}
+	
+	private void resetPointsScorer(PointScorer scorer) {
+		
 	}
 	
 	private synchronized void calculateResult(EventResult result, List<Team> teams) {

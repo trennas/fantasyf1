@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Car implements Comparable<Car> {
+public class Car implements Comparable<Car>, PointScorer {
 	@Id
 	private String name;
 	private int price;

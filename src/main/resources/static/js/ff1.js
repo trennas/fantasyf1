@@ -18,11 +18,12 @@ function($scope, $http, $location) {
         $http.get('teams')
             .success(function(response) {
                 $scope.teams = response;
+                $scope.getEvents();                
             })
             .error(function(response, status) {
-                alert("Status: " + status);
-            });
-        $('#spinner').hide();
+                $('#spinner').hide();
+                alert("Status: " + status);                
+            });        
     };
     
     $scope.saveResult = function(result) {
@@ -36,15 +37,15 @@ function($scope, $http, $location) {
     };
     
     $scope.getEvents = function() {
-        $('#spinner').show();
         $http.get('events')
             .success(function(response) {
                 $scope.events = response;
+                $('#spinner').hide();
             })
             .error(function(response, status) {
+                $('#spinner').hide();
                 alert("Status: " + status);
             });
-        $('#spinner').hide();
     };
     
     $scope.getTeam = function(id) {

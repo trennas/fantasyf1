@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Engine implements Comparable<Engine> {
+public class Engine implements Comparable<Engine>, PointScorer {
 	@Id
 	private String name;
 	private int price;
