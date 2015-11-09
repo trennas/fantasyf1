@@ -73,12 +73,26 @@ public class MainController {
 		return "editresult";
 	}
 	
-	@RequestMapping(value = {"/saveResult", "/{subpage}/saveResult"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/{editresult}/saveResult"}, method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean saveResult(@RequestBody EventResult result) {
 		result.setFastestLapDriver(driverRepo.findByName(result.getFastestLapDriver().getName()).get(0));
 		resultRepo.save(result);
 		leagueService.recalculateAllResults();
+		return true;
+	}
+	
+	@RequestMapping("/{editresult}/refreshResult")
+	@ResponseBody
+	public Boolean refreshResult(int round) {		
+		eventService.refreshEvent(round);
+		return true;
+	}
+	
+	@RequestMapping("/{editresult}/refreshAllResults")
+	@ResponseBody
+	public Boolean refreshAllResults() {		
+		eventService.refreshAllEvents();
 		return true;
 	}
 	

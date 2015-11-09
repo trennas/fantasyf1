@@ -29,10 +29,28 @@ public class EventServiceImpl {
 	
 	@Autowired
 	CorrectionRepository correctionRepo;
+	
+	@Autowired
+	LeagueServiceImpl leagueService;
 
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
+	
+	public void refreshEvent(int round) {
+		eventRepo.deleteByRound(round);
+		EventResult result = liveRepo.fetchEventResult(round);
+		if(result != null) {
+			applyCorrections(result);
+			eventRepo.save(result);
+			leagueService.recalculateAllResults();
+		}
+	}
+	
+	public void refreshAllEvents() {
+		eventRepo.deleteAll();
+		leagueService.recalculateAllResults();
+	}
 
 	public synchronized boolean checkForNewResults() {
 		boolean newResults = false;
@@ -47,7 +65,7 @@ public class EventServiceImpl {
 				if(!result.isRaceComplete()) {
 					result = liveRepo.fetchEventResult(result.getRound());
 					if(result.isRaceComplete()) {
-						actionCorrections(result);
+						applyCorrections(result);
 						eventRepo.save(result);
 						newResults = true;
 					}
@@ -58,7 +76,7 @@ public class EventServiceImpl {
 			if (result != null) {
 				LOG.info("Found new live race results... updating");
 				while (result != null) {
-					actionCorrections(result);
+					applyCorrections(result);
 					eventRepo.save(result);					
 					result = liveRepo.fetchEventResult(result.getRound() + 1);
 				}
@@ -77,7 +95,7 @@ public class EventServiceImpl {
 		return results;
 	}
 	
-	private void actionCorrections(EventResult result) {
+	private void applyCorrections(EventResult result) {
 		List<Correction> corrections = correctionRepo.findByRound(result.getRound());
 		if(corrections.size() > 0) {
 			LOG.info("Applying corrections to event: " + result.getVenue());

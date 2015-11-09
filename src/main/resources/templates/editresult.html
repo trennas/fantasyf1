@@ -104,6 +104,8 @@
 	    </tbody>
 	  </table>
 	  <button type="button" class="btn btn-success" ng-click="saveResult(event);">Save</button>
+	  <button type="button" class="btn btn-success" ng-click="refreshResult(event.round);">Refetch Result</button>
+	  <button type="button" class="btn btn-success" ng-click="refreshAllResults();">Refetch All Results</button>
 	  {{status}}
   </div>
   <div th:replace="modals :: modals" />

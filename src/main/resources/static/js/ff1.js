@@ -49,6 +49,26 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.refreshResult = function(event) {
+        $http.get('refreshResult?round=' + event)
+            .success(function(response) {
+                $scope.status = "Result refreshed";
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.refreshAllResults = function(event) {
+        $http.get('refreshAllResults')
+            .success(function(response) {
+                $scope.status = "All results refreshed";
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
     $scope.getEvents = function() {
         $http.get('events')
             .success(function(response) {

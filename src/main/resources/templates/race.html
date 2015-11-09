@@ -31,6 +31,8 @@
 	<div th:replace="header :: header" />
 	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
   <h1><span class="label label-default">{{event.venue}}</span></h1>
+  <a class="a-unstyled" th:href="@{/editresult#?round={{event.round}}}"><button type="button" class="btn btn-success">Edit Result</button></a>
+  
   <h2><span class="label label-primary">Qualifying Order</span></h2>
   
 		<table class="table table-striped">
