@@ -166,6 +166,7 @@ public class LeagueServiceImpl {
 			int points = 0;
 			List<Driver> carDrivers = driverRepo.findByCar(car);
 
+			int numCarsParticipated = 0;
 			int numCarsFinished = 0;
 			for(Driver driver : carDrivers) {
 				Position pos = result.getQualifyingOrder().get(driver.getName());
@@ -178,6 +179,7 @@ public class LeagueServiceImpl {
 				if(result.isRaceComplete()) {
 					pos = result.getRaceOrder().get(driver.getName());
 					if(pos != null) {
+						numCarsParticipated++;
 						if(pos.isClassified()) {
 							points += CAR_RACE_POINTS.get(pos.getPosition());
 							numCarsFinished++;
@@ -187,6 +189,9 @@ public class LeagueServiceImpl {
 			}
 			if(numCarsFinished >= 2) {
 				points += BOTH_CARS_FINISHED_BONUS;
+			}
+			if(result.isRaceComplete() && numCarsParticipated == 0) {
+				result.addRemark(car.getName() + " did not participate in the race.");
 			}
 			car.getPointsPerEvent().put(result.getRound(), points);
 			car.setTotalPoints(car.getTotalPoints() + points);
