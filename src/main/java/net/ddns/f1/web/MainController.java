@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
@@ -26,7 +28,9 @@ import net.ddns.f1.service.impl.TeamService;
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +40,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Profile("!create")
-public class MainController {
+public class MainController implements ErrorController {
+
+	private static final String ERROR_PATH = "/error";
 
 	private static final Logger LOG = Logger
 			.getLogger(MainController.class);
@@ -189,5 +195,35 @@ public class MainController {
 	@RequestMapping("/login")
 	public String login() {
 		return "login";
+	}
+	
+	@RequestMapping(ERROR_PATH)
+	public String error(final HttpServletRequest request, final Model model) {
+		model.addAttribute("message",
+				request.getAttribute("javax.servlet.error.message"));
+		model.addAttribute("code",
+				request.getAttribute("javax.servlet.error.status_code"));
+		return "error";
+	}
+
+	@Override
+	public String getErrorPath() {
+		return ERROR_PATH;
+	}
+
+	@RequestMapping("loginError")
+	public String loginError(final Model model) {
+		model.addAttribute("message", "Invalid authentication credentials.");
+		model.addAttribute("returnLocation", "/login");
+		return "error";
+	}
+
+	@RequestMapping("accessError")
+	public String accessError(final Model model) {
+		model.addAttribute("message",
+				"You don't have access to view this page.");
+		model.addAttribute("returnLocation", "/login");
+		SecurityContextHolder.getContext().setAuthentication(null);
+		return "error";
 	}
 }
