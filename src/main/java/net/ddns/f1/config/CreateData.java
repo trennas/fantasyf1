@@ -84,8 +84,16 @@ public class CreateData {
 		
 		driverRepo.save(new Driver("Kevin Magnussen", 20, carRepo.findByName("Mclaren").get(0), 0, true));
 		driverRepo.save(new Driver("Alexander Rossi", 53, carRepo.findByName("Manor").get(0), 0, true));
+				
+		correctionRepo.save(new Correction(2, "Roberto Merhi", 19, true, 15, true));
+		correctionRepo.save(new Correction(3, "Max Verstappen", 13, true, 17, false));
+		correctionRepo.save(new Correction(10, "Will Stevens", 20, true, 16, false));
+		correctionRepo.save(new Correction(12, "Max Verstappen", 20, true, 12, true));
+		correctionRepo.save(new Correction(12, "Nico Rosberg", 4, true, 17, false));
+		correctionRepo.save(new Correction(12, "Fernando Alonso", 17, true, 18, false));		
+		correctionRepo.save(new Correction(14, "Alexander Rossi", 20, true, 18, true));
+		correctionRepo.save(new Correction(14, "Felipe Nasr", 18, true, 20, true));
 		
-		correctionRepo.save(new Correction(16, "Carlos Sainz", 20, true, 7, true));
 
 		try {			
 			List<Driver> drivers = new ArrayList<Driver>();
