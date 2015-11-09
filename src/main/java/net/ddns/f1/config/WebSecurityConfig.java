@@ -21,8 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private String adminExpression;
 
     @Override
-    protected void configure(final HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().anyRequest().permitAll();
+    protected void configure(final HttpSecurity http) throws Exception {		
 		 http.csrf()
 		 .disable()
 		 .authorizeRequests()
