@@ -125,36 +125,39 @@ public class LeagueServiceImpl {
 				}
 			}
 			
-			pos = result.getRaceOrder().get(driver.getName());
-			if(pos != null) {
-				if(pos.isClassified()) {
-					points += DRIVER_RACE_POINTS.get(pos.getPosition());
-				}
-				if(driver.equals(result.getFastestLapDriver())) {
-					points += FASTEST_LAP_BONUS;
-					driver.setFastestLaps(driver.getFastestLaps()+1);
-					driverRepo.save(driver);
-				}
-			} else {
-				// Is there a stand in driver?
-				List<Driver> standIns = driverRepo.findByCarAndStandin(driver.getCar(), true);
-				for(Driver standInDriver : standIns) {
-					pos = result.getRaceOrder().get(standInDriver.getName());
-					if(pos != null) {
-						if(pos.isClassified()) {
-							points += DRIVER_RACE_POINTS.get(pos.getPosition());
+			if(result.isRaceComplete()) {
+				pos = result.getRaceOrder().get(driver.getName());
+				if(pos != null) {
+					if(pos.isClassified()) {
+						points += DRIVER_RACE_POINTS.get(pos.getPosition());
+					}
+					if(driver.equals(result.getFastestLapDriver())) {
+						points += FASTEST_LAP_BONUS;
+						driver.setFastestLaps(driver.getFastestLaps()+1);
+						driverRepo.save(driver);
+					}
+				} else {
+					// Is there a stand in driver?
+					List<Driver> standIns = driverRepo.findByCarAndStandin(driver.getCar(), true);
+					for(Driver standInDriver : standIns) {
+						pos = result.getRaceOrder().get(standInDriver.getName());
+						if(pos != null) {
+							if(pos.isClassified()) {
+								points += DRIVER_RACE_POINTS.get(pos.getPosition());
+							}
+							if(standInDriver.equals(result.getFastestLapDriver())) {
+								points += FASTEST_LAP_BONUS;
+							}
+							result.getRemarks().add(driver.getName() + " scores race points from stand-in driver " + standInDriver.getName());
+							resultRepo.save(result);
+							break;
 						}
-						if(standInDriver.equals(result.getFastestLapDriver())) {
-							points += FASTEST_LAP_BONUS;
-						}
-						result.getRemarks().add(driver.getName() + " scores race points from stand-in driver " + standInDriver.getName());
-						resultRepo.save(result);
-						break;
 					}
 				}
 			}
 			driver.getPointsPerEvent().put(result.getRound(), points);
 			driver.setTotalPoints(driver.getTotalPoints() + points);
+			driverRepo.save(driver);
 		}
 		
 		Iterator<Car> carItr = carRepo.findAll().iterator();
@@ -171,11 +174,13 @@ public class LeagueServiceImpl {
 						points += CAR_QUAL_POINTS.get(pos.getPosition());					}
 				}				
 
-				pos = result.getRaceOrder().get(driver.getName());
-				if(pos != null) {
-					if(pos.isClassified()) {
-						points += CAR_RACE_POINTS.get(pos.getPosition());
-						numCarsFinished++;
+				if(result.isRaceComplete()) {
+					pos = result.getRaceOrder().get(driver.getName());
+					if(pos != null) {
+						if(pos.isClassified()) {
+							points += CAR_RACE_POINTS.get(pos.getPosition());
+							numCarsFinished++;
+						}
 					}
 				}
 			}
@@ -184,6 +189,7 @@ public class LeagueServiceImpl {
 			}
 			car.getPointsPerEvent().put(result.getRound(), points);
 			car.setTotalPoints(car.getTotalPoints() + points);
+			carRepo.save(car);
 		}
 		
 		Iterator<Engine> engineItr = engineRepo.findAll().iterator();
@@ -209,15 +215,18 @@ public class LeagueServiceImpl {
 					}
 				}
 				
-				pos = result.getRaceOrder().get(driver.getName());
-				if(pos != null) {
-					if(pos.isClassified()) {
-						points += ENGINE_RACE_POINTS.get(pos.getPosition());
+				if(result.isRaceComplete()) {
+					pos = result.getRaceOrder().get(driver.getName());
+					if(pos != null) {
+						if(pos.isClassified()) {
+							points += ENGINE_RACE_POINTS.get(pos.getPosition());
+						}
 					}
 				}
 			}
 			engine.getPointsPerEvent().put(result.getRound(), points);
-			engine.setTotalPoints(engine.getTotalPoints() + points);			
+			engine.setTotalPoints(engine.getTotalPoints() + points);	
+			engineRepo.save(engine);
 		}
 		
 		for(Team team : teams) {

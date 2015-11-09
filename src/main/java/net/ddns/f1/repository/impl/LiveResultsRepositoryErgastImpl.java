@@ -38,15 +38,25 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 	@Override
 	public EventResult fetchEventResult(final int round) {
 		final RestTemplate restTemplate = new RestTemplate();
-		final MRDataType qual = restTemplate
-				.getForObject(ERGAST_BASE_URL + round
-						+ "/qualifying.xml", MRDataType.class);
-		final MRDataType race = restTemplate.getForObject(
-				ERGAST_BASE_URL + round + "/results.xml",
-				MRDataType.class);
-		final MRDataType fastestLap = restTemplate.getForObject(
-				ERGAST_BASE_URL + round
-						+ "/fastest/1/drivers.xml", MRDataType.class);
+		
+		final MRDataType qual;
+		final MRDataType race;
+		final MRDataType fastestLap;
+		
+		try {
+			qual = restTemplate
+					.getForObject(ERGAST_BASE_URL + round
+							+ "/qualifying.xml", MRDataType.class);
+			race = restTemplate.getForObject(
+					ERGAST_BASE_URL + round + "/results.xml",
+					MRDataType.class);
+			fastestLap = restTemplate.getForObject(
+					ERGAST_BASE_URL + round
+							+ "/fastest/1/drivers.xml", MRDataType.class);
+		} catch(Exception e) {
+			LOG.error("Unable to contact results service at " + ERGAST_BASE_URL);
+			return null;
+		}
 
 		if (qual.getRaceTable().getRace().size() > 0) {
 			final EventResult result = new EventResult();
