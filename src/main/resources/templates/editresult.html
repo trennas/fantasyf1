@@ -94,13 +94,16 @@
 	    <thead>
 	      <tr>
 	        <th>Remarks</th>
+	        <th>Action</th>
 	      </tr>
 	    </thead>
 	    <tbody>
 	      <tr ng-repeat="remark in event.remarks">
-	        <td><input type="text" class="form-control" ng-model="remark"/></td>
-	      </tr>
+	        <td><input type="text" class="form-control" ng-model="remark" ng-blur="updateRemark($index, remark);"/></td>
+	        <td><button type="button" class="btn btn-danger" ng-click="deleteRemark($index);">Delete</button></td>
+	      </tr>	      
 	    </tbody>
+	    <button type="button" class="btn btn-danger" ng-click="addRemark();">Add Remark</button>
 	  </table>
 	  <button type="button" class="btn btn-success" ng-click="saveResult(event);">Save</button>
 	  <button type="button" class="btn btn-success" ng-click="refreshResult(event.round);">Refetch Result</button>

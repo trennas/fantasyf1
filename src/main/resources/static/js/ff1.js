@@ -53,6 +53,18 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.updateRemark = function(index, remark) {
+        $scope.event.remarks[index] = remark;
+    };
+    
+    $scope.deleteRemark = function(index) {
+        $scope.event.remarks.splice(index, 1);
+    };  
+    
+    $scope.addRemark = function() {
+        $scope.event.remarks.push("");
+    };
+    
     $scope.refreshResult = function(event) {
         $('#spinner').show();
         $http.get('refreshResult?round=' + event)
