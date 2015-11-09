@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -98,7 +99,8 @@ public class LeagueServiceImpl {
 	}
 	
 	private void resetPointsScorer(PointScorer scorer) {
-		
+		scorer.setTotalPoints(0);
+		scorer.setPointsPerEvent(new LinkedHashMap<Integer,Integer>());
 	}
 	
 	private synchronized void calculateResult(EventResult result, List<Team> teams) {
