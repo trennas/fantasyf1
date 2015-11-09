@@ -84,7 +84,9 @@ public class MainController implements ErrorController {
 		result.setFastestLapDriver(driverRepo.findByName(result.getFastestLapDriver().getName()).get(0));
 		resultRepo.save(result);
 		leagueService.recalculateAllResults();
-		return resultRepo.findByRound(result.getRound()).get(0);
+		EventResult savedResult = resultRepo.findByRound(result.getRound()).get(0);
+		savedResult.setRemarks(result.getRemarks());
+		return savedResult;
 	}
 	
 	@RequestMapping("/{editresult}/refreshResult")
