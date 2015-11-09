@@ -37,7 +37,7 @@ public class EventServiceImpl {
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
 	
-	public void refreshEvent(int round) {
+	public EventResult refreshEvent(int round) {
 		LOG.info("Manually invoked refresh result round " + round + "...");
 		eventRepo.deleteByRound(round);
 		EventResult result = liveRepo.fetchEventResult(round);
@@ -46,6 +46,7 @@ public class EventServiceImpl {
 			eventRepo.save(result);
 			leagueService.recalculateAllResults();
 		}
+		return result;
 	}
 	
 	public void refreshAllEvents() {

@@ -90,9 +90,8 @@ public class MainController implements ErrorController {
 	
 	@RequestMapping("/{editresult}/refreshResult")
 	@ResponseBody
-	public Boolean refreshResult(int round) {		
-		eventService.refreshEvent(round);
-		return true;
+	public EventResult refreshResult(int round) {		
+		return eventService.refreshEvent(round);
 	}
 	
 	@RequestMapping("/{editresult}/refreshAllResults")

@@ -57,6 +57,7 @@ function($scope, $http, $location) {
         $http.get('refreshResult?round=' + event)
             .success(function(response) {
                 $('#spinner').hide();
+                $scope.event = response;
                 $scope.status = "Result refreshed";
             })
             .error(function(response, status) {
