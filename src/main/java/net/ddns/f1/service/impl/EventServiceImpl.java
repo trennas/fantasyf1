@@ -38,6 +38,7 @@ public class EventServiceImpl {
 	private long timeOfLastResultCheck = 0;
 	
 	public void refreshEvent(int round) {
+		LOG.info("Manually invoked refresh result round " + round + "...");
 		eventRepo.deleteByRound(round);
 		EventResult result = liveRepo.fetchEventResult(round);
 		if(result != null) {
@@ -48,6 +49,7 @@ public class EventServiceImpl {
 	}
 	
 	public void refreshAllEvents() {
+		LOG.info("Manually invoked refresh of all results..");
 		eventRepo.deleteAll();
 		timeOfLastResultCheck = 0;
 		leagueService.calculateLeagueStandings();
