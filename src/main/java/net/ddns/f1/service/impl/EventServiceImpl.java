@@ -49,6 +49,7 @@ public class EventServiceImpl {
 	
 	public void refreshAllEvents() {
 		eventRepo.deleteAll();
+		timeOfLastResultCheck = 0;
 		leagueService.recalculateAllResults();
 	}
 
