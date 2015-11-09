@@ -60,7 +60,6 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 		if (qual.getRaceTable().getRace().size() > 0) {
 			final EventResult result = new EventResult();
-			result.setRemarks(new ArrayList<String>());
 			result.setRaceComplete(false);
 			
 			boolean q3Complete = false;
@@ -103,18 +102,18 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				Position pos = result.getQualifyingOrder().get(driver.getName());				
 				if(res.getQ1() == null) {
 					pos.setClassified(false);
-					result.getRemarks().add(driver.getName() + " did not set a qualifying time");
+					result.addRemark(driver.getName() + " did not set a qualifying time");
 				} else {
 					long millis = durationToMillis(res.getQ1().getValue());
 					if(millis*100 > classifiedTime) {
 						pos.setClassified(false); // Q1 outside 107%
-						result.getRemarks().add(driver.getName() + " not classified in qualifying (Q1 time was outside 107%)");
+						result.addRemark(driver.getName() + " not classified in qualifying (Q1 time was outside 107%)");
 					}
 				}					
 			}
 			
 			if(!q3Complete) {
-				result.getRemarks().add("Qualifying was not completed in full");
+				result.addRemark("Qualifying was not completed in full");
 			}
 
 			if (race.getRaceTable().getRace().size() > 0) {
@@ -135,7 +134,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				result.setFastestLapDriver(fastestLapDriver);
 				result.setRaceComplete(true);
 			} else {
-				result.getRemarks().add("Awaiting Race Results");
+				result.addRemark("Awaiting Race Results");
 			}
 			return result;
 		}
@@ -161,7 +160,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				String message = "Driver: " + res.getDriver().getGivenName() + " "
 						+ res.getDriver().getFamilyName() + " in results list could not be found.";
 				LOG.error(message);
-				eventResult.getRemarks().add(message);
+				eventResult.addRemark(message);
 				return null;
 			}
 		}

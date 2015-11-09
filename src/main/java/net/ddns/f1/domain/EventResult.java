@@ -1,5 +1,6 @@
 package net.ddns.f1.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +41,16 @@ public class EventResult implements Comparable<EventResult> {
 			return -1;
 		} else {
 			return 0;
+		}
+	}
+	
+	public void addRemark(String remark) {
+		if(this.remarks == null) {
+			this.remarks = new ArrayList<String>();
+		}
+		
+		if(!this.remarks.contains(remark)) {
+			this.remarks.add(remark);
 		}
 	}
 }

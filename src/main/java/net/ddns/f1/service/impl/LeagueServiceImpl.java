@@ -118,7 +118,7 @@ public class LeagueServiceImpl {
 						if(pos.isClassified()) {
 							points += DRIVER_QUAL_POINTS.get(pos.getPosition());
 						}
-						result.getRemarks().add(driver.getName() + " scores qualifying points from stand-in driver " + standInDriver.getName());
+						result.addRemark(driver.getName() + " scores qualifying points from stand-in driver " + standInDriver.getName());
 						resultRepo.save(result);
 						break;
 					}
@@ -147,8 +147,8 @@ public class LeagueServiceImpl {
 							}
 							if(standInDriver.equals(result.getFastestLapDriver())) {
 								points += FASTEST_LAP_BONUS;
-							}
-							result.getRemarks().add(driver.getName() + " scores race points from stand-in driver " + standInDriver.getName());
+							}							
+							result.addRemark(driver.getName() + " scores race points from stand-in driver " + standInDriver.getName());
 							resultRepo.save(result);
 							break;
 						}
@@ -171,7 +171,8 @@ public class LeagueServiceImpl {
 				Position pos = result.getQualifyingOrder().get(driver.getName());
 				if(pos != null) {
 					if(pos.isClassified()) {
-						points += CAR_QUAL_POINTS.get(pos.getPosition());					}
+						points += CAR_QUAL_POINTS.get(pos.getPosition());
+					}
 				}				
 
 				if(result.isRaceComplete()) {
