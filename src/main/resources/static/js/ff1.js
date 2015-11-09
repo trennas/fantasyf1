@@ -13,12 +13,25 @@ function($scope, $http, $location) {
     $scope.engine;    
     $scope.status;
     
-    $scope.getTeams = function() {
+    $scope.getLeagueTable = function() {
         $('#spinner').show();
         $http.get('teams')
             .success(function(response) {
                 $scope.teams = response;
                 $scope.getEvents();                
+            })
+            .error(function(response, status) {
+                $('#spinner').hide();
+                alert("Status: " + status);                
+            });        
+    };
+    
+    $scope.getTeams = function() {
+        $('#spinner').show();
+        $http.get('teams')
+            .success(function(response) {
+                $scope.teams = response;
+                $('#spinner').hide();
             })
             .error(function(response, status) {
                 $('#spinner').hide();
