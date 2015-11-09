@@ -40,31 +40,40 @@ function($scope, $http, $location) {
     };
     
     $scope.saveResult = function(result) {
+        $('#spinner').show();
         $http.post('saveResult', result)
             .success(function(response) {
                 $scope.status = "Success";
+                $('#spinner').hide();
             })
             .error(function(response, status) {
+                $('#spinner').hide();
                 alert("Status: " + status);
             });
     };
     
     $scope.refreshResult = function(event) {
+        $('#spinner').show();
         $http.get('refreshResult?round=' + event)
             .success(function(response) {
+                $('#spinner').hide();
                 $scope.status = "Result refreshed";
             })
             .error(function(response, status) {
+                $('#spinner').hide();
                 alert("Status: " + status);
             });
     };
     
     $scope.refreshAllResults = function(event) {
+        $('#spinner').show();
         $http.get('refreshAllResults')
-            .success(function(response) {
+            .success(function(response) {                
                 $scope.status = "All results refreshed";
+                $('#spinner').hide();
             })
             .error(function(response, status) {
+                $('#spinner').hide();
                 alert("Status: " + status);
             });
     };
