@@ -1,1 +1,1 @@
-web: java -jar  target/fantasyf1.jar
+web: java -jar app.jar
