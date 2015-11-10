@@ -1,0 +1,1 @@
+web: java -jar  target/fantasyf1.jar
