@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
-@Profile("create")
+//@Profile("create")
 public class CreateData {
 
 	private static final Logger LOG = Logger.getLogger(CreateData.class);
