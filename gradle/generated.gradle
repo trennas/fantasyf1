@@ -9,7 +9,7 @@ configurations {
  
 task genJaxb {
     ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
-    ext.classesDir = "${buildDir}/classes/jaxb"
+    ext.classesDir = "${buildDir}/classes/main"
     ext.schemaDir = "src/main/resources/schema/mrd/xsd"
 
     outputs.dir classesDir
