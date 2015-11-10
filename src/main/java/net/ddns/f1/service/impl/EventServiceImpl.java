@@ -106,6 +106,12 @@ public class EventServiceImpl {
 			for(Correction correction : corrections) {
 				result.getQualifyingOrder().put(correction.getDriver(), correction.getPositions().get(0));
 				result.getRaceOrder().put(correction.getDriver(), correction.getPositions().get(1));
+				List<String> remarks = result.getRemarks();
+				for(String remark : correction.getRemarks()) {					
+					if(!remarks.remove(remark)) {						
+						remarks.add(remark);
+					}
+				}
 				eventRepo.save(result);
 			}
 		}

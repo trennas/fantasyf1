@@ -22,6 +22,9 @@ public class Correction {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<Position> positions;
 	
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> remarks;
+	
 	public Correction() {		
 	}
 	
