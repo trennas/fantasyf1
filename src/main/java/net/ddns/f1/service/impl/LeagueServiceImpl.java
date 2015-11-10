@@ -240,9 +240,11 @@ public class LeagueServiceImpl {
 			engineRepo.save(engine);
 		}
 		
-		for(Team team : teams) {
+		Iterator<Team> teamItr = teamRepo.findAll().iterator();
+		while(teamItr.hasNext()) {
+			Team team = teamItr.next();
 			int points = 0;
-			for(Driver driver : team.getDrivers()) {
+			for(Driver driver : team.getDrivers()) {				
 				points += driver.getPointsPerEvent().get(result.getRound());
 			}
 			points += team.getCar().getPointsPerEvent().get(result.getRound());

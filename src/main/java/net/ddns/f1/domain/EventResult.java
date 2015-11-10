@@ -30,7 +30,7 @@ public class EventResult implements Comparable<EventResult> {
 	private Map<String, Position> qualifyingOrder;
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<String, Position> raceOrder;
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> remarks;
 
 	@Override

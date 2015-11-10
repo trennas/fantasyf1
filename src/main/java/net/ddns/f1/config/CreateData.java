@@ -133,7 +133,7 @@ public class CreateData {
 			
 			drivers = new ArrayList<Driver>();
 			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
-			drivers.add(driverRepo.findByName("Nico Hülkenberg").get(0));
+			drivers.add(driverRepo.findByName("Nico Hulkenberg").get(0));
 			team = new Team("Dodgy Sparkplugs", "Matt Horsley", "matt@durge.org", "welcome1", drivers, carRepo.findByName("Manor").get(0), engineRepo.findByName("Renault").get(0));
 			teamService.addTeam(team);
 			

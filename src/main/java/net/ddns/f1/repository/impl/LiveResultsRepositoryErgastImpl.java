@@ -1,6 +1,5 @@
 package net.ddns.f1.repository.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,6 +14,7 @@ import net.ddns.f1.repository.LiveResultsRepository;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,7 +27,10 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 	private static final Logger LOG = Logger
 			.getLogger(LiveResultsRepositoryErgastImpl.class);
 	
-	private static final String ERGAST_BASE_URL = "http://ergast.com/api/f1/current/";
+	@Value("${season}")
+	private String season;
+	
+	private final String ERGAST_BASE_URL = "http://ergast.com/api/f1/";
 
 	@Autowired
 	DriverRepository driverRepo;
@@ -37,6 +40,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 	@Override
 	public EventResult fetchEventResult(final int round) {
+		String seasonUrl = ERGAST_BASE_URL + season + "/";
 		final RestTemplate restTemplate = new RestTemplate();
 		
 		final MRDataType qual;
@@ -45,16 +49,16 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 		
 		try {
 			qual = restTemplate
-					.getForObject(ERGAST_BASE_URL + round
+					.getForObject(seasonUrl + round
 							+ "/qualifying.xml", MRDataType.class);
 			race = restTemplate.getForObject(
-					ERGAST_BASE_URL + round + "/results.xml",
+					seasonUrl + round + "/results.xml",
 					MRDataType.class);
 			fastestLap = restTemplate.getForObject(
-					ERGAST_BASE_URL + round
+					seasonUrl + round
 							+ "/fastest/1/drivers.xml", MRDataType.class);
 		} catch(Exception e) {
-			LOG.error("Unable to contact results service at " + ERGAST_BASE_URL);
+			LOG.error("Unable to contact results service at " + seasonUrl);
 			return null;
 		}
 
