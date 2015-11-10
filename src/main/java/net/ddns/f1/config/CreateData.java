@@ -64,13 +64,13 @@ public class CreateData {
 		driverRepo.save(new Driver("Lewis Hamilton", 44, carRepo.findByName("Mercedes").get(0), 27, false));
 		driverRepo.save(new Driver("Nico Rosberg", 6, carRepo.findByName("Mercedes").get(0), 25, false));
 		driverRepo.save(new Driver("Sebastian Vettel", 5, carRepo.findByName("Ferrari").get(0), 19, false));
-		driverRepo.save(new Driver("Kimi Räikkönen", 7, carRepo.findByName("Ferrari").get(0), 17, false));
+		driverRepo.save(new Driver("Kimi Raikkonen", 7, carRepo.findByName("Ferrari").get(0), 17, false));
 		driverRepo.save(new Driver("Daniel Ricciardo", 3, carRepo.findByName("Red Bull").get(0), 21, false));
 		driverRepo.save(new Driver("Daniil Kvyat", 26, carRepo.findByName("Red Bull").get(0), 17, false));
 		driverRepo.save(new Driver("Felipe Massa", 19, carRepo.findByName("Williams").get(0), 18, false));
 		driverRepo.save(new Driver("Valtteri Bottas", 77, carRepo.findByName("Williams").get(0), 20, false));
-		driverRepo.save(new Driver("Nico Hülkenberg", 27, carRepo.findByName("Force India").get(0), 14, false));
-		driverRepo.save(new Driver("Sergio Pérez", 11, carRepo.findByName("Force India").get(0), 13, false));
+		driverRepo.save(new Driver("Nico Hulkenberg", 27, carRepo.findByName("Force India").get(0), 14, false));
+		driverRepo.save(new Driver("Sergio Perez", 11, carRepo.findByName("Force India").get(0), 13, false));
 		driverRepo.save(new Driver("Max Verstappen", 33, carRepo.findByName("Toro Rosso").get(0), 7, false));
 		driverRepo.save(new Driver("Carlos Sainz", 55, carRepo.findByName("Toro Rosso").get(0), 6, false));
 		driverRepo.save(new Driver("Romain Grosjean", 8, carRepo.findByName("Lotus").get(0), 10, false));
