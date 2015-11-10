@@ -20,6 +20,7 @@ public class Car implements Comparable<Car>, PointScorer {
 	@OneToOne(targetEntity=Engine.class, fetch=FetchType.EAGER)
 	private Engine engine;
 	
+	private int bothCarsFinishBonuses;
 	private long totalPoints;	
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();

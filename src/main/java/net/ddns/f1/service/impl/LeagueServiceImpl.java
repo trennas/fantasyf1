@@ -89,7 +89,9 @@ public class LeagueServiceImpl {
 		
 		Iterator<Car> carItr = carRepo.findAll().iterator();
 		while(carItr.hasNext()) {
-			resetPointsScorer(carItr.next());			
+			Car car = carItr.next();
+			car.setBothCarsFinishBonuses(0);
+			resetPointsScorer(car);			
 		}
 		
 		Iterator<Engine> engineItr = engineRepo.findAll().iterator();
@@ -189,8 +191,9 @@ public class LeagueServiceImpl {
 					}
 				}
 			}
-			if(numCarsFinished >= 2) {
+			if(numCarsFinished == 2) {
 				points += BOTH_CARS_FINISHED_BONUS;
+				car.setBothCarsFinishBonuses(car.getBothCarsFinishBonuses() + 1);
 			}
 			if(result.isRaceComplete() && numCarsParticipated == 0) {
 				result.addRemark(car.getName() + " did not participate in the race.");
