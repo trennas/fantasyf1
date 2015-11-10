@@ -1,1 +1,1 @@
-web: java -jar -Dhttp.port=$PORT app.jar
+web: java -jar app.jar
