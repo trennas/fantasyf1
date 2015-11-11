@@ -49,11 +49,23 @@ public class EventServiceImpl {
 		return result;
 	}
 	
-	public void refreshAllEvents() {
+	public synchronized void refreshAllEvents() {
 		LOG.info("Manually invoked refresh of all results..");
 		eventRepo.deleteAll();
 		timeOfLastResultCheck = 0;
-		leagueService.calculateLeagueStandings();
+		checkForNewResults();
+		leagueService.recalculateAllResults();
+	}
+	
+	public synchronized int updateResults() {
+		LOG.info("Updating results..");
+		timeOfLastResultCheck = 0;
+		if(checkForNewResults()) {
+			leagueService.recalculateAllResults();
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	public synchronized boolean checkForNewResults() {

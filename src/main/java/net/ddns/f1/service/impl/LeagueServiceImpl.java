@@ -23,6 +23,7 @@ import net.ddns.f1.repository.TeamRepository;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +31,9 @@ public class LeagueServiceImpl {
 	
 	private static final Logger LOG = Logger
 			.getLogger(LeagueServiceImpl.class);
+	
+	@Value("${refresh-results-on-page-load}")
+	private boolean refreshResultsOnPageLoad;
 	
 	@Autowired
 	TeamService teamService;
@@ -55,7 +59,7 @@ public class LeagueServiceImpl {
 	public List<Team> calculateLeagueStandings() {
 		List<Team> teams = teamService.getAllTeams();		
 
-		if(eventService.checkForNewResults()) {			
+		if(refreshResultsOnPageLoad && eventService.checkForNewResults()) {			
 			calculateAllResults(teams);
 		}
 		

@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Profile("!create")
 public class MainController implements ErrorController {
 
 	private static final String ERROR_PATH = "/error";
@@ -76,6 +75,13 @@ public class MainController implements ErrorController {
 	@RequestMapping("/editresult")
 	public String editResult(Integer round) {
 		return "editresult";
+	}
+	
+	@RequestMapping("/updateresults")
+	@ResponseBody
+	public int updateResults() {
+		eventService.updateResults();
+		return 0;
 	}
 	
 	@RequestMapping(value = {"/{editresult}/saveResult"}, method = RequestMethod.POST)
