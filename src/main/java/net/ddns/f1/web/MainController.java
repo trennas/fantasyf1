@@ -80,8 +80,9 @@ public class MainController implements ErrorController {
 	@RequestMapping("/updateresults")
 	@ResponseBody
 	public int updateResults() {
-		eventService.updateResults();
-		return 0;
+		int res = eventService.updateResults();
+		LOG.info("updateresults: " + res);
+		return res;
 	}
 	
 	@RequestMapping(value = {"/{editresult}/saveResult"}, method = RequestMethod.POST)
