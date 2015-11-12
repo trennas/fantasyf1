@@ -1,0 +1,1 @@
+create schema f1_2018;
