@@ -111,3 +111,7 @@ body {
   background-color: #2f840b;
   color: white;
 }
+
+.panel-info {
+  border-color: #2f840b;
+}
