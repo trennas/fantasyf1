@@ -1,9 +1,7 @@
 package net.ddns.f1.config;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Correction;
@@ -22,10 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.transaction.annotation.Transactional;
 
+@Profile("create")
 @Configuration
-//@Profile("create")
 public class CreateData {
 
 	private static final Logger LOG = Logger.getLogger(CreateData.class);
@@ -41,7 +38,7 @@ public class CreateData {
 	@Autowired
 	TeamService teamService;
 
-	@Transactional
+	@Profile("create")
 	@Bean
 	public int createDummyData() {
 		LOG.info("Creating League Data...");
