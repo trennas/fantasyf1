@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar app.jar
+web: java -Dserver.port=$PORT -Dspring.datasource.url=$DATABASE_URL $JAVA_OPTS -jar fantasyf1.jar

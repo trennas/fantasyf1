@@ -66,11 +66,11 @@ task stage(type: Copy, dependsOn: [clean, genJaxb, build]) {
     from jar.archivePath
     into project.rootDir 
     rename {
-        'app.jar'
+        'fantasyf1.jar'
     }
 }
 stage.mustRunAfter(clean)
 
 clean << {
-    project.file('app.jar').delete()
+    project.file('fantasyf1.jar').delete()
 }
