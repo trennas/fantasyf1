@@ -29,7 +29,7 @@
 </head>
 <body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header" />
-	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
+	<div id="leagueSpinner" class="spinner-loader pull-right">Loading...</div>
 	
 	<div class="panel panel-primary" ng-init="getLeagueTable();">
 	<div class="panel-heading">League Table</div>	
@@ -62,7 +62,8 @@
 	  </table>
 	  </div>
   </div>
-    
+  
+  <div id="raceSpinner" class="spinner-loader pull-right">Loading...</div>
   <div class="panel panel-info">
 	<div class="panel-heading">Race Results</div>
 	<div class="panel-body">

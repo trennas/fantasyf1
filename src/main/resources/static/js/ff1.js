@@ -14,14 +14,16 @@ function($scope, $http, $location) {
     $scope.status;
     
     $scope.getLeagueTable = function() {
-        $('#spinner').show();
+        $('#leagueSpinner').show();
+        $('#raceSpinner').show();
         $http.get('teams')
             .success(function(response) {
                 $scope.teams = response;
+                $('#leagueSpinner').hide();
                 $scope.getEvents();                
             })
             .error(function(response, status) {
-                $('#spinner').hide();
+                $('#leagueSpinner').hide();
                 alert("Status: " + status);                
             });        
     };
@@ -96,10 +98,10 @@ function($scope, $http, $location) {
         $http.get('events')
             .success(function(response) {
                 $scope.events = response;
-                $('#spinner').hide();
+                $('#raceSpinner').hide();
             })
             .error(function(response, status) {
-                $('#spinner').hide();
+            	$('#raceSpinner').hide();
                 alert("Status: " + status);
             });
     };
