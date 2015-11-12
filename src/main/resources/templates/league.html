@@ -31,10 +31,9 @@
 	<div th:replace="header :: header" />
 	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
 	
-	<div ng-init="getLeagueTable();">
-		
-		<h2><span class="label label-primary">League Table</span></h2>
-	
+	<div class="panel panel-primary" ng-init="getLeagueTable();">
+	<div class="panel-heading">League Table</div>	
+	<div class="panel-body">
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -61,10 +60,12 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	  </div>
   </div>
-  
-  <div>
-  	<h3><span class="label label-success">Race Results</span></h3>
+    
+  <div class="panel panel-info">
+	<div class="panel-heading">Race Results</div>
+	<div class="panel-body">
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -91,6 +92,7 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	 </div>
   </div>
   
   <div th:replace="modals :: modals" />

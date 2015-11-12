@@ -106,3 +106,8 @@ body {
 .table tbody tr > td.info {
   background-color: #d9edf7 !important;
 }
+
+.panel-info > .panel-heading {
+  background-color: #2f840b;
+  color: white;
+}
