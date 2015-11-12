@@ -29,9 +29,14 @@
 </head>
 <body>		
 	<div th:replace="header :: header" />	
-  <h1><span class="label label-default">{{event.venue}}</span></h1>
-  <h2><span class="label label-primary">Qualifying Order</span></h2>
-  <div class="form-group" ng-init="getDrivers();">
+  
+  <div class="panel panel-success">
+		<div class="panel-heading">{{event.venue}}</div>
+  </div>
+  
+  <div class="panel panel-primary" ng-init="getDrivers();">
+	<div class="panel-heading">Qualifying Order</div>	
+	<div class="panel-body">  
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -52,8 +57,12 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	</div>
+  </div>
 	
-	<h2><span class="label label-success">Race Order</span></h2>
+	<div class="panel panel-info">
+		<div class="panel-heading">Race Order</div>	
+		<div class="panel-body">  	
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -74,8 +83,12 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	  </div>
+	 </div>
 	  
-	  <h3><span class="label label-warning">Fastest Lap</span></h3>
+	  <div class="panel panel-success">
+		<div class="panel-heading">Fastest Lap</div>	
+		<div class="panel-body">
 	  <table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -88,8 +101,12 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	  </div>
+	  </div>
 	  
-	  <h3><span class="label label-warning">Remarks</span></h3>
+	  <div class="panel panel-warning">
+		<div class="panel-heading">Remarks</div>	
+		<div class="panel-body">
 	  <table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -105,12 +122,13 @@
 	    </tbody>
 	    <button type="button" class="btn btn-danger" ng-click="addRemark();">Add Remark</button>
 	  </table>
+	  </div>
+	  </div>
 	  <button type="button" class="btn btn-success" ng-click="saveResult(event);">Save</button>
 	  <button type="button" class="btn btn-success" ng-click="refreshResult(event.round);">Refetch Result</button>
 	  <button type="button" class="btn btn-success" ng-click="refreshAllResults();">Refetch All Results</button>
 	  <div id="spinner" class="spinner-loader pull-right">Updating...</div>
 	  {{status}}
-  </div>
   <div th:replace="modals :: modals" />
   
   <div th:replace="footer :: footer" />

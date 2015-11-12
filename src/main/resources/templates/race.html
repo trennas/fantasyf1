@@ -30,12 +30,14 @@
 <body>		
 	<div th:replace="header :: header" />
 	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
-  <h1><span class="label label-default">{{event.venue}}</span></h1>
-
-  <a sec:authorize="isAuthenticated()" class="a-unstyled" th:href="@{/editresult#?round={{event.round}}}"><button type="button" class="btn btn-success">Edit Result</button></a>
+	<div class="panel panel-success">
+		<div class="panel-heading">{{event.venue}}</div>
+		<a sec:authorize="isAuthenticated()" class="panel-body a-unstyled" th:href="@{/editresult#?round={{event.round}}}"><button type="button" class="btn btn-success">Edit Result</button></a>
+  	</div>
   
-  <h2><span class="label label-primary">Qualifying Order</span></h2>
-  
+  <div class="panel panel-primary">
+	<div class="panel-heading">Qualifying Order</div>	
+	<div class="panel-body">
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -52,26 +54,35 @@
 	      </tr>
 	    </tbody>
 	  </table>
-	<h2><span class="label label-success">Race Order</span></h2>
-		<table class="table table-striped">
-	    <thead>
-	      <tr>
-	        <th>Position</th>
-	        <th>Driver</th>
-	        <th>Classified</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr ng-repeat="(driver, position) in event.raceOrder">
-	        <td>{{position.position}}</td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver)">{{driver}}</a></td>
-	        <td>{{position.classified}}</td>
-	      </tr>
-	    </tbody>
-	  </table>
+	  </div>
+	</div>
+	
+	<div class="panel panel-info">
+		<div class="panel-heading">Race Order</div>	
+		<div class="panel-body">  	
+			<table class="table table-striped">
+			    <thead>
+			      <tr>
+			        <th>Position</th>
+			        <th>Driver</th>
+			        <th>Classified</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr ng-repeat="(driver, position) in event.raceOrder">
+			        <td>{{position.position}}</td>
+			        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver)">{{driver}}</a></td>
+			        <td>{{position.classified}}</td>
+			      </tr>
+			    </tbody>
+		    </table>
+		   </div>
+		  </div>
 	  
-	  <h3><span class="label label-danger">Fastest Lap</span></h3>
-	  <table class="table table-striped">
+	  <div class="panel panel-success">
+		<div class="panel-heading">Fastest Lap</div>	
+		<div class="panel-body">
+	  	<table class="table table-striped">
 	    <thead>
 	      <tr>
 	        <th>Driver</th>
@@ -83,8 +94,13 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	  </div>
+	  </div>
 	  
-	  <h3><span class="label label-warning">Remarks</span></h3>
+	  <div class="panel panel-warning">
+		<div class="panel-heading">Remarks</div>	
+		<div class="panel-body">
+	  
 	  <table class="table table-striped">
 	    <thead>
 	      <tr>
@@ -97,8 +113,12 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	  </div>
+	  </div>
 	  
-	  <h3><span class="label label-info">Points</span></h3>
+	  <div class="panel panel-warning">
+		<div class="panel-heading">Points</div>	
+		<div class="panel-body">
 	  <table class="table table-striped" ng-init="getDrivers();">
 	    <thead>
 	      <tr>
@@ -156,6 +176,8 @@
 	      </tr>
 	    </tbody>
 	  </table>
+	  </div>
+	  </div>
 
   
   <div th:replace="modals :: modals" />
