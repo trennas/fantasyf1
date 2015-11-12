@@ -5,39 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
-<body>	
-	<nav class="navbar navbar-inverse" th:fragment="header">		
-			<div class="navbar-header">
-			   	<div class="navbar-brand">
-			   		<div class="col-xs-6">			   			
-				   		<img style="max-height: 30px;" th:src="@{/image/f1.jpg}" alt="F1 Logo"/>
-				   		<a class="a-unstyledheader text-left" th:href="@{/}">
-				   			<span style="margin-left: 15px;">Fantasy F1 League</span>
-			   			</a>
-		   			</div>
-		   			<div class="col-xs-6">
-		   				<a th:href="@{/login}" class="text-right a-unstyledheader"><span style="margin-left: 15px;">Admin Login</span></a>
-		   			</div>	
-		   		</div>
-   			</div>
-			<div sec:authorize="isAuthenticated()">
-				<div  class="collapse navbar-collapse" id="myNavbar" th:fragment="logoutPanel">
-				Active Profiles:
-				<span th:each="profile : ${@environment.getActiveProfiles()}"
-       th:text="${profile}">An active profile</span>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span sec:authentication="name">Bob</span><b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a th:href="@{/logout}">Logout</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</div>
-	</nav>
-	
-	
-	
+<body>
+
+<nav class="navbar navbar-default" th:fragment="header">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" th:href="@{/}"><img style="max-height: 30px;" th:src="@{/image/f1.jpg}" alt="F1 Logo"/></a>
+    </div>
+    <div class="navbar-brand"><a class="a-unstyled" th:href="@{/}">Fantasy F1</a></div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login<span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Create Team</a></li>        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span sec:authentication="name">Bob</span><b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</li>
+		</ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
 	
 </body>
 </html>
