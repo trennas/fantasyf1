@@ -44,7 +44,7 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.2"
     compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity3:2.1.1.RELEASE')
     compile('org.apache.commons:commons-collections4:4.0')
-    //runtime('com.h2database:h2')
+    runtime('com.h2database:h2')
     runtime('postgresql:postgresql:9.1-901-1.jdbc4')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testCompile('org.springframework.boot:spring-boot-starter-test') 
