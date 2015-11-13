@@ -94,6 +94,32 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.myTeam = function() {
+        $('#spinner').show();
+        $http.get('myteam')
+            .success(function(response) {                
+                $scope.team = team;
+                $('#spinner').hide();
+            })
+            .error(function(response, status) {
+                $('#spinner').hide();
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.saveMyTeam = function(team) {
+        $('#spinner').show();
+        $http.post('savemyteam', team)
+            .success(function(response) {
+                $scope.status = response;
+                $('#spinner').hide();
+            })
+            .error(function(response, status) {
+                $('#spinner').hide();
+                alert("Status: " + status);
+            });
+    };
+    
     $scope.getEvents = function() {
         $http.get('events')
             .success(function(response) {

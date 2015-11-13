@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+<link rel="stylesheet" th:href="@{/css/spinner.css}" type="text/css" />
+<script>
+	// Weblogic doesn't add trailing / to URL and this breaks AngularJS.
+	var url = window.location.href;
+	url = url.replace(/\/?(\?|#|$)/, '/$1');
+	if(window.location.href != url) {
+		window.location.href = url;
+	}
+</script>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/angular.min.js}"></script>
+<script th:src="@{/js/angular-cookies.js}"></script>
+<script th:src="@{/js/ff1.js}"></script>
+
+<title>Fantasy F1 League - My Account</title>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+	  	<script src="js/html5shiv.min.js"></script>
+	  	<script src="js/respond.min.js"></script>
+		<![endif]-->
+</head>
+<body ng-app="ff1App" ng-controller="controller">		
+	<div th:replace="header :: header" />
+	<div id="leagueSpinner" class="spinner-loader pull-right">Loading...</div>
+	
+	<div class="panel panel-primary" ng-init="getMyTeam();">
+	<div class="panel-heading">League Table</div>	
+	<div class="panel-body">
+		<table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Team Name</th>
+	        <th>Owner</th>
+	        <th>Driver 1</th>
+	        <th>Driver 2</th>
+	        <th>Car</th>
+	        <th>Engine</th>
+	        <th>Last Race</th>
+	        <th>Overall</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="team in teams">
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#teamModal" ng-click="getTeam(team.id)">{{team.name}}</a></td>
+	        <td>{{team.owner}}</td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[0].name)">{{team.drivers[0].name}}</a></td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[1].name)">{{team.drivers[1].name}}</a></td>	        
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(team.car.name)">{{team.car.name}}</a></td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(team.engine.name)">{{team.engine.name}}</a></td>
+	        <td>{{team.pointsPerEvent[getLength(team.pointsPerEvent)]}}</td>
+	        <td>{{team.totalPoints}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  </div>
+  </div>
+  
+  <div id="raceSpinner" class="spinner-loader pull-right">Loading...</div>
+  <div class="panel panel-info">
+	<div class="panel-heading">Race Results</div>
+	<div class="panel-body">
+		<table class="table table-striped">
+	    <thead>
+	      <tr>
+	        <th>Round</th>
+	        <th>Circuit</th>
+	        <th>Remarks</th>
+	        <th>Race Complete</th>
+	        <th>Fastest Lap</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="event in events">
+	        <td>{{event.round}}</td>
+	        <td><a class="a-unstyled" th:href="@{/race#?round={{event.round}}}">{{event.venue}}</a></td>
+	        <td><a class="a-unstyled" href="#" ng-if="event.remarks.length > 0" data-toggle="modal" data-target="#remarksModal" ng-click="getEvent(event.round)">
+	        	<span class="glyphicon glyphicon-list-alt"/>
+	        	</a>
+	        </td>
+	        <td>
+	        	<span ng-if="event.raceComplete" class="glyphicon glyphicon-ok"></span>
+	        	<span ng-if="!event.raceComplete" class="glyphicon glyphicon-remove"></span>
+	        </td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(event.fastestLapDriver.name)">{{event.fastestLapDriver.name}}</a></td>
+	      </tr>
+	    </tbody>
+	  </table>
+	 </div>
+  </div>
+  
+  <div th:replace="modals :: modals" />
+  
+  <div th:replace="footer :: footer" />
+</body>
+</html>

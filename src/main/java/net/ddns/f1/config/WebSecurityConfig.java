@@ -19,8 +19,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebMvcSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Value("${auth.role-expression}")
+	@Value("${auth.main-page-role-expression}")
 	private String roleExpression;
+	
+	@Value("${auth.myaccount-role}")
+	private String myAccountRole;
 	
 	@Value("${auth.admin-role}")
 	private String adminExpression;
@@ -68,10 +71,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .logoutRequestMatcher(
 		 new AntPathRequestMatcher("/logout", "GET"))
 		 .permitAll()
+		 
 		 .and().authorizeRequests().antMatchers("/editresult/**")
-		 .hasRole(this.adminExpression)
+		 .hasRole(adminExpression)
+		 
+		 .and().authorizeRequests().antMatchers("/myaccount/**")
+		 .hasRole(myAccountRole)
+		 .and().authorizeRequests().antMatchers("/myteam/**")
+		 .hasRole(myAccountRole)
+		 .and().authorizeRequests().antMatchers("/savemyteam/**")
+		 .hasRole(myAccountRole)
+		 
 		 .and().authorizeRequests().antMatchers("/")
-		 .access(this.roleExpression);
+		 .access(roleExpression);
+		 
 		 http.headers()
 		 .addHeaderWriter(
 		 new XFrameOptionsHeaderWriter(
@@ -80,13 +93,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .inMemoryAuthentication()
-                .withUser("admin").password("thorn47wibble62").roles(adminExpression);
+//      auth.inMemoryAuthentication().withUser("admin").password("pass").roles(adminExpression);
         Iterator<Team> itr = teamRepo.findAll().iterator();
         while(itr.hasNext()) {
         	Team team = itr.next();
-        	auth.inMemoryAuthentication().withUser(team.getEmail()).password(team.getPassword()).roles("USER");
+        	auth.inMemoryAuthentication().withUser(team.getEmail()).password(team.getPassword()).roles("user");
         }
     }
 

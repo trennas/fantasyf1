@@ -23,6 +23,7 @@ import net.ddns.f1.repository.TeamRepository;
 import net.ddns.f1.service.impl.EventServiceImpl;
 import net.ddns.f1.service.impl.LeagueServiceImpl;
 import net.ddns.f1.service.impl.TeamService;
+import net.ddns.f1.service.impl.ValidationException;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
@@ -198,6 +199,30 @@ public class MainController implements ErrorController {
 			output.put(driverName, map.get(driverName));
 		}
 		return output;
+	}
+	
+	@RequestMapping("/myaccount")
+	public String myAccount() {
+		return "myaccount";
+	}
+	
+	@RequestMapping("/myteam")
+	@ResponseBody
+	public Team myTeam() {
+		return teamRepo.findByOwner(SecurityContextHolder
+			.getContext().getAuthentication().getName()).get(0);
+	}
+	
+	@RequestMapping("/savemyteam")
+	@ResponseBody
+	public String saveTeam(Team team) {
+		try {
+			teamService.validateTeam(team);
+		} catch (ValidationException e) {
+			return e.getMessage();
+		}
+		teamRepo.save(team);
+		return "Team saved successfully.";
 	}
 	
 	@RequestMapping("/login")

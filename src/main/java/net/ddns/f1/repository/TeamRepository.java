@@ -9,4 +9,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface TeamRepository extends CrudRepository<Team, Integer> {
 	List<Team> findById(final Integer id);
 	List<Team> findByName(final String name);
+	List<Team> findByOwner(final String owner);
 }
