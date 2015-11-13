@@ -33,51 +33,49 @@
 	
 	<div class="panel panel-primary" ng-init="myTeam();">
 	<div class="panel-heading">My Account</div>	
-	<div class="panel-body">
-		<table class="table table-striped">
-	    <thead>
-	      <tr>
-	        <th>Owner</th>
-	        <th>Email</th>
-	        <th>Password</th>
-	        <th>Confirm Password</th>>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr>
-	        <td>{{team.owner}}</td>
-	        <td>{{team.email}}</td>
-	        <td>{{team.password}}</td>
-	        <td>{{team.password}}</td>
-	      </tr>
-	    </tbody>
-	  </table>
+	<div class="panel-body">		
+		<div class="row">
+			<label class="col-xs-1" for="owner">Name</label>
+			<div class="col-xs-2"><input id="owner" type="text" class="form-control" ng-model="team.owner"/></div>
+  	    </div>
+		<div class="row">
+			<label class="col-xs-1" for="email">E-Mail</label>
+			<div class="col-xs-2"><input id="email" type="text" class="form-control" ng-model="team.email"/></div>
+  	    </div>
+  	    <div class="row">
+			<label class="col-xs-1" for="password">Password</label>
+			<div class="col-xs-2"><input id="password" type="password" class="form-control" ng-model="team.password"/></div>
+  	    </div>
+  	    <div class="row">
+			<label class="col-xs-1" for="confirmPassword">Confirm Password</label>
+			<div class="col-xs-2"><input id="confirmPassword" type="password" class="form-control"/></div>
+  	    </div>
 	  </div>
   </div>
   
-  <div class="panel panel-primary">
+  <div class="panel panel-info">
 	<div class="panel-heading">My Team</div>	
 	<div class="panel-body">
-		<table class="table table-striped">
-	    <thead>
-	      <tr>
-	        <th>Team Name</th>
-	        <th>Driver 1</th>
-	        <th>Driver 2</th>
-	        <th>Car</th>
-	        <th>Engine</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#teamModal" ng-click="getTeam(team.id)">{{team.name}}</a></td>	       
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[0].name)">{{team.drivers[0].name}}</a></td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[1].name)">{{team.drivers[1].name}}</a></td>	        
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(team.car.name)">{{team.car.name}}</a></td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(team.engine.name)">{{team.engine.name}}</a></td>	        
-	      </tr>
-	    </tbody>
-	  </table>
+		<div class="row">
+			<label class="col-xs-1" for="name">Team Name</label>
+			<div class="col-xs-2"><input id="name" type="text" class="form-control" ng-model="team.name"/></div>
+  	    </div>
+  	    <div class="row">
+			<label class="col-xs-1" for="driver1">Driver 1</label>
+			<div class="col-xs-2"><input id="driver1" type="text" class="form-control" ng-model="team.drivers[0].name"/></div>
+  	    </div>
+  	    <div class="row">
+			<label class="col-xs-1" for="driver2">Driver 2</label>
+			<div class="col-xs-2"><input id="driver2" type="text" class="form-control" ng-model="team.drivers[1].name"/></div>
+  	    </div>
+  	    <div class="row">
+			<label class="col-xs-1" for="car">Car</label>
+			<div class="col-xs-2"><input id="car" type="text" class="form-control" ng-model="team.car.name"/></div>
+  	    </div>
+  	    <div class="row">
+			<label class="col-xs-1" for="engine">Engine</label>
+			<div class="col-xs-2"><input id="engine" type="text" class="form-control" ng-model="team.engine.name"/></div>
+  	    </div>
 	  </div>
   </div>
   

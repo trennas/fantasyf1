@@ -98,7 +98,7 @@ function($scope, $http, $location) {
         $('#spinner').show();
         $http.get('myteam')
             .success(function(response) {                
-                $scope.team = team;
+                $scope.team = response;
                 $('#spinner').hide();
             })
             .error(function(response, status) {
