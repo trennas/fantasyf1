@@ -1,1 +1,1 @@
-heroku logs -n 1500
+heroku logs -n 1500 --app fantasyf1league

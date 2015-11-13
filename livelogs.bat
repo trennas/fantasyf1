@@ -1,1 +1,1 @@
-heroku logs -t
+heroku logs -t --app fantasyf1league
