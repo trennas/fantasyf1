@@ -29,7 +29,6 @@ import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorController;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -206,14 +205,14 @@ public class MainController implements ErrorController {
 		return "myaccount";
 	}
 	
-	@RequestMapping("/myteam")
+	@RequestMapping("/myaccount/myteam")
 	@ResponseBody
 	public Team myTeam() {
-		return teamRepo.findByOwner(SecurityContextHolder
+		return teamRepo.findByEmail(SecurityContextHolder
 			.getContext().getAuthentication().getName()).get(0);
 	}
 	
-	@RequestMapping("/savemyteam")
+	@RequestMapping("/myaccount/savemyteam")
 	@ResponseBody
 	public String saveTeam(Team team) {
 		try {

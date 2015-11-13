@@ -77,9 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 
 		 .and().authorizeRequests().antMatchers("/myaccount/**")
 		 .hasRole(myAccountRole)
-		 .and().authorizeRequests().antMatchers("/myteam/**")
+		 .and().authorizeRequests().antMatchers("/myaccount/myteam/**")
 		 .hasRole(myAccountRole)
-		 .and().authorizeRequests().antMatchers("/savemyteam/**")
+		 .and().authorizeRequests().antMatchers("/myaccount/savemyteam/**")
 		 .hasRole(myAccountRole)
 		 
 		 .and().authorizeRequests().antMatchers("/")
