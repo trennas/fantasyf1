@@ -34,7 +34,10 @@ public class TeamService {
 
 	public void validateTeam(final Team team) throws ValidationException {
 		int cost = 0;
-
+		if(team == null) {
+			throw new ValidationException(
+					"Team is null");
+		}
 		if (!team.getName().matches(teamNameRegex)) {
 			throw new ValidationException(
 					"Name must match the following regex: " + teamNameRegex);

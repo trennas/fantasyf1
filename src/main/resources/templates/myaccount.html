@@ -29,58 +29,60 @@
 </head>
 <body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header" />
-	<div id="spinner" class="spinner-loader pull-right">Loading...</div>
-	
+		
 	<div class="panel panel-primary" ng-init="myTeam();">
 	<div class="panel-heading">My Account</div>	
 	<div class="panel-body">		
 		<div class="row">
-			<label class="col-xs-1" for="owner">Name</label>
-			<div class="col-xs-2"><input id="owner" type="text" class="form-control" ng-model="team.owner"/></div>
+			<label class="col-xs-3" for="owner">Name</label>
+			<div class="col-xs-6"><input id="owner" type="text" class="form-control" ng-model="team.owner"/></div>
   	    </div>
 		<div class="row">
-			<label class="col-xs-1" for="email">E-Mail</label>
-			<div class="col-xs-2"><input id="email" type="text" class="form-control" ng-model="team.email"/></div>
+			<label class="col-xs-3" for="email">E-Mail</label>
+			<div class="col-xs-6"><input id="email" type="text" class="form-control" ng-model="team.email"/></div>
   	    </div>
   	    <div class="row">
-			<label class="col-xs-1" for="password">Password</label>
-			<div class="col-xs-2"><input id="password" type="password" class="form-control" ng-model="team.password"/></div>
+			<label class="col-xs-3" for="password">Password</label>
+			<div class="col-xs-6"><input id="password" type="password" class="form-control" ng-model="team.password"/></div>
   	    </div>
   	    <div class="row">
-			<label class="col-xs-1" for="confirmPassword">Confirm Password</label>
-			<div class="col-xs-2"><input id="confirmPassword" type="password" class="form-control"/></div>
+			<label class="col-xs-3" for="confirmPassword">Confirm Password</label>
+			<div class="col-xs-6"><input id="confirmPassword" type="password" class="form-control"/></div>
   	    </div>
 	  </div>
   </div>
   
-  <div class="panel panel-info">
-	<div class="panel-heading">My Team</div>	
-	<div class="panel-body">
-		<div class="row">
-			<label class="col-xs-1" for="name">Team Name</label>
-			<div class="col-xs-2"><input id="name" type="text" class="form-control" ng-model="team.name"/></div>
-  	    </div>
-  	    <div class="row">
-			<label class="col-xs-1" for="driver1">Driver 1</label>
-			<div class="col-xs-2"><input id="driver1" type="text" class="form-control" ng-model="team.drivers[0].name"/></div>
-  	    </div>
-  	    <div class="row">
-			<label class="col-xs-1" for="driver2">Driver 2</label>
-			<div class="col-xs-2"><input id="driver2" type="text" class="form-control" ng-model="team.drivers[1].name"/></div>
-  	    </div>
-  	    <div class="row">
-			<label class="col-xs-1" for="car">Car</label>
-			<div class="col-xs-2"><input id="car" type="text" class="form-control" ng-model="team.car.name"/></div>
-  	    </div>
-  	    <div class="row">
-			<label class="col-xs-1" for="engine">Engine</label>
-			<div class="col-xs-2"><input id="engine" type="text" class="form-control" ng-model="team.engine.name"/></div>
-  	    </div>
+  <form role="form">
+	  <div class="panel panel-info form-horizontal">
+		<div class="panel-heading">My Team</div>	
+		<div class="panel-body">
+			<div class="row">
+				<label class="col-xs-3" for="name">Team Name</label>
+				<div class="col-xs-6"><input id="name" type="text" class="form-control" ng-model="team.name"/></div>
+	  	    </div>
+	  	    <div class="row">
+				<label class="col-xs-3" for="driver1">Driver 1</label>
+				<div class="col-xs-6"><input id="driver1" type="text" class="form-control" ng-model="team.drivers[0].name"/></div>
+	  	    </div>
+	  	    <div class="row">
+				<label class="col-xs-3" for="driver2">Driver 2</label>
+				<div class="col-xs-6"><input id="driver2" type="text" class="form-control" ng-model="team.drivers[1].name"/></div>
+	  	    </div>
+	  	    <div class="row">
+				<label class="col-xs-3" for="car">Car</label>
+				<div class="col-xs-6"><input id="car" type="text" class="form-control" ng-model="team.car.name"/></div>
+	  	    </div>
+	  	    <div class="row">
+				<label class="col-xs-3" for="engine">Engine</label>
+				<div class="col-xs-6"><input id="engine" type="text" class="form-control" ng-model="team.engine.name"/></div>
+	  	    </div>
+		  </div>
+		  <button type="submit" class="btn btn-success" ng-click="saveMyTeam(team);">Submit</button>
+		  {{status}}		  
+		  <div id="spinner" class="spinner-loader pull-right">Loading...</div>
 	  </div>
-  </div>
+  </form>
   
-  <button type="button" class="btn btn-success" ng-click="saveMyTeam(team);">Save</button>
-  {{status}}
   <div th:replace="modals :: modals" />
   
   <div th:replace="footer :: footer" />

@@ -211,8 +211,8 @@ public class MainController implements ErrorController {
 		return teamRepo.findByEmail(SecurityContextHolder
 			.getContext().getAuthentication().getName()).get(0);
 	}
-	
-	@RequestMapping("/myaccount/savemyteam")
+
+	@RequestMapping(value = {"/myaccount/savemyteam"}, method = RequestMethod.POST)
 	@ResponseBody
 	public String saveTeam(Team team) {
 		try {
