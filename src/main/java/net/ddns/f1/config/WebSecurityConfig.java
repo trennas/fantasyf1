@@ -1,5 +1,10 @@
 package net.ddns.f1.config;
 
+import java.util.Iterator;
+
+import net.ddns.f1.domain.Team;
+import net.ddns.f1.repository.TeamRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +22,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${auth.role-expression}")
 	private String roleExpression;
 	
-	@Value("${auth.admin-expression}")
+	@Value("${auth.admin-role}")
 	private String adminExpression;
+	
+	@Autowired
+	private TeamRepository teamRepo;
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {		
@@ -61,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 new AntPathRequestMatcher("/logout", "GET"))
 		 .permitAll()
 		 .and().authorizeRequests().antMatchers("/editresult/**")
-		 .access(this.adminExpression)
+		 .hasRole(this.adminExpression)
 		 .and().authorizeRequests().antMatchers("/")
 		 .access(this.roleExpression);
 		 http.headers()
@@ -74,7 +82,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
         auth
             .inMemoryAuthentication()
-                .withUser("admin").password("thorn47wibble62").roles("USER");
+                .withUser("admin").password("thorn47wibble62").roles(adminExpression);
+        Iterator<Team> itr = teamRepo.findAll().iterator();
+        while(itr.hasNext()) {
+        	Team team = itr.next();
+        	auth.inMemoryAuthentication().withUser(team.getEmail()).password(team.getPassword()).roles("USER");
+        }
     }
 
 }
