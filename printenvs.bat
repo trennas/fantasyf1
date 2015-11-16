@@ -1,0 +1,1 @@
+heroku config --app fantasyf1league
