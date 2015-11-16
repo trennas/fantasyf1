@@ -53,7 +53,7 @@
   </div>
   
   <form role="form">
-	  <div class="panel panel-info form-horizontal" ng-init="getDrivers();">
+	  <div class="panel panel-info form-horizontal">
 		<div class="panel-heading">My Team</div>
 		<div class="panel-body form-group">
 			<div class="row">
@@ -62,7 +62,7 @@
 					<input id="name" type="text" class="form-control" ng-model="team.name"/>
 				</div>
 	  	    </div>
-	  	    <div class="row">
+	  	    <div class="row" ng-init="getDrivers();">
 				<label class="col-xs-3" for="driver1">Driver 1</label>
 				<div class="col-xs-6">					
 					<select id="driver1" name="driver1"					
@@ -80,13 +80,23 @@
 					</select>
 				</div>
 	  	    </div>
-	  	    <div class="row">
+	  	    <div class="row" ng-init="getCars();">
 				<label class="col-xs-3" for="car">Car</label>
-				<div class="col-xs-6"><input id="car" type="text" class="form-control" ng-model="team.car.name"/></div>
+				<div class="col-xs-6">					
+					<select id="car" name="car"					
+						ng-model="team.car" ng-options="car as car.name for car in cars track by car.name"
+						class="form-control">
+					</select>
+				</div>
 	  	    </div>
-	  	    <div class="row">
+	  	    <div class="row" ng-init="getEngines();">
 				<label class="col-xs-3" for="engine">Engine</label>
-				<div class="col-xs-6"><input id="engine" type="text" class="form-control" ng-model="team.engine.name"/></div>
+				<div class="col-xs-6">					
+					<select id="engine" name="engine"					
+						ng-model="team.engine" ng-options="engine as engine.name for engine in engines track by engine.name"
+						class="form-control">
+					</select>
+				</div>
 	  	    </div>
 		  </div>
 		  <button type="submit" class="btn btn-success" ng-click="saveMyTeam(team);">Submit</button>
