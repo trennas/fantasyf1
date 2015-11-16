@@ -17,6 +17,7 @@ import net.ddns.f1.service.impl.ValidationException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -37,6 +38,12 @@ public class CreateData {
 	CorrectionRepository correctionRepo;
 	@Autowired
 	TeamService teamService;
+	
+	@Value("${auth.myaccount-role}")
+	private String myAccountRole;
+	
+	@Value("${auth.admin-role}")
+	private String adminRole;
 
 	@Profile("create")
 	@Bean
@@ -138,6 +145,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
 			drivers.add(driverRepo.findByName("Carlos Sainz").get(0));
 			team = new Team("Fast But Bad Manors", "Mike Trenaman", "mike.trenaman@gmail.com", "welcome1", drivers, carRepo.findByName("Manor").get(0), engineRepo.findByName("Mercedes").get(0));
+			//team.setRoles(myAccountRole + "," + adminRole);
 			teamService.addTeam(team);
 			
 			drivers = new ArrayList<Driver>();

@@ -27,6 +27,7 @@ public class Team  implements Comparable<Team>, PointScorer {
 	private String owner;	
 	private String email;
 	private String password;
+	private String roles;
 	
 	@Transient
 	private String confirmPassword;
@@ -52,6 +53,7 @@ public class Team  implements Comparable<Team>, PointScorer {
 		this.owner = owner;
 		this.email = email;
 		this.password = password;
+		this.roles = "user";
 		this.confirmPassword = password;
 		this.drivers = drivers;
 		this.car = car;

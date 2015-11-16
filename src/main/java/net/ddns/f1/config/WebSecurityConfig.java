@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private String myAccountRole;
 	
 	@Value("${auth.admin-role}")
-	private String adminExpression;
+	private String adminRole;
 	
 	@Autowired
 	private TeamRepository teamRepo;
@@ -77,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .permitAll()
 		 
 		 .and().authorizeRequests().antMatchers("/editresult/**")
-		 .hasRole(adminExpression)
+		 .hasRole(adminRole)
 		 
 		 .and().authorizeRequests().antMatchers("/myaccount/**")
 		 .hasRole(myAccountRole)
@@ -97,11 +97,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-//      auth.inMemoryAuthentication().withUser("admin").password("pass").roles(adminExpression);
         Iterator<Team> itr = teamRepo.findAll().iterator();
         while(itr.hasNext()) {
         	Team team = itr.next();
-        	auth.inMemoryAuthentication().withUser(team.getEmail()).password(team.getPassword()).roles("user");
+        	auth.inMemoryAuthentication().withUser(team.getEmail()).password(team.getPassword()).roles(team.getRoles());
         }
     }
 
