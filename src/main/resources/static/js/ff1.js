@@ -99,6 +99,7 @@ function($scope, $http, $location) {
         $http.get('myteam')
             .success(function(response) {
                 $scope.team = response;
+                $scope.team.confirmPassword = $scope.team.password;
                 $('#spinner').hide();
             })
             .error(function(response, status) {

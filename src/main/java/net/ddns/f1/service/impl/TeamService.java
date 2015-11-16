@@ -9,6 +9,7 @@ import net.ddns.f1.repository.TeamRepository;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,11 +29,11 @@ public class TeamService {
 	}
 
 	public void addTeam(final Team team) throws ValidationException {
-		validateTeam(team);
+		validateTeam(team, true);
 		teamRepo.save(team);
 	}
 
-	public void validateTeam(final Team team) throws ValidationException {
+	public void validateTeam(final Team team, boolean newTeam) throws ValidationException {
 		int cost = 0;
 		if(team == null) {
 			throw new ValidationException(
@@ -48,12 +49,22 @@ public class TeamService {
 		if (!team.getName().matches(teamNameRegex)) {
 			throw new ValidationException(
 					"Name must match the following regex: " + teamNameRegex);
-		} else {
-			final List<Team> existingTeams = teamRepo.findByName(team
-					.getName());
-			if (existingTeams.size() > 0) {
-				throw new ValidationException(
-						"A team already exists with that name");
+		} else {			
+			final List<Team> existingTeams = teamRepo.findByName(team.getName());
+			if (newTeam) {
+				if(existingTeams.size() > 0) {
+					throw new ValidationException(
+							"A team already exists with that name");
+				}
+			} else {
+				Team existingTeam = teamRepo.findByEmail(SecurityContextHolder
+						.getContext().getAuthentication().getName()).get(0);
+				if(!existingTeam.getName().equals(team.getName())) {
+					if(existingTeams.size() > 0) {
+						throw new ValidationException(
+								"A team already exists with that name");
+					}
+				}
 			}
 		}
 
