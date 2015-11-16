@@ -214,14 +214,18 @@ public class MainController implements ErrorController {
 
 	@RequestMapping(value = {"/myaccount/savemyteam"}, method = RequestMethod.POST)
 	@ResponseBody
-	public String saveTeam(Team team) {
+	public String saveTeam(@RequestBody Team team) {
 		try {
 			teamService.validateTeam(team);
+			teamRepo.save(team);
+			return jsonMessage("Account updated successfully.");
 		} catch (ValidationException e) {
-			return e.getMessage();
+			return jsonMessage(e.getMessage());
 		}
-		teamRepo.save(team);
-		return "Team saved successfully.";
+	}
+	
+	private String jsonMessage(String message) {
+		return "{\"message\":\"" + message + "\"}";
 	}
 	
 	@RequestMapping("/login")

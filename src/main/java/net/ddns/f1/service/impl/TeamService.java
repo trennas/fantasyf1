@@ -38,6 +38,13 @@ public class TeamService {
 			throw new ValidationException(
 					"Team is null");
 		}
+		if(team.getPassword() == null || team.getPassword().isEmpty()) {
+			throw new ValidationException(
+					"Password cannot be empty");
+		} else if(team.getConfirmPassword() == null || !team.getConfirmPassword().equals(team.getPassword())) {
+			throw new ValidationException(
+					"Passwords don't match");
+		}
 		if (!team.getName().matches(teamNameRegex)) {
 			throw new ValidationException(
 					"Name must match the following regex: " + teamNameRegex);

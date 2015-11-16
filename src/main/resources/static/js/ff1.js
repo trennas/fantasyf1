@@ -111,12 +111,12 @@ function($scope, $http, $location) {
         $('#spinner').show();
         $http.post('savemyteam', team)
             .success(function(response) {
-                $scope.status = response;
+                $scope.status = response.message;
                 $('#spinner').hide();
             })
-            .error(function(response, status) {
+            .error(function (data, status, headers, config) {
                 $('#spinner').hide();
-                alert("Status: " + status);
+                alert("Status: " + data);
             });
     };
     

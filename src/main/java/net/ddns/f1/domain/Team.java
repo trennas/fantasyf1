@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
+import javax.persistence.Transient;
 
 import lombok.Data;
 import net.ddns.f1.service.impl.ValidationException;
@@ -26,6 +27,9 @@ public class Team  implements Comparable<Team>, PointScorer {
 	private String owner;	
 	private String email;
 	private String password;
+	
+	@Transient
+	private String confirmPassword;
 	
 	@ManyToMany(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	@OrderColumn
@@ -48,6 +52,7 @@ public class Team  implements Comparable<Team>, PointScorer {
 		this.owner = owner;
 		this.email = email;
 		this.password = password;
+		this.confirmPassword = password;
 		this.drivers = drivers;
 		this.car = car;
 		this.engine = engine;
