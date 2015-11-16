@@ -17,7 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
-@ActiveProfiles("h2")
+@ActiveProfiles("test")
 public class LiveResultsRepositoryErgastImplTest {
 
 	@Autowired
