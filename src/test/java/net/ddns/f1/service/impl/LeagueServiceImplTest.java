@@ -18,7 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
-@ActiveProfiles("h2,create")
+@ActiveProfiles("h2")
 public class LeagueServiceImplTest {
 	
 	@Autowired
