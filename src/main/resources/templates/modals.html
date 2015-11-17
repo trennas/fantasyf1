@@ -27,6 +27,7 @@
 				        <th>Car</th>				        
 				        <th>Engine</th>
 				        <th>Points</th>
+				        <th>Price</th>
 				      </tr>
 				    </thead>
 				    <tbody>
@@ -37,7 +38,8 @@
 				        <td>{{team.drivers[1].name}}</td>
 				        <td>{{team.car.name}}</td>
 				        <td>{{team.engine.name}}</td>
-				        <td>{{team.totalPoints}}</td>				        
+				        <td>{{team.totalPoints}}</td>
+				        <td>&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</td>
 				      </tr>				
 				    </tbody>
 				 </table>
@@ -66,7 +68,8 @@
 				        <th>Name</th>
 				        <th>Car</th>
 				        <th>Fastest Laps</th>
-				        <th>Points</th>				        
+				        <th>Points</th>
+				        <th>Price</th>
 				      </tr>
 				    </thead>
 				    <tbody>
@@ -75,6 +78,7 @@
 				        <td>{{driver.car.name}}</td>
 				        <td>{{driver.fastestLaps}}</td>
 				        <td>{{driver.totalPoints}}</td>
+				        <td>&#163;{{driver.price}}m</td>
 				      </tr>				
 				    </tbody>
 				 </table>
@@ -104,6 +108,7 @@
 				        <th>Engine</th>
 				        <th>Points</th>
 				        <th>Finishing Bonuses</th>
+				        <th>Price</th>
 				      </tr>
 				    </thead>
 				    <tbody>
@@ -112,6 +117,7 @@
 				        <td>{{car.engine.name}}</td>
 				        <td>{{car.totalPoints}}</td>
 				        <td>{{car.bothCarsFinishBonuses}}</td>
+				        <td>&#163;{{car.price}}m</td>
 				      </tr>				
 				    </tbody>
 				 </table>
@@ -139,12 +145,14 @@
 				      <tr>
 				        <th>Name</th>
 				        <th>Points</th>
+				        <th>Price</th>
 				      </tr>
 				    </thead>
 				    <tbody>
 				      <tr>
 				        <td>{{engine.name}}</td>
 				        <td>{{engine.totalPoints}}</td>
+				        <td>&#163;{{engine.price}}m</td>
 				      </tr>				
 				    </tbody>
 				 </table>
