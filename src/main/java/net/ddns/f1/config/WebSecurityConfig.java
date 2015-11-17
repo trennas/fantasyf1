@@ -100,7 +100,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         Iterator<Team> itr = teamRepo.findAll().iterator();
         while(itr.hasNext()) {
         	Team team = itr.next();
-        	auth.inMemoryAuthentication().withUser(team.getEmail()).password(team.getPassword()).roles(team.getRoles());
+        	String[] roles = new String[team.getRoles().size()];
+        	roles = team.getRoles().toArray(roles);
+        	auth.inMemoryAuthentication().withUser(team.getEmail()).password(team.getPassword()).roles(roles);
         }
     }
 

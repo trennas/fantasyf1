@@ -1,5 +1,7 @@
 package net.ddns.f1.domain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,9 @@ public class Team  implements Comparable<Team>, PointScorer {
 	private String owner;	
 	private String email;
 	private String password;
-	private String roles;
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> roles;
 	
 	@Transient
 	private String confirmPassword;
@@ -53,7 +57,7 @@ public class Team  implements Comparable<Team>, PointScorer {
 		this.owner = owner;
 		this.email = email;
 		this.password = password;
-		this.roles = "user";
+		this.roles = new ArrayList<String>(Arrays.asList("user"));
 		this.confirmPassword = password;
 		this.drivers = drivers;
 		this.car = car;

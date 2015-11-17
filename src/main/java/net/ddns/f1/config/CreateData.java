@@ -145,7 +145,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
 			drivers.add(driverRepo.findByName("Carlos Sainz").get(0));
 			team = new Team("Fast But Bad Manors", "Mike Trenaman", "mike.trenaman@gmail.com", "welcome1", drivers, carRepo.findByName("Manor").get(0), engineRepo.findByName("Mercedes").get(0));
-			//team.setRoles(myAccountRole + "," + adminRole);
+			team.getRoles().add(adminRole);
 			teamService.addTeam(team);
 			
 			drivers = new ArrayList<Driver>();
