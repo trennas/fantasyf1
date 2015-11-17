@@ -66,7 +66,7 @@
 				<label class="col-xs-3" for="driver1">Driver 1</label>
 				<div class="col-xs-6">					
 					<select id="driver1" name="driver1"					
-						ng-model="team.drivers[0]" ng-options="driver as driver.name for driver in drivers | orderBy:'price':true track by driver.name"
+						ng-model="team.drivers[0]" ng-options="driver as driver.name + ' &#163;' + driver.price + 'm' for driver in drivers | orderBy:'price':true track by driver.name"
 						class="form-control">
 					</select>
 				</div>
@@ -75,7 +75,7 @@
 				<label class="col-xs-3" for="driver2">Driver 2</label>
 				<div class="col-xs-6">					
 					<select id="driver2" name="driver2"					
-						ng-model="team.drivers[1]" ng-options="driver as driver.name for driver in drivers | orderBy:'price':true track by driver.name"
+						ng-model="team.drivers[1]" ng-options="driver as driver.name + ' &#163;' + driver.price + 'm' for driver in drivers | orderBy:'price':true track by driver.name"
 						class="form-control">
 					</select>
 				</div>
@@ -84,7 +84,7 @@
 				<label class="col-xs-3" for="car">Car</label>
 				<div class="col-xs-6">					
 					<select id="car" name="car"					
-						ng-model="team.car" ng-options="car as car.name for car in cars | orderBy:'price':true track by car.name"
+						ng-model="team.car" ng-options="car as car.name + ' &#163;' + car.price + 'm' for car in cars | orderBy:'price':true track by car.name"
 						class="form-control">
 					</select>
 				</div>
@@ -93,7 +93,7 @@
 				<label class="col-xs-3" for="engine">Engine</label>
 				<div class="col-xs-6">					
 					<select id="engine" name="engine"					
-						ng-model="team.engine" ng-options="engine as engine.name for engine in engines | orderBy:'price':true track by engine.name"
+						ng-model="team.engine" ng-options="engine as engine.name + ' &#163;' + engine.price + 'm' for engine in engines | orderBy:'price':true track by engine.name"
 						class="form-control">
 					</select>
 				</div>

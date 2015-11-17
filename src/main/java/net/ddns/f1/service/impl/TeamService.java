@@ -116,7 +116,7 @@ public class TeamService {
 		cost += team.getEngine().getPrice();
 
 		if (cost > budget) {
-			throw new ValidationException("Team is over budget by "
+			throw new ValidationException("Team is over budget by £"
 					+ (cost - budget) + "m");
 		}
 	}
