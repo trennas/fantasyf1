@@ -202,7 +202,7 @@ public class MainController implements ErrorController {
 		return output;
 	}
 	
-	@RequestMapping("/seasonstarted")
+	@RequestMapping({"/seasonstarted", "/{subpage}/seasonstarted"})
 	@ResponseBody
 	public boolean seasonStarted() {
 		return teamService.seasonStarted();

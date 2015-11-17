@@ -12,6 +12,7 @@ function($scope, $http, $location) {
     $scope.car;
     $scope.engine;    
     $scope.status;
+    $scope.seasonStarted;
     
     $scope.getLeagueTable = function() {
         $('#leagueSpinner').show();
@@ -98,12 +99,22 @@ function($scope, $http, $location) {
         $('#spinner').show();
         $http.get('myteam')
             .success(function(response) {
-                $scope.team = response;
+                $scope.team = response;                
                 $scope.team.confirmPassword = $scope.team.password;
                 $('#spinner').hide();
             })
             .error(function(response, status) {
                 $('#spinner').hide();
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.seasonStarted = function() {
+        $http.get('seasonstarted')
+            .success(function(response) {
+                $scope.seasonStarted = response;
+            })
+            .error(function(response, status) {
                 alert("Status: " + status);
             });
     };
