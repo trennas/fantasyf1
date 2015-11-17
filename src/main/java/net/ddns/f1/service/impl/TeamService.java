@@ -48,6 +48,19 @@ public class TeamService {
 	}
 
 	public void saveTeam(final Team team, final boolean newTeam) throws ValidationException {
+		if(seasonStarted()) {
+			if(newTeam) {
+				throw new ValidationException("New teams cannot be added once the season has started");
+			} else {
+				Team prevTeam = teamRepo.findById(team.getId()).get(0);
+				if(!prevTeam.getDrivers().get(0).getName().equals(team.getDrivers().get(0).getName()) ||
+				   !prevTeam.getDrivers().get(1).getName().equals(team.getDrivers().get(1).getName()) ||
+				   !prevTeam.getCar().getName().equals(team.getCar().getName()) ||
+				   !prevTeam.getEngine().getName().equals(team.getEngine().getName())) {
+					throw new ValidationException("Your team cannot be altered once the season has started");
+				}
+			}
+		}
 		validateTeam(team, newTeam);
 		teamRepo.save(team);
 		setCredentials(team);
