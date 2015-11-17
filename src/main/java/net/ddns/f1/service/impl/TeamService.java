@@ -12,6 +12,7 @@ import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +31,9 @@ public class TeamService {
 	
 	@Autowired
 	private InMemoryUserDetailsManager inMemoryUserDetailsManager;
+	
+	@Autowired
+	private Environment environment;
 
 	@Value("${budget}")
 	private int budget;
@@ -46,11 +50,23 @@ public class TeamService {
 	public boolean seasonStarted() {
 		return new Date().after(seasonStartDateTime);
 	}
+	
+	private boolean dataCreationProfile() {
+		String[] profiles = environment.getActiveProfiles();
+		for(String profile : profiles) {
+			if(profile.equals("create")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void saveTeam(final Team team, final boolean newTeam) throws ValidationException {
 		if(seasonStarted()) {
 			if(newTeam) {
-				throw new ValidationException("New teams cannot be added once the season has started");
+				if(!dataCreationProfile()) {
+					throw new ValidationException("New teams cannot be added once the season has started");
+				}
 			} else {
 				Team prevTeam = teamRepo.findById(team.getId()).get(0);
 				if(!prevTeam.getDrivers().get(0).getName().equals(team.getDrivers().get(0).getName()) ||
