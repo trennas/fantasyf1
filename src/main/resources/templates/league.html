@@ -30,7 +30,7 @@
 <body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header" />
 	<div id="leagueSpinner" class="spinner-loader pull-right">Loading...</div>
-	
+	<!--div sec:authorize="isAuthenticated()">Authorities: <span sec:authentication="principal.authorities">authorities</span></div-->
 	<div class="panel panel-primary" ng-init="getLeagueTable();">
 	<div class="panel-heading">League Table</div>	
 	<div class="panel-body">

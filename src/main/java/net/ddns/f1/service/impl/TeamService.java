@@ -1,5 +1,6 @@
 package net.ddns.f1.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.ddns.f1.domain.Driver;
@@ -7,16 +8,28 @@ import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.TeamRepository;
 
 import org.apache.commons.collections4.IteratorUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TeamService {
+	
+	private static final Logger LOG = Logger
+			.getLogger(TeamService.class);
 
 	@Autowired
-	TeamRepository teamRepo;
+	private TeamRepository teamRepo;
+	
+	@Autowired
+	private InMemoryUserDetailsManager inMemoryUserDetailsManager;
 
 	@Value("${budget}")
 	private int budget;
@@ -28,9 +41,23 @@ public class TeamService {
 		return IteratorUtils.toList(i.iterator());
 	}
 
-	public void addTeam(final Team team) throws ValidationException {
-		validateTeam(team, true);
+	public void saveTeam(final Team team, final boolean newTeam) throws ValidationException {
+		validateTeam(team, newTeam);
 		teamRepo.save(team);
+		setCredentials(team);
+	}
+	
+	private void setCredentials(Team team) {
+		try {
+			inMemoryUserDetailsManager.deleteUser(team.getEmail());
+			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+			for(String role : team.getRoles()) {
+				authorities.add(new SimpleGrantedAuthority(role));
+			}
+			inMemoryUserDetailsManager.createUser(new User(team.getEmail(), team.getPassword(), authorities));
+		} catch (Exception e) {
+			LOG.error("Unable to set credentials for " + team.getEmail());
+		}
 	}
 
 	public void validateTeam(final Team team, boolean newTeam) throws ValidationException {

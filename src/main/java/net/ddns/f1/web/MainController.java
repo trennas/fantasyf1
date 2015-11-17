@@ -216,8 +216,7 @@ public class MainController implements ErrorController {
 	@ResponseBody
 	public String saveTeam(@RequestBody Team team) {
 		try {
-			teamService.validateTeam(team, false);
-			teamRepo.save(team);
+			teamService.saveTeam(team, false);
 			return jsonMessage("Account updated successfully.");
 		} catch (ValidationException e) {
 			return jsonMessage(e.getMessage());
