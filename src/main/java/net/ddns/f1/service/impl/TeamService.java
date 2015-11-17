@@ -1,6 +1,7 @@
 package net.ddns.f1.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.ddns.f1.domain.Driver;
@@ -16,7 +17,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,10 +35,16 @@ public class TeamService {
 	private int budget;
 	@Value("${team-name-regex}")
 	private String teamNameRegex;
+	@Value("#{new java.text.SimpleDateFormat(\"${dateFormat}\").parse(\"${season-start-date-time}\")}")    
+	private Date seasonStartDateTime;
 
 	public List<Team> getAllTeams() {
 		final Iterable<Team> i = teamRepo.findAll();
 		return IteratorUtils.toList(i.iterator());
+	}
+	
+	public boolean seasonStarted() {
+		return new Date().after(seasonStartDateTime);
 	}
 
 	public void saveTeam(final Team team, final boolean newTeam) throws ValidationException {

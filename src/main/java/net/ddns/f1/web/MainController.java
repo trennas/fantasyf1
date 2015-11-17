@@ -200,6 +200,12 @@ public class MainController implements ErrorController {
 		return output;
 	}
 	
+	@RequestMapping("/seasonstarted")
+	@ResponseBody
+	public boolean seasonStarted() {
+		return teamService.seasonStarted();
+	}
+	
 	@RequestMapping("/myaccount")
 	public String myAccount() {
 		return "myaccount";
