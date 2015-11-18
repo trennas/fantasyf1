@@ -213,6 +213,11 @@ public class MainController implements ErrorController {
 		return "myaccount";
 	}
 	
+	@RequestMapping("/register")
+	public String register() {
+		return "register";
+	}
+	
 	@RequestMapping("/myaccount/myteam")
 	@ResponseBody
 	public Team myTeam() {
@@ -224,7 +229,7 @@ public class MainController implements ErrorController {
 	@ResponseBody
 	public String saveTeam(@RequestBody Team team) {
 		try {
-			teamService.saveTeam(team, false);
+			teamService.saveTeam(team);
 			return jsonMessage("Account updated successfully.");
 		} catch (ValidationException e) {
 			return jsonMessage(e.getMessage());

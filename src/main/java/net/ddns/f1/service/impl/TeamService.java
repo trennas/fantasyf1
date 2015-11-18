@@ -61,7 +61,8 @@ public class TeamService {
 		return false;
 	}
 
-	public void saveTeam(final Team team, final boolean newTeam) throws ValidationException {
+	public void saveTeam(final Team team) throws ValidationException {
+		boolean newTeam = team.getId() == null;
 		if(seasonStarted()) {
 			if(newTeam) {
 				if(!dataCreationProfile()) {
@@ -119,12 +120,11 @@ public class TeamService {
 							"A team already exists with that name");
 				}
 			} else {
-				Team existingTeam = teamRepo.findByEmail(SecurityContextHolder
-						.getContext().getAuthentication().getName()).get(0);
+				Team existingTeam = teamRepo.findById(team.getId()).get(0);
 				if(!existingTeam.getName().equals(team.getName())) {
 					if(existingTeams.size() > 0) {
 						throw new ValidationException(
-								"A team already exists with that name");
+							"A team already exists with that name");
 					}
 				}
 			}

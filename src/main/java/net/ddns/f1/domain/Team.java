@@ -24,7 +24,7 @@ import net.ddns.f1.service.impl.ValidationException;
 @Data
 public class Team  implements Comparable<Team>, PointScorer {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	int id;
+	Integer id;
 	private String name;	
 	private String owner;	
 	private String email;
