@@ -225,12 +225,23 @@ public class MainController implements ErrorController {
 			.getContext().getAuthentication().getName()).get(0);
 	}
 
-	@RequestMapping(value = {"/myaccount/savemyteam"}, method = RequestMethod.POST)
+	@RequestMapping(value = "/myaccount/savemyteam", method = RequestMethod.POST)
 	@ResponseBody
 	public String saveTeam(@RequestBody Team team) {
 		try {
 			teamService.saveTeam(team);
 			return jsonMessage("Account updated successfully.");
+		} catch (ValidationException e) {
+			return jsonMessage(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/register/savemyteam", method = RequestMethod.POST)
+	@ResponseBody
+	public String registerTeam(@RequestBody Team team) {
+		try {
+			teamService.saveTeam(team);
+			return jsonMessage("Team registered successfully. You can modify your team by logging in and using 'My Account', until the start of the season.");
 		} catch (ValidationException e) {
 			return jsonMessage(e.getMessage());
 		}

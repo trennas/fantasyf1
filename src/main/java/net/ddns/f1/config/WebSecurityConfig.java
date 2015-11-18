@@ -94,7 +94,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .and().authorizeRequests().antMatchers("/myaccount/savemyteam/**")
 		 .hasAuthority(myAccountRole)
 		 
-		 .and().authorizeRequests().antMatchers("/")
+		 .and().authorizeRequests().antMatchers("/", "/register/**", "/register/savemyteam/**")
 		 .access(roleExpression);
 		 
 		 http.headers()

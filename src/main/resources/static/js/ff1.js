@@ -14,6 +14,8 @@ function($scope, $http, $location) {
     $scope.status;
     $scope.seasonStarted;
     
+    $('#spinner').hide();
+    
     $scope.getLeagueTable = function() {
         $('#leagueSpinner').show();
         $('#raceSpinner').show();
@@ -30,14 +32,11 @@ function($scope, $http, $location) {
     };
     
     $scope.getTeams = function() {
-        $('#spinner').show();
         $http.get('teams')
             .success(function(response) {
                 $scope.teams = response;
-                $('#spinner').hide();
             })
             .error(function(response, status) {
-                $('#spinner').hide();
                 alert("Status: " + status);                
             });        
     };
