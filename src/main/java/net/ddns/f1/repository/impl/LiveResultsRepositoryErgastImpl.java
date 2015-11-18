@@ -31,7 +31,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 	private String season;
 	
 	@Value("${ergast-base-url}")
-	private String ERGAST_BASE_URL;
+	private String ergastBaseUrl;
 
 	@Autowired
 	DriverRepository driverRepo;
@@ -41,7 +41,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 	@Override
 	public EventResult fetchEventResult(final int round) {
-		String seasonUrl = ERGAST_BASE_URL + season + "/";
+		String seasonUrl = ergastBaseUrl + season + "/";
 		final RestTemplate restTemplate = new RestTemplate();
 		
 		final MRDataType qual;
