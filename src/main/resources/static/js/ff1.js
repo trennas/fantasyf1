@@ -120,6 +120,13 @@ function($scope, $http, $location) {
     
     $scope.saveMyTeam = function(team) {
         $('#spinner').show();
+        
+        var numericArray = [];
+        for (var item in team.drivers) {
+            numericArray.push(team.drivers[item]);
+        }
+        team.drivers = numericArray;
+        
         $http.post('savemyteam', team)
             .success(function(response) {
                 $scope.status = response.message;
