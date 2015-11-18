@@ -30,7 +30,8 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 	@Value("${season}")
 	private String season;
 	
-	private final String ERGAST_BASE_URL = "http://ergast.com/api/f1/";
+	@Value("${ergast-base-url}")
+	private String ERGAST_BASE_URL;
 
 	@Autowired
 	DriverRepository driverRepo;
