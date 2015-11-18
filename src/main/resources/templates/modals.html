@@ -17,32 +17,43 @@
 				<h4 class="modal-title">{{team.name}}</h4>
 			</div>
 			<div class="modal-body">
-				<table class="table table-striped">				
-					<thead>
-				      <tr>
-				        <th>Name</th>
-				        <th>Owner</th>
-				        <th>Driver 1</th>
-				        <th>Driver 2</th>
-				        <th>Car</th>				        
-				        <th>Engine</th>
-				        <th>Points</th>
-				        <th>Price</th>
-				      </tr>
-				    </thead>
+				<div class="panel panel-info">
+				<div class="panel-heading">{{team.name}}</div>	
+				<div class="panel-body">
+				<table class="table table-striped">	
 				    <tbody>
 				      <tr>
+				      	<th>Name</th>
 				        <td>{{team.name}}</td>
+				      </tr>
+				      <tr>
+				        <th>Owner</th>
 				        <td>{{team.owner}}</td>
-				        <td>{{team.drivers[0].name}}</td>
-				        <td>{{team.drivers[1].name}}</td>
+				      </tr>				      
+				      <tr ng-repeat="driver in team.drivers">
+					    <th>Driver {{$index+1}}</th>
+					    <td>{{driver.name}}</td>
+				      </tr>
+				      <tr>
+				      	<th>Car</th>
 				        <td>{{team.car.name}}</td>
+				      </tr>
+				      <tr>
+				      	<th>Engine</th>
 				        <td>{{team.engine.name}}</td>
+				      </tr>
+				      <tr>
+				      	<th>Points</th>
 				        <td>{{team.totalPoints}}</td>
+				      </tr>
+				      <tr>
+				      	<th>Price</th>
 				        <td>&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</td>
 				      </tr>				
 				    </tbody>
 				 </table>
+				 </div>
+				 </div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-primary btn-sm"
@@ -62,6 +73,9 @@
 				<h4 class="modal-title">{{driver.name}}</h4>
 			</div>
 			<div class="modal-body">
+				<div class="panel panel-info">
+				<div class="panel-heading">{{driver.name}}</div>	
+				<div class="panel-body">
 				<table class="table table-striped">				
 					<thead>
 				      <tr>
@@ -82,6 +96,7 @@
 				      </tr>				
 				    </tbody>
 				 </table>
+				 </div></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-primary btn-sm"
@@ -101,6 +116,9 @@
 				<h4 class="modal-title">{{car.name}}</h4>
 			</div>
 			<div class="modal-body">
+				<div class="panel panel-info">
+				<div class="panel-heading">{{car.name}}</div>	
+				<div class="panel-body">
 				<table class="table table-striped">				
 					<thead>
 				      <tr>
@@ -120,7 +138,7 @@
 				        <td>&#163;{{car.price}}m</td>
 				      </tr>				
 				    </tbody>
-				 </table>
+				 </table></div></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-primary btn-sm"
@@ -140,6 +158,9 @@
 				<h4 class="modal-title">{{engine.name}}</h4>
 			</div>
 			<div class="modal-body">
+				<div class="panel panel-info">
+				<div class="panel-heading">{{engine.name}}</div>	
+				<div class="panel-body">
 				<table class="table table-striped">				
 					<thead>
 				      <tr>
@@ -156,6 +177,8 @@
 				      </tr>				
 				    </tbody>
 				 </table>
+				 </div>
+				 </div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-primary btn-sm"
@@ -175,6 +198,9 @@
 				<h4 class="modal-title">Remarks for {{event.venue}}</h4>
 			</div>
 			<div class="modal-body">
+				<div class="panel panel-info">
+				<div class="panel-heading">{{event.venue}} Remarks</div>	
+				<div class="panel-body">
 				<table class="table table-striped">
 				    <thead>
 				      <tr>
@@ -187,6 +213,8 @@
 				      </tr>
 				    </tbody>
 				 </table>
+				 </div>
+				 </div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-primary btn-sm"
