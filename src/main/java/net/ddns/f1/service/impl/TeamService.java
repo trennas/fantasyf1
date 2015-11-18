@@ -40,6 +40,8 @@ public class TeamService {
 	private String teamNameRegex;
 	@Value("#{new java.text.SimpleDateFormat(\"${dateFormat}\").parse(\"${season-start-date-time}\")}")    
 	private Date seasonStartDateTime;
+	@Value("${num-drivers-per-team}")
+	private int numDriversPerTeam;
 
 	public List<Team> getAllTeams() {
 		final Iterable<Team> i = teamRepo.findAll();
@@ -100,6 +102,16 @@ public class TeamService {
 		if(team == null) {
 			throw new ValidationException(
 					"Team is null");
+		}
+		if(team.getDrivers() == null || team.getDrivers().size() < numDriversPerTeam) {
+			throw new ValidationException(
+					"You must select " + numDriversPerTeam + " drivers");
+		}
+		if(team.getCar() == null) {
+			throw new ValidationException("You must select a car");
+		}
+		if(team.getEngine() == null) {
+			throw new ValidationException("You must select an engine");
 		}
 		if(team.getPassword() == null || team.getPassword().isEmpty()) {
 			throw new ValidationException(
