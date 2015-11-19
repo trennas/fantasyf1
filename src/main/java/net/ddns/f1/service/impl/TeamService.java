@@ -120,6 +120,10 @@ public class TeamService {
 			throw new ValidationException(
 					"Passwords don't match");
 		}
+		if (team.getName() == null || team.getName().isEmpty()) {
+			throw new ValidationException(
+				"A team name is required");
+		}
 		if (!team.getName().matches(teamNameRegex)) {
 			throw new ValidationException(
 					"Name must match the following regex: " + teamNameRegex);
