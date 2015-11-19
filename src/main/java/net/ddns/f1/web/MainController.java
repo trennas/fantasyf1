@@ -1,5 +1,6 @@
 package net.ddns.f1.web;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -115,13 +116,13 @@ public class MainController implements ErrorController {
 	@RequestMapping({"/teams", "/{subpage}/teams"})
 	@ResponseBody
 	public List<Team> getTeams() {
-		return leagueService.calculateLeagueStandings();
+		return maskPreSeasonTeams(leagueService.calculateLeagueStandings());
 	}
 	
 	@RequestMapping({"/team", "/{subpage}/team"})
 	@ResponseBody
 	public Team getTeam(Integer id) {
-		return teamRepo.findById(id).get(0);
+		return maskPreSeasonTeam(teamRepo.findById(id).get(0));
 	}
 	
 	@RequestMapping("/events")
@@ -284,5 +285,21 @@ public class MainController implements ErrorController {
 		model.addAttribute("returnLocation", "/login");
 		SecurityContextHolder.getContext().setAuthentication(null);
 		return "error";
+	}
+	
+	private List<Team> maskPreSeasonTeams(List<Team> teams) {		
+		for(Team team : teams) {
+			maskPreSeasonTeam(team);
+		}
+		return teams;
+	}
+	
+	private Team maskPreSeasonTeam(Team team) {
+		if(!seasonStarted()) {
+			team.setDrivers(new ArrayList<Driver>());
+			team.setCar(null);
+			team.setEngine(null);
+		}
+		return team;
 	}
 }

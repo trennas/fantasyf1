@@ -48,7 +48,7 @@
 				      </tr>
 				      <tr>
 				      	<th>Price</th>
-				        <td>&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</td>
+				        <td><span ng-show="team.drivers[0] || team.drivers[1] || team.car || team.engine">&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</span></td>
 				      </tr>				
 				    </tbody>
 				 </table>
