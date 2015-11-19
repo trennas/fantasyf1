@@ -27,7 +27,7 @@
 	  	<script src="js/respond.min.js"></script>
 		<![endif]-->
 </head>
-<body ng-app="ff1App" ng-controller="controller" ng-init="seasonStarted();">		
+<body ng-app="ff1App" ng-controller="controller" ng-init="getSeasonStarted();">		
 	<div th:replace="header :: header" />
 	
 	<div ng-if="!seasonStarted">

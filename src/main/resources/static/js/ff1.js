@@ -7,7 +7,7 @@ function($scope, $http, $location) {
     $scope.cars = [];
     $scope.engines = [];
     $scope.event;
-    $scope.team;
+    $scope.team = {};
     $scope.driver;
     $scope.car;
     $scope.engine;    
@@ -108,7 +108,7 @@ function($scope, $http, $location) {
             });
     };
     
-    $scope.seasonStarted = function() {
+    $scope.getSeasonStarted = function() {
         $http.get('seasonstarted')
             .success(function(response) {
                 $scope.seasonStarted = response;
@@ -137,7 +137,7 @@ function($scope, $http, $location) {
                 alert("Status: " + data);
             });
     };
-    
+
     $scope.getEvents = function() {
         $http.get('events')
             .success(function(response) {

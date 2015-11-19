@@ -38,6 +38,8 @@ public class TeamService {
 	private int budget;
 	@Value("${team-name-regex}")
 	private String teamNameRegex;
+	@Value("${email-regex}")
+	private String emailRegex;
 	@Value("#{new java.text.SimpleDateFormat(\"${dateFormat}\").parse(\"${season-start-date-time}\")}")    
 	private Date seasonStartDateTime;
 	@Value("${num-drivers-per-team}")
@@ -103,15 +105,18 @@ public class TeamService {
 			throw new ValidationException(
 					"Team is null");
 		}
-		if(team.getDrivers() == null || team.getDrivers().size() < numDriversPerTeam) {
+
+		if(team.getOwner() == null || team.getOwner().isEmpty()) {
 			throw new ValidationException(
-					"You must select " + numDriversPerTeam + " drivers");
+					"Your name is required");
 		}
-		if(team.getCar() == null) {
-			throw new ValidationException("You must select a car");
+		if(team.getEmail() == null || team.getEmail().isEmpty()) {
+			throw new ValidationException(
+					"Your E-Mail address is required");
 		}
-		if(team.getEngine() == null) {
-			throw new ValidationException("You must select an engine");
+		else if(!team.getEmail().matches(emailRegex)) {
+			throw new ValidationException(
+					"Invalid E-Mail address");
 		}
 		if(team.getPassword() == null || team.getPassword().isEmpty()) {
 			throw new ValidationException(
@@ -143,6 +148,18 @@ public class TeamService {
 					}
 				}
 			}
+		}
+		
+
+		if(team.getDrivers() == null || team.getDrivers().size() < numDriversPerTeam) {
+			throw new ValidationException(
+					"You must select " + numDriversPerTeam + " drivers");
+		}
+		if(team.getCar() == null) {
+			throw new ValidationException("You must select a car");
+		}
+		if(team.getEngine() == null) {
+			throw new ValidationException("You must select an engine");
 		}
 
 		final List<Driver> drivers = team.getDrivers();
