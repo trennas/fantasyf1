@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,14 @@ public class MailServiceImpl {
 	
 	public void sendNewResultsMail(EventResult result) {
 		if(newResultEmailAlerts) {
-	        F1MimeMessagePreparator mimePrep = new F1MimeMessagePreparator(result, teamRepo.findAll().iterator());	        
-	        //TODO mailSender password from emailConfigRepo
+			if(mailSender instanceof JavaMailSenderImpl) {
+				JavaMailSenderImpl mailSenderImpl = (JavaMailSenderImpl) mailSender;
+				mailSenderImpl.setPassword(emailConfigRepo.findAll().iterator().next().getPassword());
+			}			
+			
+	        F1MimeMessagePreparator mimePrep = new F1MimeMessagePreparator(result, teamRepo.findAll().iterator());			
+			//F1MimeMessagePreparator mimePrep = new F1MimeMessagePreparator(result, teamRepo.findByEmail("mike.trenaman@gmail.com").iterator());			
+	        
 	        mailSender.send(mimePrep);
 	        LOG.info("Sent new" + (result.isRaceComplete() ? " Race " : " Qualifying ") + "results email for " + result.getVenue());
 		}
