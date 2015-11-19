@@ -36,7 +36,7 @@ public class LeagueServiceImpl {
 	private boolean refreshResultsOnPageLoad;
 	
 	@Autowired
-	TeamService teamService;
+	TeamServiceImpl teamService;
 
 	@Autowired
 	TeamRepository teamRepo;

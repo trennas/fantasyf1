@@ -23,7 +23,8 @@ import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
 import net.ddns.f1.service.impl.EventServiceImpl;
 import net.ddns.f1.service.impl.LeagueServiceImpl;
-import net.ddns.f1.service.impl.TeamService;
+import net.ddns.f1.service.impl.MailServiceImpl;
+import net.ddns.f1.service.impl.TeamServiceImpl;
 import net.ddns.f1.service.impl.ValidationException;
 
 import org.apache.commons.collections4.IteratorUtils;
@@ -53,7 +54,7 @@ public class MainController implements ErrorController {
 	@Autowired
 	private TeamRepository teamRepo;
 	@Autowired
-	private TeamService teamService;
+	private TeamServiceImpl teamService;
 	@Autowired
 	private EventResultRepository resultRepo;
 	@Autowired

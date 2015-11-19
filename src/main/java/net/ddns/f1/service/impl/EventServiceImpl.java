@@ -32,6 +32,9 @@ public class EventServiceImpl {
 	
 	@Autowired
 	LeagueServiceImpl leagueService;
+	
+	@Autowired
+	MailServiceImpl mailService;
 
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
@@ -82,7 +85,9 @@ public class EventServiceImpl {
 					result = liveRepo.fetchEventResult(result.getRound());
 					if(result.isRaceComplete()) {
 						applyCorrections(result);
+						results.add(result);
 						eventRepo.save(result);
+						mailService.sendNewResultsMail(result);
 						newResults = true;
 					}
 				}
@@ -93,9 +98,11 @@ public class EventServiceImpl {
 				LOG.info("Found new live race results... updating");
 				while (result != null) {
 					applyCorrections(result);
+					results.add(result);
 					eventRepo.save(result);					
 					result = liveRepo.fetchEventResult(result.getRound() + 1);
 				}
+				mailService.sendNewResultsMail(results.get(results.size() - 1));
 				newResults = true;
 			} else {
 				LOG.info("No new race results found");

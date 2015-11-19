@@ -21,10 +21,10 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TeamService {
+public class TeamServiceImpl {
 	
 	private static final Logger LOG = Logger
-			.getLogger(TeamService.class);
+			.getLogger(TeamServiceImpl.class);
 
 	@Autowired
 	private TeamRepository teamRepo;
