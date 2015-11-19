@@ -1,6 +1,7 @@
 package net.ddns.f1.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,9 @@ public class TeamService {
 	
 	@Autowired
 	private Environment environment;
-
+	
+	@Value("${auth.myaccount-role}")
+	private String myAccountRole;
 	@Value("${budget}")
 	private int budget;
 	@Value("${team-name-regex}")
@@ -87,6 +90,10 @@ public class TeamService {
 	}
 	
 	private void setCredentials(Team team) {
+		if(team.getRoles() == null || team.getRoles().size() == 0) {
+			List<String> roles = Arrays.asList(myAccountRole);
+			team.setRoles(roles);
+		}
 		try {
 			inMemoryUserDetailsManager.deleteUser(team.getEmail());
 			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
