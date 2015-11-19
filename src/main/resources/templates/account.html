@@ -84,8 +84,8 @@
 						  </ul>
 						</div>
 					</td>
-					<td>{{team.drivers[0].car.name}} Driver</td>
-					<td>&#163;{{team.drivers[0].price}}m</td>
+					<td><span ng-show="team.drivers[0]">{{team.drivers[0].car.name}} Driver</span></td>
+					<td><span ng-show="team.drivers[0]">&#163;{{team.drivers[0].price}}m</span></td>
 				</tr>
 			 	<tr>
 			 		<th>Driver 2</th>
@@ -116,8 +116,8 @@
 						  </ul>
 						</div>
 					</td>
-					<td>{{team.drivers[1].car.name}}  Driver</td>
-					<td>&#163;{{team.drivers[1].price}}m</td>
+					<td><span ng-show="team.drivers[1]">{{team.drivers[1].car.name}}  Driver</span></td>
+					<td><span ng-show="team.drivers[1]">&#163;{{team.drivers[1].price}}m</span></td>
 				</tr>
 			 	<tr>
 			 		<th>Car</th>
@@ -148,8 +148,8 @@
 						  </ul>
 						</div>
 					</td>
-					<td>Uses {{team.car.engine.name}} Engine</td>
-					<td>&#163;{{team.car.price}}m</td>
+					<td><span ng-show="team.car">Uses {{team.car.engine.name}} Engine</span></td>
+					<td><span ng-show="team.car">&#163;{{team.car.price}}m</span></td>
 				</tr>
 			 	<tr>
 			 		<th>Engine</th>
@@ -181,11 +181,11 @@
 						</div>
 					</td>
 					<td></td>
-					<td>&#163;{{team.engine.price}}m</td>
+					<td><span ng-show="team.engine">&#163;{{team.engine.price}}m</span></td>
 			 	</tr>
 			 	<tr>
 			 		<th colspan="3">Total Cost</th>
-			 		<th>&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</th>
+			 		<th><span ng-show="team.drivers[0] || team.drivers[1] || team.car || team.engine"> &#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</span></th>
 			 	</tr>
 			 </tbody>
 		  </table>
