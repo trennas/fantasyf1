@@ -27,9 +27,22 @@
 	  	<script src="js/respond.min.js"></script>
 		<![endif]-->
 </head>
-<body ng-app="ff1App" ng-controller="controller">		
+<body ng-app="ff1App" ng-controller="controller" ng-init="seasonStarted();">		
 	<div th:replace="header :: header" />
-	<div th:replace="account :: account" />  
+	
+	<div ng-if="!seasonStarted">
+		<div th:replace="account :: account" />
+	</div>
+	
+	<div ng-if="seasonStarted">
+		<div class="panel panel-primary">
+			<div class="panel-heading">The Season Has Alreary Started</div>	
+			<div class="panel-body">
+				<p class="text-danger">Teams cannot be created once the season is underway</p>
+			</div>
+		</div>		
+	</div>
+	
 	<div th:replace="footer :: footer" />
 </body>
 </html>
