@@ -141,19 +141,19 @@ public class TeamService {
 					"Name must match the following regex: " + teamNameRegex);
 		} else {			
 			final List<Team> existingTeams = teamRepo.findByName(team.getName());
-			if (newTeam) {
-				if(existingTeams.size() > 0) {
+			for(Team existingTeam : existingTeams) {
+				if(newTeam || existingTeam.getId() != team.getId()) {
 					throw new ValidationException(
 							"A team already exists with that name");
 				}
-			} else {
-				Team existingTeam = teamRepo.findById(team.getId()).get(0);
-				if(!existingTeam.getName().equals(team.getName())) {
-					if(existingTeams.size() > 0) {
-						throw new ValidationException(
-							"A team already exists with that name");
-					}
-				}
+			}
+		}
+		
+		final List<Team> existingTeams = teamRepo.findByEmail(team.getEmail());
+		for(Team existingTeam : existingTeams) {
+			if(newTeam || existingTeam.getId() != team.getId()) {
+				throw new ValidationException(
+						"A team has already been registered with that E-Mail address");
 			}
 		}
 		

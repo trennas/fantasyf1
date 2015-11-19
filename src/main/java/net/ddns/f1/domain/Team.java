@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,9 +26,14 @@ import net.ddns.f1.service.impl.ValidationException;
 public class Team  implements Comparable<Team>, PointScorer {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	Integer id;
-	private String name;	
-	private String owner;	
+	@Column(unique=true)
+	private String name;
+	
+	private String owner;
+	
+	@Column(unique=true)
 	private String email;
+	
 	private String password;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
