@@ -56,14 +56,14 @@ public class EventServiceImpl {
 		LOG.info("Manually invoked refresh of all results..");
 		eventRepo.deleteAll();
 		timeOfLastResultCheck = 0;
-		checkForNewResults();
+		checkForNewResults(false);
 		leagueService.recalculateAllResults();
 	}
 	
 	public synchronized int updateResults() {
 		LOG.info("Updating results..");
 		timeOfLastResultCheck = 0;
-		if(checkForNewResults()) {
+		if(checkForNewResults(true)) {
 			leagueService.recalculateAllResults();
 			return 1;
 		} else {
@@ -71,7 +71,7 @@ public class EventServiceImpl {
 		}
 	}
 
-	public synchronized boolean checkForNewResults() {
+	public synchronized boolean checkForNewResults(boolean emailAlerts) {
 		boolean newResults = false;
 		final Iterable<EventResult> itr = eventRepo.findAll();
 		List<EventResult> results = IteratorUtils.toList(itr.iterator());
@@ -94,14 +94,19 @@ public class EventServiceImpl {
 			
 			EventResult result = liveRepo.fetchEventResult(results.size() + 1);
 			if (result != null) {
+				int num = 0;
 				LOG.info("Found new live race results... updating");
 				while (result != null) {
+					num++;
 					applyCorrections(result);
 					results.add(result);
 					eventRepo.save(result);					
 					result = liveRepo.fetchEventResult(result.getRound() + 1);
 				}
-				mailService.sendNewResultsMail(results.get(results.size() - 1));
+				if(emailAlerts && num == 1) {
+					// Don't bombarde with emails pulling in multiple results
+					mailService.sendNewResultsMail(results.get(results.size() - 1));
+				}
 				newResults = true;
 			} else {
 				LOG.info("No new race results found");

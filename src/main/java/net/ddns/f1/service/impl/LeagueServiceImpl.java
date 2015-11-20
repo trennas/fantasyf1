@@ -59,7 +59,7 @@ public class LeagueServiceImpl {
 	public List<Team> calculateLeagueStandings() {
 		List<Team> teams = teamService.getAllTeams();		
 
-		if(refreshResultsOnPageLoad && eventService.checkForNewResults()) {			
+		if(refreshResultsOnPageLoad && eventService.checkForNewResults(true)) {			
 			calculateAllResults(teams);
 		}
 		
