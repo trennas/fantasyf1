@@ -11,7 +11,7 @@ import javax.mail.internet.MimeMessage;
 
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Team;
-import net.ddns.f1.repository.EmailConfigRepository;
+import net.ddns.f1.repository.ConfigRepository;
 import net.ddns.f1.repository.TeamRepository;
 
 import org.apache.log4j.Logger;
@@ -33,7 +33,7 @@ public class MailServiceImpl {
 	TeamRepository teamRepo;
 	
 	@Autowired
-	EmailConfigRepository emailConfigRepo;
+	ConfigRepository configRepo;
 	
 	@Value("${website-url}")
 	private String websiteUrl;
@@ -42,17 +42,21 @@ public class MailServiceImpl {
 	private boolean newResultEmailAlerts;
 	
 	public void sendNewResultsMail(EventResult result) {
-		if(newResultEmailAlerts) {
-			if(mailSender instanceof JavaMailSenderImpl) {
-				JavaMailSenderImpl mailSenderImpl = (JavaMailSenderImpl) mailSender;
-				mailSenderImpl.setPassword(emailConfigRepo.findAll().iterator().next().getPassword());
-			}			
-			
-	        F1MimeMessagePreparator mimePrep = new F1MimeMessagePreparator(result, teamRepo.findAll().iterator());			
-			//F1MimeMessagePreparator mimePrep = new F1MimeMessagePreparator(result, teamRepo.findByEmail("mike.trenaman@gmail.com").iterator());			
-	        
-	        mailSender.send(mimePrep);
-	        LOG.info("Sent new" + (result.isRaceComplete() ? " Race " : " Qualifying ") + "results email for " + result.getVenue());
+		try {
+			if(newResultEmailAlerts) {
+				if(mailSender instanceof JavaMailSenderImpl) {
+					JavaMailSenderImpl mailSenderImpl = (JavaMailSenderImpl) mailSender;
+					mailSenderImpl.setPassword(configRepo.findByKey("emailPassword").get(0).getValue());
+				}			
+				
+		        F1MimeMessagePreparator mimePrep = new F1MimeMessagePreparator(result, teamRepo.findAll().iterator());			
+				//F1MimeMessagePreparator mimePrep = new F1MimeMessagePreparator(result, teamRepo.findByEmail("mike.trenaman@gmail.com").iterator());			
+		        
+		        mailSender.send(mimePrep);
+		        LOG.info("Sent new" + (result.isRaceComplete() ? " Race " : " Qualifying ") + "results email for " + result.getVenue());
+			}
+		} catch(Exception e) {
+			LOG.error("Error sending mail. " + e.getClass().getName() + ": " + e.getMessage());
 		}
 	}
 	

@@ -85,7 +85,6 @@ public class EventServiceImpl {
 					result = liveRepo.fetchEventResult(result.getRound());
 					if(result.isRaceComplete()) {
 						applyCorrections(result);
-						results.add(result);
 						eventRepo.save(result);
 						mailService.sendNewResultsMail(result);
 						newResults = true;
