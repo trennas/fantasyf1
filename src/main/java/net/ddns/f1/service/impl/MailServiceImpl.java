@@ -41,9 +41,12 @@ public class MailServiceImpl {
 	@Value("${new-result-email-alerts}")
 	private boolean newResultEmailAlerts;
 	
+	@Value("${qualifying-result-email-alerts}")
+	private boolean qualifyingResultEmailAlerts;
+	
 	public void sendNewResultsMail(EventResult result) {
 		try {
-			if(newResultEmailAlerts) {
+			if(newResultEmailAlerts && (qualifyingResultEmailAlerts || result.isRaceComplete())) {
 				if(mailSender instanceof JavaMailSenderImpl) {
 					JavaMailSenderImpl mailSenderImpl = (JavaMailSenderImpl) mailSender;
 					mailSenderImpl.setPassword(configRepo.findByKey("emailPassword").get(0).getValue());
