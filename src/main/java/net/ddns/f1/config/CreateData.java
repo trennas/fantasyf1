@@ -6,13 +6,11 @@ import java.util.List;
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Correction;
 import net.ddns.f1.domain.Driver;
-import net.ddns.f1.domain.Config;
 import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.CorrectionRepository;
 import net.ddns.f1.repository.DriverRepository;
-import net.ddns.f1.repository.ConfigRepository;
 import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.service.impl.TeamServiceImpl;
 import net.ddns.f1.service.impl.ValidationException;
@@ -40,8 +38,6 @@ public class CreateData {
 	CorrectionRepository correctionRepo;
 	@Autowired
 	TeamServiceImpl teamService;
-	@Autowired
-	ConfigRepository emailConfigRepo;
 	
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
@@ -118,9 +114,6 @@ public class CreateData {
 		correctionRepo.save(correction);
 		
 		correctionRepo.save(new Correction(14, "Felipe Nasr", 18, true, 20, true));
-		
-		Config emailConfig = new Config("emailPassword", "welcome1");
-		emailConfigRepo.save(emailConfig);
 
 		try {			
 			List<Driver> drivers = new ArrayList<Driver>();
