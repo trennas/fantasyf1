@@ -43,7 +43,7 @@ function($scope, $http, $location) {
     
     $scope.saveResult = function(result) {
         $('#spinner').show();
-        $http.post('saveResult', result)
+        $http.post('saveresult', result)
             .success(function(response) {
                 $scope.event = response;
                 $scope.status = "Success";
@@ -69,7 +69,7 @@ function($scope, $http, $location) {
     
     $scope.refreshResult = function(event) {
         $('#spinner').show();
-        $http.get('refreshResult?round=' + event)
+        $http.get('refreshresult?round=' + event)
             .success(function(response) {
                 $('#spinner').hide();
                 $scope.event = response;
@@ -241,6 +241,16 @@ function($scope, $http, $location) {
     	$scope.getEvent(round);
     	$('#spinner').hide();
     }
+    
+    $scope.addEvent = function(round) {
+        $http.get('newevent')
+            .success(function(response) {
+                $scope.event = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
     
     $scope.getLength = function(obj) {
         return Object.keys(obj).length;

@@ -29,6 +29,7 @@ import net.ddns.f1.service.impl.ValidationException;
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +48,9 @@ public class MainController implements ErrorController {
 
 	private static final Logger LOG = Logger
 			.getLogger(MainController.class);
+	
+	@Value("${season}")
+	private int season;
 
 	@Autowired
 	private LeagueServiceImpl leagueService;
@@ -80,6 +84,11 @@ public class MainController implements ErrorController {
 		return "editresult";
 	}
 
+	@RequestMapping("/addresult")
+	public String addResult(final Integer round) {
+		return "addresult";
+	}
+
 	@RequestMapping("/updateresults")
 	@ResponseBody
 	public int updateResults() {
@@ -88,7 +97,7 @@ public class MainController implements ErrorController {
 		return res;
 	}
 
-	@RequestMapping(value = {"/{editresult}/saveResult"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/editresult/saveresult", "/addresult/saveresult"}, method = RequestMethod.POST)
 	@ResponseBody
 	public EventResult saveResult(@RequestBody final EventResult result) {
 		result.setFastestLapDriver(driverRepo.findByName(result.getFastestLapDriver().getName()).get(0));
@@ -99,8 +108,32 @@ public class MainController implements ErrorController {
 		resultRepo.save(savedResult);
 		return event(savedResult.getRound());
 	}
+	
+	@RequestMapping({"/addresult/newevent"})
+	@ResponseBody
+	public EventResult event() {
+		final EventResult result = new EventResult();		
+		final Map<String, Position> order = new HashMap<String, Position>();
+		final Position pos = new Position(0, false);
+		final List<Driver> drivers = IteratorUtils.toList(driverRepo.findAll().iterator());
+		final List<String> remarks = new ArrayList<String>();
+		remarks.add("This result was manually created");
+		Collections.sort(drivers);
+		for(Driver driver : drivers) {
+			order.put(driver.getName(), pos);
+		}
+		result.setRound(eventService.getSeasonResults().size() + 1);
+		result.setQualifyingOrder(order);
+		result.setRaceOrder(order);
+		result.setVenue("Race Venue");
+		result.setFastestLapDriver(drivers.get(0));
+		result.setSeason(season);
+		result.setRaceComplete(false);
+		result.setRemarks(remarks);
+		return result;
+	}
 
-	@RequestMapping("/{editresult}/refreshResult")
+	@RequestMapping("/editresult/refreshresult")
 	@ResponseBody
 	public EventResult refreshResult(final int round) {
 		return eventService.refreshEvent(round);
