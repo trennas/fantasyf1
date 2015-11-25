@@ -34,7 +34,7 @@
 		<div class="panel-heading">{{event.venue}}</div>
   </div>
   
-  <div class="panel panel-primary" ng-init="getDrivers();">
+  <div class="panel panel-primary" ng-init="getAllDrivers();">
 	<div class="panel-heading">Qualifying Order</div>	
 	<div class="panel-body">  
 		<table class="table table-striped">
@@ -125,7 +125,8 @@
 	  </div>
 	  </div>
 	  <button type="button" class="btn btn-success" ng-click="saveResult(event);">Save</button>
-	  <button type="button" class="btn btn-success" ng-click="refreshResult(event.round);">Refetch Result</button>
+	  <button type="button" class="btn btn-info" ng-click="refreshResult(event.round);">Refetch Result</button>
+	  <button type="button" class="btn btn-danger" ng-click="deleteResult(event.round);">Delete Result</button>
 	  <div id="spinner" class="spinner-loader pull-right">Updating...</div>
 	  {{status}}
   <div th:replace="modals :: modals" />

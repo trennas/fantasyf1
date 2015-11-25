@@ -163,11 +163,32 @@ public class MainController implements ErrorController {
 	public List<EventResult> events() {
 		return eventService.getSeasonResults();
 	}
+	
+	@RequestMapping("/editresult/deleteevent")
+	@ResponseBody
+	public int deleteEvent(int round) {
+		return eventService.deleteEvent(round);
+	}
 
 	@RequestMapping({"/drivers", "/{subpage}/drivers"})
 	@ResponseBody
 	public List<Driver> drivers() {
-		final List<Driver> drivers = driverRepo.findByStandin(false);
+		return drivers(false);
+	}
+	
+	@RequestMapping({"/alldrivers", "/{subpage}/alldrivers"})
+	@ResponseBody
+	public List<Driver> allDrivers() {
+		return drivers(true);
+	}
+	
+	private List<Driver> drivers(boolean includeStandin) {
+		List<Driver> drivers;
+		if(includeStandin) {
+			drivers = IteratorUtils.toList(driverRepo.findAll().iterator());
+		} else {
+			drivers = driverRepo.findByStandin(false);
+		}
 		Collections.sort(drivers);
 		return drivers;
 	}

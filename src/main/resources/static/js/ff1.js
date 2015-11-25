@@ -81,6 +81,23 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.deleteResult = function(event) {
+        $('#spinner').show();
+        $http.get('deleteevent?round=' + event)
+            .success(function(response) {
+                $('#spinner').hide();
+                if(response == 1) {
+                    $scope.status = "Result deleted";
+                } else {
+                    $scope.status = "Unable to delete result";
+                }
+            })
+            .error(function(response, status) {
+                $('#spinner').hide();
+                alert("Status: " + status);
+            });
+    };
+    
     $scope.refreshAllResults = function(event) {
         $('#leagueSpinner').show();
         $('#raceSpinner').show();
@@ -196,6 +213,16 @@ function($scope, $http, $location) {
     
     $scope.getDrivers = function() {
         $http.get('drivers')
+            .success(function(response) {
+                $scope.drivers = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.getAllDrivers = function() {
+        $http.get('alldrivers')
             .success(function(response) {
                 $scope.drivers = response;
             })

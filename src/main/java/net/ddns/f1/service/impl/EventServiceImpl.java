@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EventServiceImpl {
@@ -41,15 +42,30 @@ public class EventServiceImpl {
 	private long timeOfLastResultCheck = 0;
 	
 	public EventResult refreshEvent(int round) {
-		LOG.info("Manually invoked refresh result round " + round + "...");
-		eventRepo.deleteByRound(round);
+		LOG.info("Manually invoked refresh result round " + round + "...");		
 		EventResult result = liveRepo.fetchEventResult(round);
-		if(result != null) {
+		if(result != null) {			
 			applyCorrections(result);
+			eventRepo.deleteByRound(round);
 			eventRepo.save(result);
 			leagueService.recalculateAllResults();
 		}
 		return result;
+	}
+	
+	@Transactional
+	public int deleteEvent(int round) {
+		LOG.info("Manually invoked delete result round " + round + "...");
+		EventResult res = eventRepo.findByRound(round).get(0);
+		if(res != null) {
+			eventRepo.deleteByRound(round);
+			LOG.info("Deleted result round " + round);
+			leagueService.recalculateAllResults();
+			return 1;
+		} else {
+			LOG.info("Result round " + round + " does not exist");
+			return 0;
+		}
 	}
 	
 	public synchronized void refreshAllEvents() {
