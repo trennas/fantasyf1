@@ -23,7 +23,6 @@ import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
 import net.ddns.f1.service.impl.EventServiceImpl;
 import net.ddns.f1.service.impl.LeagueServiceImpl;
-import net.ddns.f1.service.impl.MailServiceImpl;
 import net.ddns.f1.service.impl.TeamServiceImpl;
 import net.ddns.f1.service.impl.ValidationException;
 
@@ -48,7 +47,7 @@ public class MainController implements ErrorController {
 
 	private static final Logger LOG = Logger
 			.getLogger(MainController.class);
-	
+
 	@Autowired
 	private LeagueServiceImpl leagueService;
 	@Autowired
@@ -65,161 +64,161 @@ public class MainController implements ErrorController {
 	private EngineRepository engineRepo;
 	@Autowired
 	private EventServiceImpl eventService;
-	
+
 	@RequestMapping("/")
 	public String mainPage() {
 		return "league";
 	}
-	
+
 	@RequestMapping("/race")
-	public String mainPage(Integer round) {
+	public String mainPage(final Integer round) {
 		return "race";
 	}
-	
+
 	@RequestMapping("/editresult")
-	public String editResult(Integer round) {
+	public String editResult(final Integer round) {
 		return "editresult";
 	}
-	
+
 	@RequestMapping("/updateresults")
 	@ResponseBody
 	public int updateResults() {
-		int res = eventService.updateResults();
+		final int res = eventService.updateResults();
 		LOG.info("updateresults: " + res);
 		return res;
 	}
-	
+
 	@RequestMapping(value = {"/{editresult}/saveResult"}, method = RequestMethod.POST)
 	@ResponseBody
-	public EventResult saveResult(@RequestBody EventResult result) {
+	public EventResult saveResult(@RequestBody final EventResult result) {
 		result.setFastestLapDriver(driverRepo.findByName(result.getFastestLapDriver().getName()).get(0));
 		resultRepo.save(result);
 		leagueService.recalculateAllResults();
-		EventResult savedResult = resultRepo.findByRound(result.getRound()).get(0);
+		final EventResult savedResult = resultRepo.findByRound(result.getRound()).get(0);
 		savedResult.setRemarks(result.getRemarks());
 		resultRepo.save(savedResult);
 		return event(savedResult.getRound());
 	}
-	
+
 	@RequestMapping("/{editresult}/refreshResult")
 	@ResponseBody
-	public EventResult refreshResult(int round) {		
+	public EventResult refreshResult(final int round) {
 		return eventService.refreshEvent(round);
 	}
-	
-	@RequestMapping("/{editresult}/refreshAllResults")
+
+	@RequestMapping("/refreshAllResults")
 	@ResponseBody
-	public Boolean refreshAllResults() {		
+	public Boolean refreshAllResults() {
 		eventService.refreshAllEvents();
 		return true;
 	}
-	
+
 	@RequestMapping({"/teams", "/{subpage}/teams"})
 	@ResponseBody
 	public List<Team> getTeams() {
 		return maskPreSeasonTeams(leagueService.calculateLeagueStandings());
 	}
-	
+
 	@RequestMapping({"/team", "/{subpage}/team"})
 	@ResponseBody
-	public Team getTeam(Integer id) {
+	public Team getTeam(final Integer id) {
 		return maskPreSeasonTeam(teamRepo.findById(id).get(0));
 	}
-	
+
 	@RequestMapping("/events")
 	@ResponseBody
 	public List<EventResult> events() {
 		return eventService.getSeasonResults();
 	}
-	
+
 	@RequestMapping({"/drivers", "/{subpage}/drivers"})
 	@ResponseBody
 	public List<Driver> drivers() {
-		List<Driver> drivers = driverRepo.findByStandin(false);
+		final List<Driver> drivers = driverRepo.findByStandin(false);
 		Collections.sort(drivers);
 		return drivers;
 	}
-	
+
 	@RequestMapping({"/driver", "/{subpage}/driver"})
 	@ResponseBody
-	public Driver driver(String name) {
+	public Driver driver(final String name) {
 		return driverRepo.findByName(name).get(0);
 	}
-	
+
 	@RequestMapping({"/car", "/{subpage}/car"})
 	@ResponseBody
-	public Car car(String name) {
+	public Car car(final String name) {
 		return carRepo.findByName(name).get(0);
 	}
-	
+
 	@RequestMapping({"/engine", "/{subpage}/engine"})
 	@ResponseBody
-	public Engine engine(String name) {
+	public Engine engine(final String name) {
 		return engineRepo.findByName(name).get(0);
 	}
 
 	@RequestMapping({"/cars", "/{subpage}/cars"})
 	@ResponseBody
 	public List<Car> cars() {
-		List<Car> cars = IteratorUtils.toList(carRepo.findAll().iterator());
+		final List<Car> cars = IteratorUtils.toList(carRepo.findAll().iterator());
 		Collections.sort(cars);
 		return cars;
 	}
-	
+
 	@RequestMapping({"/engines", "/{subpage}/engines"})
 	@ResponseBody
 	public List<Engine> engines() {
-		List<Engine> engines = IteratorUtils.toList(engineRepo.findAll().iterator());
+		final List<Engine> engines = IteratorUtils.toList(engineRepo.findAll().iterator());
 		Collections.sort(engines);
 		return engines;
 	}
-	
+
 	@RequestMapping({"/event", "/{subpage}/event"})
 	@ResponseBody
-	public EventResult event(int round) {		
-		EventResult result = resultRepo.findByRound(round).get(0);
+	public EventResult event(final int round) {
+		final EventResult result = resultRepo.findByRound(round).get(0);
 		result.setQualifyingOrder(sortPositions(result.getQualifyingOrder()));
 		result.setRaceOrder(sortPositions(result.getRaceOrder()));
-		return result;		
+		return result;
 	}
-	
-	private LinkedHashMap<String, Position> sortPositions(Map<String, Position> map) {		
-		Iterator<String> itr = map.keySet().iterator();
-		Map<Integer, String> positionSortedDrivers = new HashMap<Integer, String>();
+
+	private LinkedHashMap<String, Position> sortPositions(final Map<String, Position> map) {
+		final Iterator<String> itr = map.keySet().iterator();
+		final Map<Integer, String> positionSortedDrivers = new HashMap<Integer, String>();
 		int last = 0;
 		while(itr.hasNext()) {
-			String driverName = itr.next();
-			int position = map.get(driverName).getPosition();
+			final String driverName = itr.next();
+			final int position = map.get(driverName).getPosition();
 			if(position > last) {
 				last = position;
 			}
 			positionSortedDrivers.put(position, driverName);
 		}
-				
-		LinkedHashMap<String, Position> output = new LinkedHashMap<String, Position>();
+
+		final LinkedHashMap<String, Position> output = new LinkedHashMap<String, Position>();
 		for(int i = 1; i <= last; i++) {
-			String driverName = positionSortedDrivers.get(i);
+			final String driverName = positionSortedDrivers.get(i);
 			output.put(driverName, map.get(driverName));
 		}
 		return output;
 	}
-	
+
 	@RequestMapping({"/seasonstarted", "/{subpage}/seasonstarted"})
 	@ResponseBody
 	public boolean seasonStarted() {
 		return teamService.seasonStarted();
 	}
-	
+
 	@RequestMapping("/myaccount")
 	public String myAccount() {
 		return "myaccount";
 	}
-	
+
 	@RequestMapping("/register")
 	public String register() {
 		return "register";
 	}
-	
+
 	@RequestMapping("/myaccount/myteam")
 	@ResponseBody
 	public Team myTeam() {
@@ -229,35 +228,35 @@ public class MainController implements ErrorController {
 
 	@RequestMapping(value = "/myaccount/savemyteam", method = RequestMethod.POST)
 	@ResponseBody
-	public String saveTeam(@RequestBody Team team) {
+	public String saveTeam(@RequestBody final Team team) {
 		try {
 			teamService.saveTeam(team);
 			return jsonMessage("Account updated successfully.");
-		} catch (ValidationException e) {
+		} catch (final ValidationException e) {
 			return jsonMessage(e.getMessage());
 		}
 	}
-	
+
 	@RequestMapping(value = "/register/savemyteam", method = RequestMethod.POST)
 	@ResponseBody
-	public String registerTeam(@RequestBody Team team) {
+	public String registerTeam(@RequestBody final Team team) {
 		try {
 			teamService.saveTeam(team);
 			return jsonMessage("Team registered successfully. You can modify your team by logging in and using 'My Account', until the start of the season.");
-		} catch (ValidationException e) {
+		} catch (final ValidationException e) {
 			return jsonMessage(e.getMessage());
 		}
 	}
-	
-	private String jsonMessage(String message) {
+
+	private String jsonMessage(final String message) {
 		return "{\"message\":\"" + message + "\"}";
 	}
-	
+
 	@RequestMapping("/login")
 	public String login() {
 		return "login";
 	}
-	
+
 	@RequestMapping(ERROR_PATH)
 	public String error(final HttpServletRequest request, final Model model) {
 		model.addAttribute("message",
@@ -287,15 +286,15 @@ public class MainController implements ErrorController {
 		SecurityContextHolder.getContext().setAuthentication(null);
 		return "error";
 	}
-	
-	private List<Team> maskPreSeasonTeams(List<Team> teams) {		
-		for(Team team : teams) {
+
+	private List<Team> maskPreSeasonTeams(final List<Team> teams) {
+		for(final Team team : teams) {
 			maskPreSeasonTeam(team);
 		}
 		return teams;
 	}
-	
-	private Team maskPreSeasonTeam(Team team) {
+
+	private Team maskPreSeasonTeam(final Team team) {
 		if(!seasonStarted()) {
 			team.setDrivers(new ArrayList<Driver>());
 			team.setCar(null);

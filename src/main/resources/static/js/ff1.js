@@ -82,14 +82,18 @@ function($scope, $http, $location) {
     };
     
     $scope.refreshAllResults = function(event) {
-        $('#spinner').show();
+        $('#leagueSpinner').show();
+        $('#raceSpinner').show();
+        $scope.teams = [];
+        $scope.events = [];
         $http.get('refreshAllResults')
             .success(function(response) {                
-                $scope.status = "All results refreshed";
-                $('#spinner').hide();
+                $scope.status = "All results refreshed";                
+                $scope.getLeagueTable();
             })
             .error(function(response, status) {
-                $('#spinner').hide();
+                $('#leagueSpinner').hide();
+                $('#raceSpinner').hide();
                 alert("Status: " + status);
             });
     };

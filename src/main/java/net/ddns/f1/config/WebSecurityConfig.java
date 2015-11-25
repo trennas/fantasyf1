@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 new AntPathRequestMatcher("/logout", "GET"))
 		 .permitAll()
 		 
-		 .and().authorizeRequests().antMatchers("/editresult/**")
+		 .and().authorizeRequests().antMatchers("/editresult/**", "/refreshAllResults/**")
 		 .hasAuthority(adminRole)
 		 
 		 .and().authorizeRequests().antMatchers("/myaccount/**")
