@@ -58,6 +58,8 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-primary btn-sm"
 					data-dismiss="modal">Close</button>
+				<button sec:authorize="hasRole(@environment.getProperty('auth.admin-role'))" type="button" class="btn btn-danger" ng-click="deleteTeam(team.id);">Delete Team</button>
+				{{status}}
 			</div>
 		</div>
 	</div>

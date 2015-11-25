@@ -34,6 +34,7 @@ import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -168,6 +169,14 @@ public class MainController implements ErrorController {
 	@ResponseBody
 	public int deleteEvent(int round) {
 		return eventService.deleteEvent(round);
+	}
+	
+	@RequestMapping("/deleteteam")
+	@ResponseBody
+	@Transactional
+	public int deleteTeam(int id) {
+		teamRepo.delete(id);
+		return 1;
 	}
 
 	@RequestMapping({"/drivers", "/{subpage}/drivers"})

@@ -81,6 +81,21 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.deleteTeam = function(id) {
+        $http.get('deleteteam?id=' + id)
+            .success(function(response) {
+                if(response == 1) {
+                    $scope.status = "Team Deleted";
+                } else {
+                    $scope.status = "Couldn't Delete Team";
+                }
+            })
+            .error(function(response, status) {
+                $('#spinner').hide();
+                alert("Status: " + status);
+            });
+    };
+    
     $scope.deleteResult = function(event) {
         $('#spinner').show();
         $http.get('deleteevent?round=' + event)
