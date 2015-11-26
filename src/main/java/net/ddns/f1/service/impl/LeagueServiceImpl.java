@@ -21,10 +21,12 @@ import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LeagueServiceImpl {
@@ -34,6 +36,9 @@ public class LeagueServiceImpl {
 	
 	@Value("${refresh-results-on-page-load}")
 	private boolean refreshResultsOnPageLoad;
+	
+	@Value("${best-theoretical-team-name}")
+	private String bestTheoreticalTeamName;
 	
 	@Autowired
 	TeamServiceImpl teamService;
@@ -57,7 +62,7 @@ public class LeagueServiceImpl {
 	EventResultRepository resultRepo;
 
 	public List<Team> calculateLeagueStandings() {
-		List<Team> teams = teamService.getAllTeams();		
+		List<Team> teams = teamService.getAllRealTeams();		
 
 		if(refreshResultsOnPageLoad && eventService.checkForNewResults(true)) {			
 			calculateAllResults(teams);
@@ -68,7 +73,7 @@ public class LeagueServiceImpl {
 	}
 	
 	public synchronized void recalculateAllResults() {
-		calculateAllResults(teamService.getAllTeams());
+		calculateAllResults(teamService.getAllRealTeams());
 	}
 	
 	private synchronized void calculateAllResults(List<Team> teams) {
@@ -79,6 +84,87 @@ public class LeagueServiceImpl {
 			calculateResult(result, teams);
 		}		
 		LOG.info("Scores recalculated.");
+	}
+
+	public void calculateBestTheoreticalTeam(EventResult result) {
+		List<Driver> allDrivers = driverRepo.findByStandin(false);
+		List<Car> cars = IteratorUtils.toList(carRepo.findAll().iterator());
+		List<Engine> engines = IteratorUtils.toList(engineRepo.findAll().iterator());				
+
+		Team bestTeamForRound;
+		if(result.getBestTheoreticalTeam() == null) {
+			bestTeamForRound = new Team();
+			bestTeamForRound.setName("Best Theoretical Team For " + result.getVenue());
+			bestTeamForRound.setTheoretical(true);
+			result.setBestTheoreticalTeam(bestTeamForRound);
+		} else {
+			bestTeamForRound = result.getBestTheoreticalTeam();
+		}
+
+		Team bestOverallTeam;
+		List<Team> res = teamRepo.findByName(bestTheoreticalTeamName);
+		if(res.size() < 1) {
+			bestOverallTeam = new Team();
+			bestOverallTeam.setName(bestTheoreticalTeamName);
+			bestOverallTeam.setTheoretical(true);
+		} else {
+			bestOverallTeam = res.get(0);
+		}
+		
+		int roundHighScore = 0;
+		long totalHighScore = bestOverallTeam.getTotalPoints();
+
+		for(Driver driver : allDrivers) {
+			Team team = new Team();
+			for(Driver driver2 : allDrivers) {
+				if(driver2.getNumber() != driver.getNumber()) {
+					team.setDrivers(new ArrayList<Driver>());
+					team.getDrivers().add(driver);
+					team.getDrivers().add(driver2);
+					for(Car car : cars) {
+						team.setCar(car);
+						for(Engine engine : engines) {
+							team.setEngine(engine);
+							try {							
+								teamService.validateTeamComponents(team);
+								int roundScore = calculateRoundScore(result.getRound(), team);
+								long totalScore = calculateTotalScore(team);
+
+								if(roundScore > roundHighScore) {
+									roundHighScore = roundScore;
+									bestTeamForRound.setComponents(team);
+									bestTeamForRound.getPointsPerEvent().put(result.getRound(), roundScore);
+									bestOverallTeam.getPointsPerEvent().put(result.getRound(), roundScore);
+								}
+								if(totalScore > totalHighScore) {
+									totalHighScore = totalScore;
+									bestOverallTeam.setComponents(team);
+									bestOverallTeam.setTotalPoints(totalScore);
+								}
+							} catch (ValidationException e) {
+								continue;
+							}
+						}
+					}
+				}
+			}
+		}		
+		teamRepo.save(bestOverallTeam);
+		resultRepo.save(result);
+	}
+	
+	private int calculateRoundScore(int round, Team team) {
+		return team.getDrivers().get(0).getPointsPerEvent().get(round) +
+			   team.getDrivers().get(1).getPointsPerEvent().get(round) +
+			   team.getCar().getPointsPerEvent().get(round) +
+			   team.getEngine().getPointsPerEvent().get(round);
+	}
+	
+	private long calculateTotalScore(Team team) {
+		return team.getDrivers().get(0).getTotalPoints() +
+			   team.getDrivers().get(1).getTotalPoints() +
+			   team.getCar().getTotalPoints() +
+			   team.getEngine().getTotalPoints();
 	}
 	
 	private void resetAllScores(List<Team> teams) {
@@ -247,16 +333,19 @@ public class LeagueServiceImpl {
 		Iterator<Team> teamItr = teamRepo.findAll().iterator();
 		while(teamItr.hasNext()) {
 			Team team = teamItr.next();
-			int points = 0;
-			for(Driver driver : team.getDrivers()) {				
-				points += driver.getPointsPerEvent().get(result.getRound());
+			if(!team.getName().equals(bestTheoreticalTeamName)) {
+				int points = 0;
+				for(Driver driver : team.getDrivers()) {				
+					points += driver.getPointsPerEvent().get(result.getRound());
+				}
+				points += team.getCar().getPointsPerEvent().get(result.getRound());
+				points += team.getEngine().getPointsPerEvent().get(result.getRound());
+				team.getPointsPerEvent().put(result.getRound(), points);
+				team.setTotalPoints(team.getTotalPoints() + points);
+				teamRepo.save(team);
 			}
-			points += team.getCar().getPointsPerEvent().get(result.getRound());
-			points += team.getEngine().getPointsPerEvent().get(result.getRound());
-			team.getPointsPerEvent().put(result.getRound(), points);
-			team.setTotalPoints(team.getTotalPoints() + points);
-			teamRepo.save(team);
 		}
+		calculateBestTheoreticalTeam(result);
 	}
 	
 	private static final Integer FASTEST_LAP_BONUS = 50;

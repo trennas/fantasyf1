@@ -51,6 +51,9 @@ public class MainController implements ErrorController {
 	
 	@Value("${season}")
 	private int season;
+	
+	@Value("${best-theoretical-team-name}")
+	private String bestTheoreticalTeamName;
 
 	@Autowired
 	private LeagueServiceImpl leagueService;
@@ -156,6 +159,24 @@ public class MainController implements ErrorController {
 	@ResponseBody
 	public Team getTeam(final Integer id) {
 		return maskPreSeasonTeam(teamRepo.findById(id).get(0));
+	}
+	
+	@RequestMapping({"/besttheoreticalteam"})
+	@ResponseBody
+	public Team getBestTheoreticalTeam() {
+		List<Team> teams = teamRepo.findByName(bestTheoreticalTeamName);
+		if(teams.size() > 0) {
+			return teams.get(0);
+		} else {
+			return null;
+		}
+	}
+	
+	@RequestMapping({"/race/besttheoreticalteamforround"})
+	@ResponseBody
+	public Team getBestTheoreticalTeamForRound(final Integer round) {
+		EventResult result = resultRepo.findByRound(round).get(0);
+		return result.getBestTheoreticalTeam();
 	}
 
 	@RequestMapping("/events")

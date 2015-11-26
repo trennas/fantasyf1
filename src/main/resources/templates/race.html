@@ -181,7 +181,49 @@
 	    </tbody>
 	  </table>
 	  </div>
+  </div>
+  
+  <div class="panel panel-success">
+		<div class="panel-heading">{{event.venue}} Best Theoretical Team</div>	
+		<div class="panel-body">
+		<table class="table table-striped" ng-init="getBestTheoreticalTeamForRound();">
+	    <thead>
+	      <tr>
+	        <th>Name</th>
+	        <th>Cost</th>
+	        <th>Points</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].name)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
+	      	<td>&#163;{{bestTheoreticalTeam.drivers[0].price}}m</td>
+	      	<td>{{bestTheoreticalTeam.drivers[0].pointsPerEvent[event.round]}}</td>
+	      </tr>
+		  <tr>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].name)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
+	      	<td>&#163;{{bestTheoreticalTeam.drivers[1].price}}m</td>
+	      	<td>{{bestTheoreticalTeam.drivers[1].pointsPerEvent[event.round]}}</td>
+	      </tr>
+		  <tr>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
+	      	<td>&#163;{{bestTheoreticalTeam.car.price}}m</td>
+	      	<td>{{bestTheoreticalTeam.car.pointsPerEvent[event.round]}}</td>
+	      </tr>	      
+		  <tr>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(bestTheoreticalTeam.engine.name)">{{bestTheoreticalTeam.engine.name}}</a></td>
+	      	<td>&#163;{{bestTheoreticalTeam.engine.price}}m</td>
+	      	<td>{{bestTheoreticalTeam.engine.pointsPerEvent[event.round]}}</td>
+	      </tr>
+	      <tr>
+	      	<th>Total Points</th>
+	      	<th>&#163;{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}m</th>
+	      	<th>{{bestTheoreticalTeam.pointsPerEvent[event.round]}}</th>
+	      </tr>
+	    </tbody>
+	  </table>
 	  </div>
+  </div>
 
   
   <div th:replace="modals :: modals" />

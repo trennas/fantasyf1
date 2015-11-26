@@ -8,6 +8,8 @@ function($scope, $http, $location) {
     $scope.engines = [];
     $scope.event;
     $scope.team = {};
+    $scope.bestTheoreticalTeam = {};
+    $scope.bestTheoreticalTeamForRound = {};
     $scope.driver;
     $scope.car;
     $scope.engine;    
@@ -22,11 +24,34 @@ function($scope, $http, $location) {
         $http.get('teams')
             .success(function(response) {
                 $scope.teams = response;
+                $scope.getBestTheoreticalTeam();
+                $scope.getEvents();                
+            })
+            .error(function(response, status) {
+                $('#leagueSpinner').hide();
+                alert("Status: " + status);                
+            });        
+    };
+    
+    $scope.getBestTheoreticalTeam = function() {
+        $http.get('besttheoreticalteam')
+            .success(function(response) {
+                $scope.bestTheoreticalTeam = response;
                 $('#leagueSpinner').hide();
                 $scope.getEvents();                
             })
             .error(function(response, status) {
                 $('#leagueSpinner').hide();
+                alert("Status: " + status);                
+            });        
+    };
+    
+    $scope.getBestTheoreticalTeamForRound = function() {
+        $http.get('besttheoreticalteamforround?round=' + ($location.search()).round)
+            .success(function(response) {
+            	$scope.bestTheoreticalTeam = response;
+            })
+            .error(function(response, status) {
                 alert("Status: " + status);                
             });        
     };

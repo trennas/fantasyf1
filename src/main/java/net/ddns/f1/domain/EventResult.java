@@ -1,18 +1,16 @@
 package net.ddns.f1.domain;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 
@@ -23,7 +21,9 @@ public class EventResult implements Comparable<EventResult> {
 	private int round;
 	private String venue;
 	private int season;
-	private boolean raceComplete;	
+	private boolean raceComplete;
+	@OneToOne(targetEntity = Team.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	private Team bestTheoreticalTeam;
 	@ManyToOne(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	private Driver fastestLapDriver;
 	@ElementCollection(fetch = FetchType.EAGER)

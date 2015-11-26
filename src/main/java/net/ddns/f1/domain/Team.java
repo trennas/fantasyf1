@@ -2,6 +2,7 @@ package net.ddns.f1.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,8 @@ public class Team  implements Comparable<Team>, PointScorer {
 	Integer id;
 	@Column(unique=true)
 	private String name;
+	
+	private boolean theoretical;
 	
 	private String owner;
 	
@@ -68,6 +71,21 @@ public class Team  implements Comparable<Team>, PointScorer {
 		this.drivers = drivers;
 		this.car = car;
 		this.engine = engine;
+		this.theoretical = false;
+	}
+	
+	public Map<Integer, Integer> getPointsPerEvent() {
+		if(pointsPerEvent == null) {
+			pointsPerEvent = new HashMap<Integer, Integer>();
+		}
+		return pointsPerEvent;
+	}
+	
+	public void setComponents(Team team) {
+		this.setDrivers(team.getDrivers());
+		this.setCar(team.getCar());		
+		this.setEngine(team.getEngine());
+		this.setTotalPoints(team.getTotalPoints());
 	}
 
 	@Override

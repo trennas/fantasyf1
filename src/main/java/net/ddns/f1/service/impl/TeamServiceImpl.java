@@ -25,7 +25,6 @@ public class TeamServiceImpl {
 	
 	private static final Logger LOG = Logger
 			.getLogger(TeamServiceImpl.class);
-
 	@Autowired
 	private TeamRepository teamRepo;
 	
@@ -35,6 +34,8 @@ public class TeamServiceImpl {
 	@Autowired
 	private Environment environment;
 	
+	@Value("${best-theoretical-team-name}")
+	private String bestTheoreticalTeamName;
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
 	@Value("${budget}")
@@ -48,9 +49,8 @@ public class TeamServiceImpl {
 	@Value("${num-drivers-per-team}")
 	private int numDriversPerTeam;
 
-	public List<Team> getAllTeams() {
-		final Iterable<Team> i = teamRepo.findAll();
-		return IteratorUtils.toList(i.iterator());
+	public List<Team> getAllRealTeams() {
+		return teamRepo.findByTheoretical(false);
 	}
 	
 	public boolean seasonStarted() {
@@ -69,6 +69,7 @@ public class TeamServiceImpl {
 
 	public void saveTeam(final Team team) throws ValidationException {
 		boolean newTeam = team.getId() == null;
+		team.setTheoretical(false);
 		if(seasonStarted()) {
 			if(newTeam) {
 				if(!dataCreationProfile()) {
@@ -106,8 +107,7 @@ public class TeamServiceImpl {
 		}
 	}
 
-	public void validateTeam(final Team team, boolean newTeam) throws ValidationException {
-		int cost = 0;
+	public void validateTeam(final Team team, boolean newTeam) throws ValidationException {		
 		if(team == null) {
 			throw new ValidationException(
 					"Team is null");
@@ -139,7 +139,10 @@ public class TeamServiceImpl {
 		if (!team.getName().matches(teamNameRegex)) {
 			throw new ValidationException(
 					"Name must match the following regex: " + teamNameRegex);
-		} else {			
+		} else if (team.getName().equalsIgnoreCase(bestTheoreticalTeamName)) {
+			throw new ValidationException(
+					"That team name is reserved");						
+		} else {
 			final List<Team> existingTeams = teamRepo.findByName(team.getName());
 			for(Team existingTeam : existingTeams) {
 				if(newTeam || existingTeam.getId() != team.getId()) {
@@ -156,8 +159,11 @@ public class TeamServiceImpl {
 						"A team has already been registered with that E-Mail address");
 			}
 		}
-		
-
+		validateTeamComponents(team);
+	}
+	
+	public void validateTeamComponents(Team team) throws ValidationException {
+		int cost = 0;
 		if(team.getDrivers() == null || team.getDrivers().size() < numDriversPerTeam) {
 			throw new ValidationException(
 					"You must select " + numDriversPerTeam + " drivers");
