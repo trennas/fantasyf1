@@ -38,24 +38,38 @@
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
+	      	<th>Position</th>
 	        <th>Team Name</th>
 	        <th>Owner</th>
 	        <th>Driver 1</th>
 	        <th>Driver 2</th>
 	        <th>Car</th>
 	        <th>Engine</th>
+	        <th>Cost</th>
 	        <th>Last Race</th>
 	        <th>Overall</th>
 	      </tr>
 	    </thead>
 	    <tbody>
+	      <tr class="warning">
+	      	<td>N/A</td>
+	      	<th colspan="2">{{bestTheoreticalTeam.name}}</th>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].name)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].name)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(bestTheoreticalTeam.engine.name)">{{bestTheoreticalTeam.engine.name}}</a></td>
+	        <td colspan="2">{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}</td>
+	        <td>{{bestTheoreticalTeam.points}}</td>
+	      </tr>
 	      <tr ng-repeat="team in teams">
+	      	<td>{{$index + 1}}</td>
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#teamModal" ng-click="getTeam(team.id)">{{team.name}}</a></td>
 	        <td>{{team.owner}}</td>
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[0].name)">{{team.drivers[0].name}}</a></td>
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[1].name)">{{team.drivers[1].name}}</a></td>	        
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(team.car.name)">{{team.car.name}}</a></td>
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(team.engine.name)">{{team.engine.name}}</a></td>
+	        <td>{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}</td>
 	        <td>{{team.pointsPerEvent[getLength(team.pointsPerEvent)]}}</td>
 	        <td>{{team.totalPoints}}</td>
 	      </tr>
@@ -95,49 +109,6 @@
 	    </tbody>
 	  </table>
 	 </div>
-  </div>
-  
-  <div id="bestTheoreticalTeamSpinner" class="spinner-loader pull-right">Loading...</div>
-  <div class="panel panel-success" ng-if="bestTheoreticalTeam">
-		<div class="panel-heading">Best Theoretical Team</div>	
-		<div class="panel-body">
-		<table class="table table-striped">
-	    <thead>
-	      <tr>
-	        <th>Name</th>
-	        <th>Cost</th>
-	        <th>Points</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].name)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
-	      	<td>&#163;{{bestTheoreticalTeam.drivers[0].price}}m</td>
-	      	<td>{{bestTheoreticalTeam.drivers[0].points}}</td>
-	      </tr>
-		  <tr>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].name)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
-	      	<td>&#163;{{bestTheoreticalTeam.drivers[1].price}}m</td>
-	      	<td>{{bestTheoreticalTeam.drivers[1].points}}</td>
-	      </tr>
-		  <tr>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
-	      	<td>&#163;{{bestTheoreticalTeam.car.price}}m</td>
-	      	<td>{{bestTheoreticalTeam.car.points}}</td>
-	      </tr>	      
-		  <tr>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(bestTheoreticalTeam.engine.name)">{{bestTheoreticalTeam.engine.name}}</a></td>
-	      	<td>&#163;{{bestTheoreticalTeam.engine.price}}m</td>
-	      	<td>{{bestTheoreticalTeam.engine.points}}</td>
-	      </tr>
-	      <tr>
-	      	<th>Total Points</th>
-	      	<th>&#163;{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}m</th>
-	      	<th>{{bestTheoreticalTeam.points}}</th>
-	      </tr>
-	    </tbody>
-	  </table>
-	  </div>
   </div>
   
   <div th:replace="modals :: modals" />
