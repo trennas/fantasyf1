@@ -73,7 +73,7 @@ public class MailServiceImpl {
 
 			final Address[] addressArray = new Address[addresses.size()];
 
-    		mimeMessage.addRecipients(Message.RecipientType.TO, addresses.toArray(addressArray));
+    		mimeMessage.addRecipients(Message.RecipientType.BCC, addresses.toArray(addressArray));
         	mimeMessage.setSubject("Fantasy F1 - " + result.getVenue() + (result.isRaceComplete() ? " Race " : " Qualifying ") + "Results");
 
         	final String message = "<font face=\"arial\"><h4>Results From The " + result.getVenue() + "</h4>" +
