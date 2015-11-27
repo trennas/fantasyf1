@@ -22,8 +22,8 @@ public class EventResult implements Comparable<EventResult> {
 	private String venue;
 	private int season;
 	private boolean raceComplete;
-	@OneToOne(targetEntity = Team.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	private Team bestTheoreticalTeam;
+	@OneToOne(targetEntity = TheoreticalTeam.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	private TheoreticalTeam bestTheoreticalTeam;
 	@ManyToOne(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	private Driver fastestLapDriver;
 	@ElementCollection(fetch = FetchType.EAGER)

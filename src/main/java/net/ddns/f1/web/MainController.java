@@ -16,11 +16,13 @@ import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.Team;
+import net.ddns.f1.domain.TheoreticalTeam;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
+import net.ddns.f1.repository.TheoreticalTeamRepository;
 import net.ddns.f1.service.impl.EventServiceImpl;
 import net.ddns.f1.service.impl.LeagueServiceImpl;
 import net.ddns.f1.service.impl.TeamServiceImpl;
@@ -71,6 +73,8 @@ public class MainController implements ErrorController {
 	private EngineRepository engineRepo;
 	@Autowired
 	private EventServiceImpl eventService;
+	@Autowired
+	private TheoreticalTeamRepository theoreticalRepo;
 
 	@RequestMapping("/")
 	public String mainPage() {
@@ -163,8 +167,8 @@ public class MainController implements ErrorController {
 	
 	@RequestMapping({"/besttheoreticalteam"})
 	@ResponseBody
-	public Team getBestTheoreticalTeam() {
-		List<Team> teams = teamRepo.findByName(bestTheoreticalTeamName);
+	public TheoreticalTeam getBestTheoreticalTeam() {
+		List<TheoreticalTeam> teams = theoreticalRepo.findByName(bestTheoreticalTeamName);
 		if(teams.size() > 0) {
 			return teams.get(0);
 		} else {
@@ -174,7 +178,7 @@ public class MainController implements ErrorController {
 	
 	@RequestMapping({"/race/besttheoreticalteamforround"})
 	@ResponseBody
-	public Team getBestTheoreticalTeamForRound(final Integer round) {
+	public TheoreticalTeam getBestTheoreticalTeamForRound(final Integer round) {
 		EventResult result = resultRepo.findByRound(round).get(0);
 		return result.getBestTheoreticalTeam();
 	}

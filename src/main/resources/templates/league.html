@@ -113,27 +113,27 @@
 	      <tr>
 	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].name)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
 	      	<td>&#163;{{bestTheoreticalTeam.drivers[0].price}}m</td>
-	      	<td>{{bestTheoreticalTeam.drivers[0].totalPoints}}</td>
+	      	<td>{{bestTheoreticalTeam.drivers[0].points}}</td>
 	      </tr>
 		  <tr>
 	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].name)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
 	      	<td>&#163;{{bestTheoreticalTeam.drivers[1].price}}m</td>
-	      	<td>{{bestTheoreticalTeam.drivers[1].totalPoints}}</td>
+	      	<td>{{bestTheoreticalTeam.drivers[1].points}}</td>
 	      </tr>
 		  <tr>
 	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
 	      	<td>&#163;{{bestTheoreticalTeam.car.price}}m</td>
-	      	<td>{{bestTheoreticalTeam.car.totalPoints}}</td>
+	      	<td>{{bestTheoreticalTeam.car.points}}</td>
 	      </tr>	      
 		  <tr>
 	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(bestTheoreticalTeam.engine.name)">{{bestTheoreticalTeam.engine.name}}</a></td>
 	      	<td>&#163;{{bestTheoreticalTeam.engine.price}}m</td>
-	      	<td>{{bestTheoreticalTeam.engine.totalPoints}}</td>
+	      	<td>{{bestTheoreticalTeam.engine.points}}</td>
 	      </tr>
 	      <tr>
 	      	<th>Total Points</th>
 	      	<th>&#163;{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}m</th>
-	      	<th>{{bestTheoreticalTeam.totalPoints}}</th>
+	      	<th>{{bestTheoreticalTeam.points}}</th>
 	      </tr>
 	    </tbody>
 	  </table>

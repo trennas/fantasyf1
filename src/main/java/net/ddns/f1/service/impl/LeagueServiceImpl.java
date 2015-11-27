@@ -15,18 +15,19 @@ import net.ddns.f1.domain.PointScorer;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Team;
+import net.ddns.f1.domain.TheoreticalTeam;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.TeamRepository;
+import net.ddns.f1.repository.TheoreticalTeamRepository;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LeagueServiceImpl {
@@ -60,6 +61,9 @@ public class LeagueServiceImpl {
 	
 	@Autowired
 	EventResultRepository resultRepo;
+	
+	@Autowired
+	private TheoreticalTeamRepository theoreticalRepo;
 
 	public List<Team> calculateLeagueStandings() {
 		List<Team> teams = teamService.getAllRealTeams();		
@@ -91,28 +95,26 @@ public class LeagueServiceImpl {
 		List<Car> cars = IteratorUtils.toList(carRepo.findAll().iterator());
 		List<Engine> engines = IteratorUtils.toList(engineRepo.findAll().iterator());				
 
-		Team bestTeamForRound;
+		TheoreticalTeam bestTeamForRound;
 		if(result.getBestTheoreticalTeam() == null) {
-			bestTeamForRound = new Team();
+			bestTeamForRound = new TheoreticalTeam();
 			bestTeamForRound.setName("Best Theoretical Team For " + result.getVenue());
-			bestTeamForRound.setTheoretical(true);
 			result.setBestTheoreticalTeam(bestTeamForRound);
 		} else {
 			bestTeamForRound = result.getBestTheoreticalTeam();
 		}
 
-		Team bestOverallTeam;
-		List<Team> res = teamRepo.findByName(bestTheoreticalTeamName);
+		TheoreticalTeam bestOverallTeam;
+		List<TheoreticalTeam> res = theoreticalRepo.findByName(bestTheoreticalTeamName);
 		if(res.size() < 1) {
-			bestOverallTeam = new Team();
+			bestOverallTeam = new TheoreticalTeam();
 			bestOverallTeam.setName(bestTheoreticalTeamName);
-			bestOverallTeam.setTheoretical(true);
 		} else {
 			bestOverallTeam = res.get(0);
 		}
 		
-		int roundHighScore = 0;
-		long totalHighScore = bestOverallTeam.getTotalPoints();
+		long roundHighScore = 0;
+		long totalHighScore = bestOverallTeam.getPoints() == null ? 0 : bestOverallTeam.getPoints();
 
 		for(Driver driver : allDrivers) {
 			Team team = new Team();
@@ -127,19 +129,18 @@ public class LeagueServiceImpl {
 							team.setEngine(engine);
 							try {							
 								teamService.validateTeamComponents(team);
-								int roundScore = calculateRoundScore(result.getRound(), team);
+								long roundScore = calculateRoundScore(result.getRound(), team);
 								long totalScore = calculateTotalScore(team);
 
 								if(roundScore > roundHighScore) {
 									roundHighScore = roundScore;
 									bestTeamForRound.setComponents(team);
-									bestTeamForRound.getPointsPerEvent().put(result.getRound(), roundScore);
-									bestOverallTeam.getPointsPerEvent().put(result.getRound(), roundScore);
+									bestTeamForRound.setPoints(roundScore);
 								}
 								if(totalScore > totalHighScore) {
 									totalHighScore = totalScore;
 									bestOverallTeam.setComponents(team);
-									bestOverallTeam.setTotalPoints(totalScore);
+									bestOverallTeam.setPoints(totalScore);
 								}
 							} catch (ValidationException e) {
 								continue;
@@ -149,11 +150,11 @@ public class LeagueServiceImpl {
 				}
 			}
 		}		
-		teamRepo.save(bestOverallTeam);
+		theoreticalRepo.save(bestOverallTeam);
 		resultRepo.save(result);
 	}
 	
-	private int calculateRoundScore(int round, Team team) {
+	private long calculateRoundScore(int round, Team team) {
 		return team.getDrivers().get(0).getPointsPerEvent().get(round) +
 			   team.getDrivers().get(1).getPointsPerEvent().get(round) +
 			   team.getCar().getPointsPerEvent().get(round) +
