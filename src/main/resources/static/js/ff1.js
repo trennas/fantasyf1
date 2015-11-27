@@ -21,9 +21,11 @@ function($scope, $http, $location) {
     $scope.getLeagueTable = function() {
         $('#leagueSpinner').show();
         $('#raceSpinner').show();
+        $('#bestTheoreticalTeamSpinner').show();
         $http.get('teams')
             .success(function(response) {
                 $scope.teams = response;
+                $('#leagueSpinner').hide();
                 $scope.getBestTheoreticalTeam();
                 $scope.getEvents();                
             })
@@ -33,15 +35,14 @@ function($scope, $http, $location) {
             });        
     };
     
-    $scope.getBestTheoreticalTeam = function() {
+    $scope.getBestTheoreticalTeam = function() {        
         $http.get('besttheoreticalteam')
             .success(function(response) {
                 $scope.bestTheoreticalTeam = response;
-                $('#leagueSpinner').hide();
-                $scope.getEvents();                
+                $('#bestTheoreticalTeamSpinner').hide();
             })
             .error(function(response, status) {
-                $('#leagueSpinner').hide();
+                $('#bestTheoreticalTeamSpinner').hide();
                 alert("Status: " + status);                
             });        
     };
