@@ -136,6 +136,12 @@ public class LeagueServiceImpl {
 								if(roundScore > roundHighScore) {
 									roundHighScore = roundScore;
 									bestTeamForRound.setComponents(team);
+									
+									bestTeamForRound.getDrivers().get(0).setPoints((long)team.getDrivers().get(0).getPointsPerEvent().get(result.getRound()));
+									bestTeamForRound.getDrivers().get(1).setPoints((long)team.getDrivers().get(1).getPointsPerEvent().get(result.getRound()));
+									bestTeamForRound.getCar().setPoints((long)team.getCar().getPointsPerEvent().get(result.getRound()));
+									bestTeamForRound.getEngine().setPoints((long)team.getEngine().getPointsPerEvent().get(result.getRound()));
+									
 									bestTeamForRound.setPoints(roundScore);
 								}
 								if(totalScore > totalHighScore) {
