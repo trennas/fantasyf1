@@ -72,7 +72,7 @@ public class LeagueServiceImpl {
 			calculateAllResults(teams);
 		}
 		
-		Collections.sort(teams);		
+		Collections.sort(teams);
 		return teams;
 	}
 	
@@ -83,7 +83,8 @@ public class LeagueServiceImpl {
 	private synchronized void calculateAllResults(List<Team> teams) {
 		LOG.info("Recalculating scores...");
 		List<EventResult> results = eventService.getSeasonResults();
-		resetAllScores(teams);		
+		resetAllScores(teams);
+		theoreticalRepo.deleteAll();
 		for(EventResult result : results) {
 			calculateResult(result, teams);
 		}		

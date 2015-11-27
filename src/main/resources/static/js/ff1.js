@@ -9,7 +9,6 @@ function($scope, $http, $location) {
     $scope.event;
     $scope.team = {};
     $scope.bestTheoreticalTeam = {};
-    $scope.bestTheoreticalTeamForRound = {};
     $scope.driver;
     $scope.car;
     $scope.engine;    
@@ -144,6 +143,7 @@ function($scope, $http, $location) {
         $('#raceSpinner').show();
         $scope.teams = [];
         $scope.events = [];
+        $scope.bestTheoreticalTeam = {};
         $http.get('refreshAllResults')
             .success(function(response) {                
                 $scope.status = "All results refreshed";                
