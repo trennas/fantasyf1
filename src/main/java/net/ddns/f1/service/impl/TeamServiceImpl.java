@@ -200,4 +200,37 @@ public class TeamServiceImpl {
 					+ (cost - budget) + "m");
 		}
 	}
+	
+	public void delete(int id) {
+		try {
+			inMemoryUserDetailsManager.deleteUser(findById(id).getEmail());
+			teamRepo.delete(id);
+		} catch(Ff1Exception e) {
+			LOG.error("Couldn't delete team id: " + id + " as it couldn't be determine. " + e.getMessage());
+		}
+	}
+	
+	public Team findByEmail(String email) throws Ff1Exception {
+		List<Team> res = teamRepo.findByEmail(email);
+		if(res.size() == 0) {
+			return res.get(0);
+		} else if(res.size() > 1) {
+			LOG.error("Multiple teams found for email: " + email);
+			throw new Ff1Exception("Multiple teams found for email: " + email);
+		} else {
+			return null;
+		}
+	}
+	
+	public Team findById(int id) throws Ff1Exception {
+		List<Team> res = teamRepo.findById(id);
+		if(res.size() == 0) {
+			return res.get(0);
+		} else if(res.size() > 1) {
+			LOG.error("Multiple teams found for id: " + id);
+			throw new Ff1Exception("Multiple teams found for id: " + id);
+		} else {
+			return null;
+		}
+	}
 }

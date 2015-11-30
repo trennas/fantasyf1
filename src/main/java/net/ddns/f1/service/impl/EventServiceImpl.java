@@ -40,7 +40,7 @@ public class EventServiceImpl {
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
-	
+
 	public EventResult refreshEvent(int round) {
 		LOG.info("Manually invoked refresh result round " + round + "...");		
 		EventResult result = liveRepo.fetchEventResult(round);
@@ -53,6 +53,22 @@ public class EventServiceImpl {
 		return result;
 	}
 	
+	public void save(EventResult result) {
+		eventRepo.save(result);
+	}
+
+	public EventResult findByRound(int round) throws Ff1Exception {
+		List<EventResult> res = eventRepo.findByRound(round);
+		if(res.size() == 1) {
+			return res.get(0);
+		} else if(res.size() > 1) {
+			LOG.error("Multiple events found for round " + round);
+			throw new Ff1Exception("Multiple events found for round " + round);
+		} else {
+			return null;
+		}
+	}
+
 	@Transactional
 	public int deleteEvent(int round) {
 		LOG.info("Manually invoked delete result round " + round + "...");

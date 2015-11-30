@@ -20,10 +20,9 @@ import net.ddns.f1.domain.TheoreticalTeam;
 import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
-import net.ddns.f1.repository.EventResultRepository;
-import net.ddns.f1.repository.TeamRepository;
 import net.ddns.f1.repository.TheoreticalTeamRepository;
 import net.ddns.f1.service.impl.EventServiceImpl;
+import net.ddns.f1.service.impl.Ff1Exception;
 import net.ddns.f1.service.impl.LeagueServiceImpl;
 import net.ddns.f1.service.impl.TeamServiceImpl;
 import net.ddns.f1.service.impl.ValidationException;
@@ -60,11 +59,7 @@ public class MainController implements ErrorController {
 	@Autowired
 	private LeagueServiceImpl leagueService;
 	@Autowired
-	private TeamRepository teamRepo;
-	@Autowired
 	private TeamServiceImpl teamService;
-	@Autowired
-	private EventResultRepository resultRepo;
 	@Autowired
 	private DriverRepository driverRepo;
 	@Autowired
@@ -106,13 +101,13 @@ public class MainController implements ErrorController {
 
 	@RequestMapping(value = {"/editresult/saveresult", "/addresult/saveresult"}, method = RequestMethod.POST)
 	@ResponseBody
-	public EventResult saveResult(@RequestBody final EventResult result) {
+	public EventResult saveResult(@RequestBody final EventResult result) throws Ff1Exception {
 		result.setFastestLapDriver(driverRepo.findByName(result.getFastestLapDriver().getName()).get(0));
-		resultRepo.save(result);
+		eventService.save(result);
 		leagueService.recalculateAllResults();
-		final EventResult savedResult = resultRepo.findByRound(result.getRound()).get(0);
+		final EventResult savedResult = eventService.findByRound(result.getRound());
 		savedResult.setRemarks(result.getRemarks());
-		resultRepo.save(savedResult);
+		eventService.save(savedResult);
 		return event(savedResult.getRound());
 	}
 	
@@ -161,8 +156,8 @@ public class MainController implements ErrorController {
 
 	@RequestMapping({"/team", "/{subpage}/team"})
 	@ResponseBody
-	public Team getTeam(final Integer id) {
-		return maskPreSeasonTeam(teamRepo.findById(id).get(0));
+	public Team getTeam(final Integer id) throws Ff1Exception {
+		return maskPreSeasonTeam(teamService.findById(id));
 	}
 	
 	@RequestMapping({"/besttheoreticalteam"})
@@ -178,8 +173,8 @@ public class MainController implements ErrorController {
 	
 	@RequestMapping({"/race/besttheoreticalteamforround"})
 	@ResponseBody
-	public TheoreticalTeam getBestTheoreticalTeamForRound(final Integer round) {
-		EventResult result = resultRepo.findByRound(round).get(0);
+	public TheoreticalTeam getBestTheoreticalTeamForRound(final Integer round) throws Ff1Exception {
+		EventResult result = eventService.findByRound(round);
 		return result.getBestTheoreticalTeam();
 	}
 
@@ -198,7 +193,7 @@ public class MainController implements ErrorController {
 	@RequestMapping("/deleteteam")
 	@ResponseBody
 	public int deleteTeam(int id) {
-		teamRepo.delete(id);
+		teamService.delete(id);
 		return 1;
 	}
 
@@ -261,8 +256,8 @@ public class MainController implements ErrorController {
 
 	@RequestMapping({"/event", "/{subpage}/event"})
 	@ResponseBody
-	public EventResult event(final int round) {
-		final EventResult result = resultRepo.findByRound(round).get(0);
+	public EventResult event(final int round) throws Ff1Exception {
+		final EventResult result = eventService.findByRound(round);
 		result.setQualifyingOrder(sortPositions(result.getQualifyingOrder()));
 		result.setRaceOrder(sortPositions(result.getRaceOrder()));
 		return result;
@@ -307,9 +302,9 @@ public class MainController implements ErrorController {
 
 	@RequestMapping("/myaccount/myteam")
 	@ResponseBody
-	public Team myTeam() {
-		return teamRepo.findByEmail(SecurityContextHolder
-			.getContext().getAuthentication().getName()).get(0);
+	public Team myTeam() throws Ff1Exception {
+		return teamService.findByEmail(SecurityContextHolder
+			.getContext().getAuthentication().getName());
 	}
 
 	@RequestMapping(value = "/myaccount/savemyteam", method = RequestMethod.POST)
