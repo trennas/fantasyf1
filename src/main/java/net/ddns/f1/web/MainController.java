@@ -386,6 +386,7 @@ public class MainController implements ErrorController {
 			team.setCar(null);
 			team.setEngine(null);
 		}
+		team.setPassword(null);
 		return team;
 	}
 }
