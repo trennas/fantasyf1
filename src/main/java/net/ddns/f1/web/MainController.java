@@ -21,6 +21,7 @@ import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.repository.TheoreticalTeamRepository;
+import net.ddns.f1.service.impl.ComponentsServiceImpl;
 import net.ddns.f1.service.impl.EventServiceImpl;
 import net.ddns.f1.service.impl.Ff1Exception;
 import net.ddns.f1.service.impl.LeagueServiceImpl;
@@ -57,15 +58,11 @@ public class MainController implements ErrorController {
 	private String bestTheoreticalTeamName;
 
 	@Autowired
+	private ComponentsServiceImpl componentService;
+	@Autowired
 	private LeagueServiceImpl leagueService;
 	@Autowired
 	private TeamServiceImpl teamService;
-	@Autowired
-	private DriverRepository driverRepo;
-	@Autowired
-	private CarRepository carRepo;
-	@Autowired
-	private EngineRepository engineRepo;
 	@Autowired
 	private EventServiceImpl eventService;
 	@Autowired
@@ -102,7 +99,7 @@ public class MainController implements ErrorController {
 	@RequestMapping(value = {"/editresult/saveresult", "/addresult/saveresult"}, method = RequestMethod.POST)
 	@ResponseBody
 	public EventResult saveResult(@RequestBody final EventResult result) throws Ff1Exception {
-		result.setFastestLapDriver(driverRepo.findByName(result.getFastestLapDriver().getName()).get(0));
+		result.setFastestLapDriver(componentService.findDriverByName(result.getFastestLapDriver().getName()));
 		eventService.save(result);
 		leagueService.recalculateAllResults();
 		final EventResult savedResult = eventService.findByRound(result.getRound());
@@ -117,7 +114,7 @@ public class MainController implements ErrorController {
 		final EventResult result = new EventResult();		
 		final Map<String, Position> order = new HashMap<String, Position>();
 		final Position pos = new Position(0, false);
-		final List<Driver> drivers = IteratorUtils.toList(driverRepo.findAll().iterator());
+		final List<Driver> drivers = componentService.findAllDrivers();
 		final List<String> remarks = new ArrayList<String>();
 		remarks.add("This result was manually created");
 		Collections.sort(drivers);
@@ -199,22 +196,22 @@ public class MainController implements ErrorController {
 
 	@RequestMapping({"/drivers", "/{subpage}/drivers"})
 	@ResponseBody
-	public List<Driver> drivers() {
+	public List<Driver> drivers() throws Ff1Exception {
 		return drivers(false);
 	}
 	
 	@RequestMapping({"/alldrivers", "/{subpage}/alldrivers"})
 	@ResponseBody
-	public List<Driver> allDrivers() {
+	public List<Driver> allDrivers() throws Ff1Exception {
 		return drivers(true);
 	}
 	
-	private List<Driver> drivers(boolean includeStandin) {
+	private List<Driver> drivers(boolean includeStandin) throws Ff1Exception {
 		List<Driver> drivers;
 		if(includeStandin) {
-			drivers = IteratorUtils.toList(driverRepo.findAll().iterator());
+			drivers = componentService.findAllDrivers();
 		} else {
-			drivers = driverRepo.findByStandin(false);
+			drivers = componentService.findByStandin(false);
 		}
 		Collections.sort(drivers);
 		return drivers;
@@ -222,20 +219,20 @@ public class MainController implements ErrorController {
 
 	@RequestMapping({"/driver", "/{subpage}/driver"})
 	@ResponseBody
-	public Driver driver(final String name) {
-		return driverRepo.findByName(name).get(0);
+	public Driver driver(final String name) throws Ff1Exception {
+		return componentService.findDriverByName(name);
 	}
 
 	@RequestMapping({"/car", "/{subpage}/car"})
 	@ResponseBody
-	public Car car(final String name) {
-		return carRepo.findByName(name).get(0);
+	public Car car(final String name) throws Ff1Exception {
+		return componentService.findCarByName(name);
 	}
 
 	@RequestMapping({"/engine", "/{subpage}/engine"})
 	@ResponseBody
-	public Engine engine(final String name) {
-		return engineRepo.findByName(name).get(0);
+	public Engine engine(final String name) throws Ff1Exception {
+		return componentService.findEngineByName(name);
 	}
 
 	@RequestMapping({"/cars", "/{subpage}/cars"})

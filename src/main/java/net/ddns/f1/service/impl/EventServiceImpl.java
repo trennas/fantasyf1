@@ -36,6 +36,9 @@ public class EventServiceImpl {
 	
 	@Autowired
 	MailServiceImpl mailService;
+	
+	@Autowired
+	ServiceUtils utils;
 
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
@@ -58,15 +61,7 @@ public class EventServiceImpl {
 	}
 
 	public EventResult findByRound(int round) throws Ff1Exception {
-		List<EventResult> res = eventRepo.findByRound(round);
-		if(res.size() == 1) {
-			return res.get(0);
-		} else if(res.size() > 1) {
-			LOG.error("Multiple events found for round " + round);
-			throw new Ff1Exception("Multiple events found for round " + round);
-		} else {
-			return null;
-		}
+		return utils.get(eventRepo.findByRound(round), Integer.toString(round));
 	}
 
 	@Transactional
