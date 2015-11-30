@@ -35,6 +35,28 @@
   </div>
   
   <div class="panel panel-primary" ng-init="getAllDrivers();">
+	<div class="panel-heading">Event Details</div>	
+	<div class="panel-body">  
+		  <table class="table table-striped table-responsive">
+			<tbody>
+			  <tr>
+			 	 <th>Round</th>
+			 	 <td><input id="round" type="text" class="form-control" ng-model="event.round"/></td>
+			  </tr>
+			  <tr>
+			 	 <th>Venue</th>
+			 	 <td><input id="venue" type="text" class="form-control" ng-model="event.venue"/></td>
+			  </tr>
+			  <tr>
+			 	 <th>Race Completed</th>
+			 	 <td><select class="form-control" ng-model="event.raceComplete" ng-options="o.v as o.n for o in [{ n: 'No', v: false }, { n: 'Yes', v: true }]"></select></td>
+			  </tr>
+			</tbody>
+		</table>
+	</div>
+  </div>
+  
+  <div class="panel panel-info" ng-init="getAllDrivers();">
 	<div class="panel-heading">Qualifying Order</div>	
 	<div class="panel-body">  
 		<table class="table table-striped">
@@ -60,7 +82,7 @@
 	</div>
   </div>
 	
-	<div class="panel panel-info">
+	<div class="panel panel-primary">
 		<div class="panel-heading">Race Order</div>	
 		<div class="panel-body">  	
 		<table class="table table-striped">

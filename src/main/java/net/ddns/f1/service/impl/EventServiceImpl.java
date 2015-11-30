@@ -91,7 +91,7 @@ public class EventServiceImpl {
 		boolean newResults = false;
 		final Iterable<EventResult> itr = eventRepo.findAll();
 		List<EventResult> results = IteratorUtils.toList(itr.iterator());
-		
+		Collections.sort(results);
 		if(System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
 			timeOfLastResultCheck = System.currentTimeMillis();
 			LOG.info("Checking for new race results...");
