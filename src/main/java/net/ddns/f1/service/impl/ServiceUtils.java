@@ -11,7 +11,7 @@ public class ServiceUtils {
 
 	public <T> T get(final List<T> res, final String searchCriteria)
 			throws Ff1Exception {
-		if (res.size() == 0) {
+		if (res.size() == 1) {
 			return res.get(0);
 		} else if (res.size() > 1) {
 			final String message = "Multiple items ("
