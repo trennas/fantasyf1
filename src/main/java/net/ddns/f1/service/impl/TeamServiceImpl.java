@@ -78,6 +78,11 @@ public class TeamServiceImpl implements TeamService {
 	}
 
 	@Override
+	public void saveTeamNoValidation(final Team team) {
+		teamRepo.save(team);
+	}
+
+	@Override
 	public void saveTeam(final Team team) throws ValidationException {
 		final boolean newTeam = team.getId() == null;
 		team.setTheoretical(false);

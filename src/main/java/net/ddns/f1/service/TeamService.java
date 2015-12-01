@@ -14,6 +14,8 @@ public interface TeamService {
 
 	public void saveTeam(final Team team) throws ValidationException;
 
+	public void saveTeamNoValidation(final Team team);
+
 	public void validateTeam(final Team team, final boolean newTeam)
 			throws ValidationException;
 

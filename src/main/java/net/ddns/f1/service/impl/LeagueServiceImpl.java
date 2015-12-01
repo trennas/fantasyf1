@@ -378,14 +378,7 @@ public class LeagueServiceImpl implements LeagueService {
 						.get(result.getRound());
 				team.getPointsPerEvent().put(result.getRound(), points);
 				team.setTotalPoints(team.getTotalPoints() + points);
-
-				try {
-					teamService.saveTeam(team);
-				} catch (final ValidationException e) {
-					throw new Ff1Exception(
-							"Unable to save existing team score due to validation error: "
-									+ e.getMessage());
-				}
+				teamService.saveTeamNoValidation(team);
 			}
 		}
 		calculateBestTheoreticalTeam(result);
