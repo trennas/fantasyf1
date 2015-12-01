@@ -4,7 +4,10 @@ import java.util.Map;
 
 public interface PointScorer {
 	long getTotalPoints();
+
 	Map<Integer, Integer> getPointsPerEvent();
-	void setTotalPoints(long totalPoints);
-	void setPointsPerEvent(Map<Integer, Integer> pointsPerEvent);	
+
+	void setTotalPoints(final long totalPoints);
+
+	void setPointsPerEvent(final Map<Integer, Integer> pointsPerEvent);
 }

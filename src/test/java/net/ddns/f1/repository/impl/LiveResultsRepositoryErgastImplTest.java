@@ -3,7 +3,6 @@ package net.ddns.f1.repository.impl;
 import static org.junit.Assert.assertEquals;
 import net.ddns.f1.FantasyF1Application;
 import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.repository.impl.LiveResultsRepositoryErgastImpl;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,10 +22,12 @@ public class LiveResultsRepositoryErgastImplTest {
 	@Autowired
 	LiveResultsRepositoryErgastImpl service;
 
-	@Test @Ignore
-	public void test() {
+	@Test
+	@Ignore
+	public void test() throws Exception {
 		final EventResult result = service.fetchEventResult(17);
-		assertEquals("Nico Rosberg", result.getFastestLapDriver().getName().toString());
+		assertEquals("Nico Rosberg", result.getFastestLapDriver().getName()
+				.toString());
 	}
 
 }

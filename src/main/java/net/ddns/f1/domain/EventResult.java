@@ -22,7 +22,7 @@ public class EventResult implements Comparable<EventResult> {
 	private String venue;
 	private int season;
 	private boolean raceComplete;
-	@OneToOne(targetEntity = TheoreticalTeam.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToOne(targetEntity = TheoreticalTeam.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private TheoreticalTeam bestTheoreticalTeam;
 	@ManyToOne(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	private Driver fastestLapDriver;
@@ -35,22 +35,22 @@ public class EventResult implements Comparable<EventResult> {
 
 	@Override
 	public int compareTo(final EventResult otherEvent) {
-		if (this.round > otherEvent.getRound()) {
+		if (round > otherEvent.getRound()) {
 			return 1;
-		} else if (this.round < otherEvent.getRound()) {
+		} else if (round < otherEvent.getRound()) {
 			return -1;
 		} else {
 			return 0;
 		}
 	}
-	
-	public void addRemark(String remark) {
-		if(this.remarks == null) {
-			this.remarks = new ArrayList<String>();
+
+	public void addRemark(final String remark) {
+		if (remarks == null) {
+			remarks = new ArrayList<String>();
 		}
-		
-		if(!this.remarks.contains(remark)) {
-			this.remarks.add(remark);
+
+		if (!remarks.contains(remark)) {
+			remarks.add(remark);
 		}
 	}
 }

@@ -16,11 +16,11 @@ public class Engine implements Comparable<Engine>, PointScorer {
 	@Id
 	private String name;
 	private int price;
-	
-	private long totalPoints;	
+
+	private long totalPoints;
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();
-	
+
 	public Engine() {
 	}
 
@@ -31,8 +31,8 @@ public class Engine implements Comparable<Engine>, PointScorer {
 
 	@Override
 	public boolean equals(final Object otherDriver) {
-		if(otherDriver instanceof Engine) {
-			if(this.name.equalsIgnoreCase(((Engine) otherDriver).getName())) {
+		if (otherDriver instanceof Engine) {
+			if (name.equalsIgnoreCase(((Engine) otherDriver).getName())) {
 				return true;
 			}
 		}
@@ -41,7 +41,7 @@ public class Engine implements Comparable<Engine>, PointScorer {
 
 	@Override
 	public int hashCode() {
-		return this.name.hashCode();
+		return name.hashCode();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class Engine implements Comparable<Engine>, PointScorer {
 	}
 
 	@Override
-	public int compareTo(Engine o) {
-		return this.name.compareToIgnoreCase(o.getName());
+	public int compareTo(final Engine o) {
+		return name.compareToIgnoreCase(o.getName());
 	}
 }

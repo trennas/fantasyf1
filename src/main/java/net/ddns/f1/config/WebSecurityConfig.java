@@ -29,101 +29,107 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Value("${auth.main-page-role-expression}")
 	private String roleExpression;
-	
+
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
-	
+
 	@Value("${auth.admin-role}")
 	private String adminRole;
-	
+
 	@Autowired
 	private TeamRepository teamRepo;
 
-    @Override
-    protected void configure(final HttpSecurity http) throws Exception {		
-		 http.csrf()
-		 .disable()
-		 .authorizeRequests()
-		 .antMatchers("/css/**")
-		 .permitAll()
-		 .and()
-		 .authorizeRequests()
-		 .antMatchers("/js/**")
-		 .permitAll()
-		 .and()
-		 .authorizeRequests()
-		 .antMatchers("/image/**")
-		 .permitAll()
-		 .and()
-		 .authorizeRequests()
-		 .antMatchers("/fonts/**")
-		 .permitAll()
-		 .and()
-		 .authorizeRequests()
-		 .antMatchers("/loginError/**")
-		 .permitAll()
-		 .and()
-		 .authorizeRequests()
-		 .antMatchers("/error/**")
-		 .permitAll()
-		 .and()
-		 .authorizeRequests()
-		 .antMatchers("/lookupAddresses/**")
-		 .permitAll()		 
-		 .and()
-		 .exceptionHandling()
-		 .accessDeniedPage("/accessError")
-		 .and()
-		 .formLogin()
-		 .loginPage("/login")
-		 .failureUrl("/loginError")
-		 .permitAll()
-		 .and()
-		 .logout()
-		 .logoutRequestMatcher(
-		 new AntPathRequestMatcher("/logout", "GET"))
-		 .permitAll()
-		 
-		 .and().authorizeRequests().antMatchers("/editresult/**", "/addresult/**", "/deleteteam/**","/refreshAllResults/**")
-		 .hasAuthority(adminRole)
-		 
-		 .and().authorizeRequests().antMatchers("/myaccount/**")
-		 .hasAuthority(myAccountRole)
-		 .and().authorizeRequests().antMatchers("/myaccount/myteam/**")
-		 .hasAuthority(myAccountRole)
-		 .and().authorizeRequests().antMatchers("/myaccount/savemyteam/**")
-		 .hasAuthority(myAccountRole)
-		 
-		 .and().authorizeRequests().antMatchers("/", "/register/**", "/register/savemyteam/**")
-		 .access(roleExpression);
-		 
-		 http.headers()
-		 .addHeaderWriter(
-		 new XFrameOptionsHeaderWriter(
-		 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
-    }
-    
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(inMemoryUserDetailsManager());
-    }
-    
-    @Bean
-    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {    	
-        final List<UserDetails> users = new ArrayList<UserDetails>();
-        
-        Iterator<Team> itr = teamRepo.findAll().iterator();
-        while(itr.hasNext()) {
-        	Team team = itr.next();
-        	if(!team.isTheoretical()) {
-	        	List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-				for(String role : team.getRoles()) {
+	@Override
+	protected void configure(final HttpSecurity http) throws Exception {
+		http.csrf()
+				.disable()
+				.authorizeRequests()
+				.antMatchers("/css/**")
+				.permitAll()
+				.and()
+				.authorizeRequests()
+				.antMatchers("/js/**")
+				.permitAll()
+				.and()
+				.authorizeRequests()
+				.antMatchers("/image/**")
+				.permitAll()
+				.and()
+				.authorizeRequests()
+				.antMatchers("/fonts/**")
+				.permitAll()
+				.and()
+				.authorizeRequests()
+				.antMatchers("/loginError/**")
+				.permitAll()
+				.and()
+				.authorizeRequests()
+				.antMatchers("/error/**")
+				.permitAll()
+				.and()
+				.authorizeRequests()
+				.antMatchers("/lookupAddresses/**")
+				.permitAll()
+				.and()
+				.exceptionHandling()
+				.accessDeniedPage("/accessError")
+				.and()
+				.formLogin()
+				.loginPage("/login")
+				.failureUrl("/loginError")
+				.permitAll()
+				.and()
+				.logout()
+				.logoutRequestMatcher(
+						new AntPathRequestMatcher("/logout", "GET"))
+				.permitAll()
+
+				.and()
+				.authorizeRequests()
+				.antMatchers("/editresult/**", "/addresult/**",
+						"/deleteteam/**", "/refreshAllResults/**")
+				.hasAuthority(adminRole)
+
+				.and().authorizeRequests().antMatchers("/myaccount/**")
+				.hasAuthority(myAccountRole).and().authorizeRequests()
+				.antMatchers("/myaccount/myteam/**")
+				.hasAuthority(myAccountRole).and().authorizeRequests()
+				.antMatchers("/myaccount/savemyteam/**")
+				.hasAuthority(myAccountRole)
+
+				.and().authorizeRequests()
+				.antMatchers("/", "/register/**", "/register/savemyteam/**")
+				.access(roleExpression);
+
+		http.headers()
+				.addHeaderWriter(
+						new XFrameOptionsHeaderWriter(
+								XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
+	}
+
+	@Override
+	protected void configure(final AuthenticationManagerBuilder auth)
+			throws Exception {
+		auth.userDetailsService(inMemoryUserDetailsManager());
+	}
+
+	@Bean
+	public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
+		final List<UserDetails> users = new ArrayList<UserDetails>();
+
+		final Iterator<Team> itr = teamRepo.findAll().iterator();
+		while (itr.hasNext()) {
+			final Team team = itr.next();
+			if (!team.isTheoretical()) {
+				final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+				for (final String role : team.getRoles()) {
 					authorities.add(new SimpleGrantedAuthority(role));
 				}
-	        	users.add(new User(team.getEmail(), team.getPassword(), authorities));
-        	}
-        }
-        
-        return new InMemoryUserDetailsManager(users);
-    }
+				users.add(new User(team.getEmail(), team.getPassword(),
+						authorities));
+			}
+		}
+
+		return new InMemoryUserDetailsManager(users);
+	}
 }

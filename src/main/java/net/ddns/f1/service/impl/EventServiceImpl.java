@@ -8,6 +8,9 @@ import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.repository.CorrectionRepository;
 import net.ddns.f1.repository.EventResultRepository;
 import net.ddns.f1.repository.LiveResultsRepository;
+import net.ddns.f1.service.EventService;
+import net.ddns.f1.service.LeagueService;
+import net.ddns.f1.service.MailService;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.Logger;
@@ -17,26 +20,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class EventServiceImpl {
-	
-	private static final Logger LOG = Logger
-			.getLogger(EventServiceImpl.class);
-	
+public class EventServiceImpl implements EventService {
+
+	private static final Logger LOG = Logger.getLogger(EventServiceImpl.class);
+
 	@Autowired
 	EventResultRepository eventRepo;
 
 	@Autowired
 	LiveResultsRepository liveRepo;
-	
+
 	@Autowired
 	CorrectionRepository correctionRepo;
-	
+
 	@Autowired
-	LeagueServiceImpl leagueService;
-	
+	LeagueService leagueService;
+
 	@Autowired
-	MailServiceImpl mailService;
-	
+	MailService mailService;
+
 	@Autowired
 	ServiceUtils utils;
 
@@ -44,10 +46,11 @@ public class EventServiceImpl {
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
 
-	public EventResult refreshEvent(int round) {
-		LOG.info("Manually invoked refresh result round " + round + "...");		
-		EventResult result = liveRepo.fetchEventResult(round);
-		if(result != null) {			
+	@Override
+	public EventResult refreshEvent(final int round) throws Ff1Exception {
+		LOG.info("Manually invoked refresh result round " + round + "...");
+		final EventResult result = liveRepo.fetchEventResult(round);
+		if (result != null) {
 			applyCorrections(result);
 			eventRepo.deleteByRound(round);
 			eventRepo.save(result);
@@ -55,20 +58,23 @@ public class EventServiceImpl {
 		}
 		return result;
 	}
-	
-	public void save(EventResult result) {
+
+	@Override
+	public void save(final EventResult result) {
 		eventRepo.save(result);
 	}
 
-	public EventResult findByRound(int round) throws Ff1Exception {
+	@Override
+	public EventResult findByRound(final int round) throws Ff1Exception {
 		return utils.get(eventRepo.findByRound(round), Integer.toString(round));
 	}
 
+	@Override
 	@Transactional
-	public int deleteEvent(int round) {
+	public int deleteEvent(final int round) throws Ff1Exception {
 		LOG.info("Manually invoked delete result round " + round + "...");
-		EventResult res = eventRepo.findByRound(round).get(0);
-		if(res != null) {
+		final EventResult res = eventRepo.findByRound(round).get(0);
+		if (res != null) {
 			eventRepo.deleteByRound(round);
 			LOG.info("Deleted result round " + round);
 			leagueService.recalculateAllResults();
@@ -78,19 +84,21 @@ public class EventServiceImpl {
 			return 0;
 		}
 	}
-	
-	public synchronized void refreshAllEvents() {
+
+	@Override
+	public synchronized void refreshAllEvents() throws Ff1Exception {
 		LOG.info("Manually invoked refresh of all results..");
 		eventRepo.deleteAll();
 		timeOfLastResultCheck = 0;
 		checkForNewResults(false);
 		leagueService.recalculateAllResults();
 	}
-	
-	public synchronized int updateResults() {
+
+	@Override
+	public synchronized int updateResults() throws Ff1Exception {
 		LOG.info("Updating results..");
 		timeOfLastResultCheck = 0;
-		if(checkForNewResults(true)) {
+		if (checkForNewResults(true)) {
 			leagueService.recalculateAllResults();
 			return 1;
 		} else {
@@ -98,19 +106,21 @@ public class EventServiceImpl {
 		}
 	}
 
-	public synchronized boolean checkForNewResults(boolean emailAlerts) {
+	@Override
+	public synchronized boolean checkForNewResults(final boolean emailAlerts)
+			throws Ff1Exception {
 		boolean newResults = false;
 		final Iterable<EventResult> itr = eventRepo.findAll();
-		List<EventResult> results = IteratorUtils.toList(itr.iterator());
+		final List<EventResult> results = IteratorUtils.toList(itr.iterator());
 		Collections.sort(results);
-		if(System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
+		if (System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
 			timeOfLastResultCheck = System.currentTimeMillis();
 			LOG.info("Checking for new race results...");
-			if(results.size() > 0) {
-				EventResult result = results.get(results.size()-1);
-				if(!result.isRaceComplete()) {
+			if (results.size() > 0) {
+				EventResult result = results.get(results.size() - 1);
+				if (!result.isRaceComplete()) {
 					result = liveRepo.fetchEventResult(result.getRound());
-					if(result.isRaceComplete()) {
+					if (result.isRaceComplete()) {
 						applyCorrections(result);
 						eventRepo.save(result);
 						mailService.sendNewResultsMail(result);
@@ -118,7 +128,7 @@ public class EventServiceImpl {
 					}
 				}
 			}
-			
+
 			EventResult result = liveRepo.fetchEventResult(results.size() + 1);
 			if (result != null) {
 				int num = 0;
@@ -127,12 +137,13 @@ public class EventServiceImpl {
 					num++;
 					applyCorrections(result);
 					results.add(result);
-					eventRepo.save(result);					
+					eventRepo.save(result);
 					result = liveRepo.fetchEventResult(result.getRound() + 1);
 				}
-				if(emailAlerts && num == 1) {
+				if (emailAlerts && num == 1) {
 					// Don't bombarde with emails pulling in multiple results
-					mailService.sendNewResultsMail(results.get(results.size() - 1));
+					mailService
+							.sendNewResultsMail(results.get(results.size() - 1));
 				}
 				newResults = true;
 			} else {
@@ -142,23 +153,27 @@ public class EventServiceImpl {
 		return newResults;
 	}
 
+	@Override
 	public synchronized List<EventResult> getSeasonResults() {
 		final Iterable<EventResult> itr = eventRepo.findAll();
-		List<EventResult> results = IteratorUtils.toList(itr.iterator());
+		final List<EventResult> results = IteratorUtils.toList(itr.iterator());
 		Collections.sort(results);
 		return results;
 	}
-	
-	private void applyCorrections(EventResult result) {
-		List<Correction> corrections = correctionRepo.findByRound(result.getRound());
-		if(corrections.size() > 0) {
+
+	private void applyCorrections(final EventResult result) {
+		final List<Correction> corrections = correctionRepo.findByRound(result
+				.getRound());
+		if (corrections.size() > 0) {
 			LOG.info("Applying corrections to event: " + result.getVenue());
-			for(Correction correction : corrections) {
-				result.getQualifyingOrder().put(correction.getDriver(), correction.getPositions().get(0));
-				result.getRaceOrder().put(correction.getDriver(), correction.getPositions().get(1));
-				List<String> remarks = result.getRemarks();
-				for(String remark : correction.getRemarks()) {					
-					if(!remarks.remove(remark)) {						
+			for (final Correction correction : corrections) {
+				result.getQualifyingOrder().put(correction.getDriver(),
+						correction.getPositions().get(0));
+				result.getRaceOrder().put(correction.getDriver(),
+						correction.getPositions().get(1));
+				final List<String> remarks = result.getRemarks();
+				for (final String remark : correction.getRemarks()) {
+					if (!remarks.remove(remark)) {
 						remarks.add(remark);
 					}
 				}

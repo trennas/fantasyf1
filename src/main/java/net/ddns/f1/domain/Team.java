@@ -24,27 +24,28 @@ import net.ddns.f1.service.impl.ValidationException;
 
 @Entity
 @Data
-public class Team  implements Comparable<Team>, PointScorer {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+public class Team implements Comparable<Team>, PointScorer {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Integer id;
-	@Column(unique=true)
+	@Column(unique = true)
 	private String name;
-	
+
 	private boolean theoretical;
-	
+
 	private String owner;
-	
-	@Column(unique=true)
+
+	@Column(unique = true)
 	private String email;
-	
+
 	private String password;
-	
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles;
-	
+
 	@Transient
 	private String confirmPassword;
-	
+
 	@ManyToMany(targetEntity = Driver.class, fetch = FetchType.EAGER)
 	@OrderColumn
 	private List<Driver> drivers;
@@ -53,39 +54,41 @@ public class Team  implements Comparable<Team>, PointScorer {
 	@OneToOne(targetEntity = Engine.class, fetch = FetchType.EAGER)
 	private Engine engine;
 
-	private long totalPoints;	
+	private long totalPoints;
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();
 
 	public Team() {
 	}
 
-	public Team(final String name, final String owner, final String email, final String password, final List<Driver> drivers, final Car car,
+	public Team(final String name, final String owner, final String email,
+			final String password, final List<Driver> drivers, final Car car,
 			final Engine engine) throws ValidationException {
 		this.name = name;
 		this.owner = owner;
 		this.email = email;
 		this.password = password;
-		this.roles = new ArrayList<String>(Arrays.asList("user"));
-		this.confirmPassword = password;
+		roles = new ArrayList<String>(Arrays.asList("user"));
+		confirmPassword = password;
 		this.drivers = drivers;
 		this.car = car;
 		this.engine = engine;
-		this.theoretical = false;
+		theoretical = false;
 	}
-	
+
+	@Override
 	public Map<Integer, Integer> getPointsPerEvent() {
-		if(pointsPerEvent == null) {
+		if (pointsPerEvent == null) {
 			pointsPerEvent = new HashMap<Integer, Integer>();
 		}
 		return pointsPerEvent;
 	}
-	
-	public void setComponents(Team team) {
-		this.setDrivers(team.getDrivers());
-		this.setCar(team.getCar());		
-		this.setEngine(team.getEngine());
-		this.setTotalPoints(team.getTotalPoints());
+
+	public void setComponents(final Team team) {
+		setDrivers(team.getDrivers());
+		setCar(team.getCar());
+		setEngine(team.getEngine());
+		setTotalPoints(team.getTotalPoints());
 	}
 
 	@Override
@@ -94,10 +97,10 @@ public class Team  implements Comparable<Team>, PointScorer {
 	}
 
 	@Override
-	public int compareTo(Team otherTeam) {
-		if (this.totalPoints > otherTeam.getTotalPoints()) {
+	public int compareTo(final Team otherTeam) {
+		if (totalPoints > otherTeam.getTotalPoints()) {
 			return -1;
-		} else if (this.totalPoints < otherTeam.getTotalPoints()) {
+		} else if (totalPoints < otherTeam.getTotalPoints()) {
 			return 1;
 		} else {
 			return 0;

@@ -19,19 +19,20 @@ public class Driver implements Comparable<Driver>, PointScorer {
 	private int number;
 	private String name;
 	private int price;
-	private boolean standin;	
+	private boolean standin;
 
 	@ManyToOne(targetEntity = Car.class, fetch = FetchType.EAGER)
 	private Car car;
 	private int fastestLaps;
-	private long totalPoints;	
+	private long totalPoints;
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();
 
 	public Driver() {
 	}
 
-	public Driver(final String name, final int number, final Car car, final int price, final boolean standin) {
+	public Driver(final String name, final int number, final Car car,
+			final int price, final boolean standin) {
 		this.number = number;
 		this.name = name;
 		this.car = car;
@@ -51,11 +52,11 @@ public class Driver implements Comparable<Driver>, PointScorer {
 
 	@Override
 	public int hashCode() {
-		return this.name.hashCode();
+		return name.hashCode();
 	}
 
 	@Override
-	public int compareTo(Driver o) {
-		return this.name.compareToIgnoreCase(o.getName());
+	public int compareTo(final Driver o) {
+		return name.compareToIgnoreCase(o.getName());
 	}
 }

@@ -9,5 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface EventResultRepository extends
 		CrudRepository<EventResult, Integer> {
 	List<EventResult> findByRound(final Integer round);
+
 	void deleteByRound(final Integer round);
 }

@@ -7,15 +7,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ServiceUtils {
-	private static final Logger LOG = Logger
-			.getLogger(ServiceUtils.class);
-	
-	public <T> T get(List<T> res, String searchCriteria) throws Ff1Exception {
-		if(res.size() == 0) {
+	private static final Logger LOG = Logger.getLogger(ServiceUtils.class);
+
+	public <T> T get(final List<T> res, final String searchCriteria)
+			throws Ff1Exception {
+		if (res.size() == 0) {
 			return res.get(0);
-		} else if(res.size() > 1) {
-			String message = "Multiple items (" + res.getClass().getName() + 
-					") found for searchCriteria: " + searchCriteria;
+		} else if (res.size() > 1) {
+			final String message = "Multiple items ("
+					+ res.getClass().getName() + ") found for searchCriteria: "
+					+ searchCriteria;
 			LOG.error(message);
 			throw new Ff1Exception(message);
 		} else {

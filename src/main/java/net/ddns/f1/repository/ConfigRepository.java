@@ -1,6 +1,7 @@
 package net.ddns.f1.repository;
 
 import java.util.List;
+
 import net.ddns.f1.domain.Config;
 
 import org.springframework.data.repository.CrudRepository;

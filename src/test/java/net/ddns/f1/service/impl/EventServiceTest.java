@@ -2,7 +2,6 @@ package net.ddns.f1.service.impl;
 
 import net.ddns.f1.FantasyF1Application;
 import net.ddns.f1.repository.EventResultRepository;
-import net.ddns.f1.service.impl.EventServiceImpl;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,11 +20,12 @@ public class EventServiceTest {
 
 	@Autowired
 	private EventServiceImpl serv;
-	
+
 	@Autowired
 	private EventResultRepository eventRepo;
 
-	@Test @Ignore
+	@Test
+	@Ignore
 	public void getSeasonResultsTest() {
 		serv.getSeasonResults();
 	}

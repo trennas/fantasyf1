@@ -17,11 +17,11 @@ public class Car implements Comparable<Car>, PointScorer {
 	@Id
 	private String name;
 	private int price;
-	@OneToOne(targetEntity=Engine.class, fetch=FetchType.EAGER)
+	@OneToOne(targetEntity = Engine.class, fetch = FetchType.EAGER)
 	private Engine engine;
-	
+
 	private int bothCarsFinishBonuses;
-	private long totalPoints;	
+	private long totalPoints;
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Integer, Integer> pointsPerEvent = new LinkedHashMap<Integer, Integer>();
 
@@ -40,7 +40,7 @@ public class Car implements Comparable<Car>, PointScorer {
 	}
 
 	@Override
-	public int compareTo(Car o) {
-		return this.name.compareToIgnoreCase(o.getName());
+	public int compareTo(final Car o) {
+		return name.compareToIgnoreCase(o.getName());
 	}
 }
