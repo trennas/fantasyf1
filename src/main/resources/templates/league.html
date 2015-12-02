@@ -27,14 +27,14 @@
 	  	<script src="js/respond.min.js"></script>
 		<![endif]-->
 </head>
-<body ng-app="ff1App" ng-controller="controller" ng-init="getSeasonStarted();">		
+<body ng-app="ff1App" ng-controller="controller" ng-init="getSeasonStarted();getSeasonStartDate();">		
 	<div th:replace="header :: header" />
 	<div id="leagueSpinner" class="spinner-loader pull-right">Loading...</div>
 	<!--div sec:authorize="isAuthenticated()">Authorities: <span sec:authentication="principal.authorities">authorities</span></div-->
 	<div class="panel panel-primary" ng-init="getLeagueTable();">
 	<div class="panel-heading text-center">League Table</div>	
 	<div class="panel-body">
-		<h4 class="text-info text-center" ng-if="!seasonStarted">Team components will be shown once the registration cut-off has passed</h4>
+		<h4 class="text-info text-center" ng-if="!seasonStarted">Team components will be shown once the registration cut-off has passed ({{seasonStartDate|date:'mediumDate'}})</h4>
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
