@@ -61,17 +61,17 @@
 	    <thead>
 	      <tr>
 	      	<th>Bonus Type</th>
-	      	<th>Points</th>
+	      	<th class="text-center">Points</th>
 	      </tr>
 	    </thead>
 	    <tbody>
 	      <tr>
 	      	<td>Both Cars Finish Bonus</td>
-	      	<td>{{rules.bothCarsFinishedBonus}}</td>
+	      	<td class="text-center">{{rules.bothCarsFinishedBonus}}</td>
 	      </tr>
 	      <tr>
 	      	<td>Fastest Lap Bonus</td>
-	      	<td>{{rules.fastestLapBonus}}</td>
+	      	<td class="text-center">{{rules.fastestLapBonus}}</td>
 	      </tr>
 	    </tbody>
 	  </table>
@@ -94,16 +94,16 @@
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
-	      	<th>Position</th>
-	      	<th>Qual Points</th>
-	      	<th>Race Points</th>
+	      	<th class="text-center">Position</th>
+	      	<th class="text-center">Qual Points</th>
+	      	<th class="text-center">Race Points</th>
 	      </tr>
 	    </thead>
 	    <tbody>	      
 	      <tr ng-repeat="(position, points) in rules.driverQualPoints">
-	      	<td>{{position}}</td>
-	      	<td>{{points}}</td>
-	      	<td>{{rules.driverRacePoints[position]}}</td>
+	      	<td class="text-center">{{position}}</td>
+	      	<td class="text-center">{{points}}</td>
+	      	<td class="text-center">{{rules.driverRacePoints[position]}}</td>
 	      </tr>
 	    </tbody>
 	  </table>
@@ -118,16 +118,16 @@
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
-	      	<th>Position</th>
-	      	<th>Qual Points</th>
-	      	<th>Race Points</th>
+	      	<th class="text-center">Position</th>
+	      	<th class="text-center">Qual Points</th>
+	      	<th class="text-center">Race Points</th>
 	      </tr>
 	    </thead>
 	    <tbody>	      
 	      <tr ng-repeat="(position, points) in rules.carQualPoints">
-	      	<td>{{position}}</td>
-	      	<td>{{points}}</td>
-	      	<td>{{rules.carRacePoints[position]}}</td>
+	      	<td class="text-center">{{position}}</td>
+	      	<td class="text-center">{{points}}</td>
+	      	<td class="text-center">{{rules.carRacePoints[position]}}</td>
 	      </tr>
 	    </tbody>
 	  </table>
@@ -142,16 +142,16 @@
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
-	      	<th>Position</th>
-	      	<th>Qual Points</th>
-	      	<th>Race Points</th>
+	      	<th class="text-center">Position</th>
+	      	<th class="text-center">Qual Points</th>
+	      	<th class="text-center">Race Points</th>
 	      </tr>
 	    </thead>
 	    <tbody>	      
 	      <tr ng-repeat="(position, points) in rules.engineQualPoints">
-	      	<td>{{position}}</td>
-	      	<td>{{points}}</td>
-	      	<td>{{rules.engineRacePoints[position]}}</td>
+	      	<td class="text-center">{{position}}</td>
+	      	<td class="text-center">{{points}}</td>
+	      	<td class="text-center">{{rules.engineRacePoints[position]}}</td>
 	      </tr>
 	    </tbody>
 	  </table>

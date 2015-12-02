@@ -46,8 +46,8 @@
 	        <th>Car</th>
 	        <th>Engine</th>
 	        <th>Cost</th>
-	        <th>Last Race</th>
-	        <th>Overall</th>
+	        <th class="text-center">Last Race</th>
+	        <th class="text-center">Overall</th>
 	      </tr>
 	    </thead>
 	    <tbody>
@@ -58,8 +58,9 @@
 	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].name)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
 	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(bestTheoreticalTeam.engine.name)">{{bestTheoreticalTeam.engine.name}}</a></td>
-	        <td colspan="2">&#163;{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}m</td>
-	        <td>{{bestTheoreticalTeam.points}}</td>
+	        <td class="text-center">&#163;{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}m</td>
+	        <td></td>
+	        <td class="text-center">{{bestTheoreticalTeam.points}}</td>
 	      </tr>
 	      <tr ng-repeat="team in teams">
 	      	<td>{{$index + 1}}</td>
@@ -69,9 +70,9 @@
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[1].name)">{{team.drivers[1].name}}</a></td>	        
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(team.car.name)">{{team.car.name}}</a></td>
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(team.engine.name)">{{team.engine.name}}</a></td>
-	        <td>&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</td>
-	        <td>{{team.pointsPerEvent[getLength(team.pointsPerEvent)]}}</td>
-	        <td>{{team.totalPoints}}</td>
+	        <td class="text-center">&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</td>
+	        <td class="text-center">{{team.pointsPerEvent[getLength(team.pointsPerEvent)]}}</td>
+	        <td class="text-center">{{team.totalPoints}}</td>
 	      </tr>
 	    </tbody>
 	  </table>
@@ -85,18 +86,18 @@
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
-	        <th>Round</th>
-	        <th>Circuit</th>
+	        <th class="text-center">Round</th>
+	        <th class="text-center">Circuit</th>
 	        <th>Remarks</th>
 	        <th>Race Complete</th>
-	        <th>Fastest Lap</th>
+	        <th class="text-center">Fastest Lap</th>
 	      </tr>
 	    </thead>
 	    <tbody>
 	      <tr ng-repeat="event in events">
-	        <td>{{event.round}}</td>
-	        <td><a class="a-unstyled" th:href="@{/race#?round={{event.round}}}">{{event.venue}}</a></td>
-	        <td><a class="a-unstyled" href="#" ng-if="event.remarks.length > 0" data-toggle="modal" data-target="#remarksModal" ng-click="getEvent(event.round)">
+	        <td class="text-center">{{event.round}}</td>
+	        <td class="text-center"><a class="a-unstyled" th:href="@{/race#?round={{event.round}}}">{{event.venue}}</a></td>
+	        <td><a class="a-unstyled text-centre" href="#" ng-if="event.remarks.length > 0" data-toggle="modal" data-target="#remarksModal" ng-click="getEvent(event.round)">
 	        	<span class="glyphicon glyphicon-list-alt"/>
 	        	</a>
 	        </td>
@@ -104,7 +105,7 @@
 	        	<span ng-if="event.raceComplete" class="glyphicon glyphicon-ok"></span>
 	        	<span ng-if="!event.raceComplete" class="glyphicon glyphicon-remove"></span>
 	        </td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(event.fastestLapDriver.name)">{{event.fastestLapDriver.name}}</a></td>
+	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(event.fastestLapDriver.name)">{{event.fastestLapDriver.name}}</a></td>
 	      </tr>
 	    </tbody>
 	  </table>
