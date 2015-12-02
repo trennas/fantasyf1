@@ -3,13 +3,16 @@ package net.ddns.f1.domain;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
-
 import lombok.Data;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 @Data
 public final class Rules {
+	@Value("${budget}")
+	private int budget;
 	private final Integer fastestLapBonus = 50;
 	private final Integer bothCarsFinishedBonus = 50;
 

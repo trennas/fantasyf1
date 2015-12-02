@@ -34,15 +34,24 @@
 	<div class="panel-heading text-center">Rules</div>	
 	<div class="panel-body">
 	<div class="col-xs-8">
-		<p>Pick a team consisting of 2 drivers, 1 car, and 1 engine</p>		
-		<p>The budget for each team is &#163;30m</p>
-		<p>You score (engine) points from every driver using your chosen engine</p>
-		<p>You score a 'both cars finished' bonus if both of your cars are classified at the end of the race</p>
-		<p>You score a 'fastest lap bonus' if either of your drivers sets the fastest lap of the race</p>
-		<p>You cannot pick the same driver twice</p>
-		<p>Neither driver may use your chosen engine</p>
-		<p>Your car may not use your chosen engine</p>
-		<p>Drivers, Cars and Engines that are Not Classified do not score points for that session</p>
+		<div class="panel panel-info">
+		<div class="panel-heading text-center">Teams</div>	
+		<div class="panel-body">
+		<table class="table table-striped">
+			<tbody>
+				<tr><td>Pick a team consisting of 2 drivers, 1 car, and 1 engine</td></tr>		
+				<tr><td>The budget for each team is &#163;{{rules.budget}}m</td></tr>
+				<tr><td>You score (engine) points from every driver using your chosen engine</td></tr>
+				<tr><td>You score a 'both cars finished' bonus if both of your cars are classified at the end of the race</td></tr>
+				<tr><td>You score a 'fastest lap bonus' if either of your drivers set the fastest lap of the race</td></tr>
+				<tr><td>You cannot pick the same driver twice</td></tr>
+				<tr><td>Neither driver may use your chosen engine</td></tr>
+				<tr><td>Your car may not use your chosen engine</td></tr>
+				<tr><td>Drivers, Cars and Engines that are Not Classified do not score points for that session</td></tr>
+			</tbody>
+		</table>
+		</div>
+		</div>
 	</div>
 	<div class="col-xs-4">
 		<div class="panel panel-info">
@@ -55,7 +64,7 @@
 	      	<th>Points</th>
 	      </tr>
 	    </thead>
-	    <tbody>	      
+	    <tbody>
 	      <tr>
 	      	<td>Both Cars Finish Bonus</td>
 	      	<td>{{rules.bothCarsFinishedBonus}}</td>
