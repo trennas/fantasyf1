@@ -15,6 +15,7 @@ function($scope, $http, $location) {
     $scope.engine;    
     $scope.status;
     $scope.seasonStarted;
+    $scope.seasonStartDate;
     
     $('#spinner').hide();
     
@@ -69,6 +70,16 @@ function($scope, $http, $location) {
         $http.get('getRules')
             .success(function(response) {
                 $scope.rules = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);                
+            });        
+    };
+    
+    $scope.getSeasonStartDate = function() {
+        $http.get('seasonstartdate')
+            .success(function(response) {
+                $scope.seasonStartDate = response;
             })
             .error(function(response, status) {
                 alert("Status: " + status);                

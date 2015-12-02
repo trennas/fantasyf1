@@ -10,8 +10,6 @@ import net.ddns.f1.service.impl.ValidationException;
 public interface TeamService {
 	public List<Team> getAllRealTeams();
 
-	public boolean seasonStarted();
-
 	public void saveTeam(final Team team) throws ValidationException;
 
 	public void saveTeamNoValidation(final Team team);

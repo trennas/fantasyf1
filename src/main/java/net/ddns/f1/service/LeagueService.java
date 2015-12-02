@@ -1,5 +1,6 @@
 package net.ddns.f1.service;
 
+import java.util.Date;
 import java.util.List;
 
 import net.ddns.f1.domain.Rules;
@@ -10,6 +11,10 @@ public interface LeagueService {
 	public List<Team> calculateLeagueStandings() throws Ff1Exception;
 
 	public void recalculateAllResults() throws Ff1Exception;
-	
+
 	public Rules getRules();
+
+	public boolean seasonStarted();
+
+	public Date getSeasonStartDate();
 }

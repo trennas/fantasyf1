@@ -2,7 +2,6 @@ package net.ddns.f1.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import net.ddns.f1.domain.Driver;
@@ -10,6 +9,7 @@ import net.ddns.f1.domain.Team;
 import net.ddns.f1.domain.TheoreticalTeam;
 import net.ddns.f1.repository.TeamRepository;
 import net.ddns.f1.repository.TheoreticalTeamRepository;
+import net.ddns.f1.service.LeagueService;
 import net.ddns.f1.service.TeamService;
 
 import org.apache.commons.collections4.IteratorUtils;
@@ -42,6 +42,9 @@ public class TeamServiceImpl implements TeamService {
 	@Autowired
 	ServiceUtils utils;
 
+	@Autowired
+	LeagueService leagueService;
+
 	@Value("${best-theoretical-team-name}")
 	private String bestTheoreticalTeamName;
 	@Value("${auth.myaccount-role}")
@@ -52,19 +55,12 @@ public class TeamServiceImpl implements TeamService {
 	private String teamNameRegex;
 	@Value("${email-regex}")
 	private String emailRegex;
-	@Value("#{new java.text.SimpleDateFormat(\"${dateFormat}\").parse(\"${season-start-date-time}\")}")
-	private Date seasonStartDateTime;
 	@Value("${num-drivers-per-team}")
 	private int numDriversPerTeam;
 
 	@Override
 	public List<Team> getAllRealTeams() {
 		return teamRepo.findByTheoretical(false);
-	}
-
-	@Override
-	public boolean seasonStarted() {
-		return new Date().after(seasonStartDateTime);
 	}
 
 	private boolean dataCreationProfile() {
@@ -86,7 +82,7 @@ public class TeamServiceImpl implements TeamService {
 	public void saveTeam(final Team team) throws ValidationException {
 		final boolean newTeam = team.getId() == null;
 		team.setTheoretical(false);
-		if (seasonStarted()) {
+		if (leagueService.seasonStarted()) {
 			if (newTeam) {
 				if (!dataCreationProfile()) {
 					throw new ValidationException(

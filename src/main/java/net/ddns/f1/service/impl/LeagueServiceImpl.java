@@ -2,6 +2,7 @@ package net.ddns.f1.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,6 +31,9 @@ public class LeagueServiceImpl implements LeagueService {
 
 	private static final Logger LOG = Logger.getLogger(LeagueServiceImpl.class);
 
+	@Value("#{new java.text.SimpleDateFormat(\"${dateFormat}\").parse(\"${season-start-date-time}\")}")
+	private Date seasonStartDateTime;
+
 	@Value("${refresh-results-on-page-load}")
 	private boolean refreshResultsOnPageLoad;
 
@@ -38,7 +42,7 @@ public class LeagueServiceImpl implements LeagueService {
 
 	@Autowired
 	TeamService teamService;
-	
+
 	@Autowired
 	Rules rules;
 
@@ -385,8 +389,19 @@ public class LeagueServiceImpl implements LeagueService {
 		}
 		calculateBestTheoreticalTeam(result);
 	}
-	
+
+	@Override
 	public Rules getRules() {
 		return rules;
+	}
+
+	@Override
+	public boolean seasonStarted() {
+		return new Date().after(seasonStartDateTime);
+	}
+
+	@Override
+	public Date getSeasonStartDate() {
+		return seasonStartDateTime;
 	}
 }

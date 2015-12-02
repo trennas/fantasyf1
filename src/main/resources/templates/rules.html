@@ -30,7 +30,7 @@
 <body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header"/>	
 	
-	<div class="panel panel-primary" ng-init="getRules();">
+	<div class="panel panel-primary" ng-init="getRules();getSeasonStartDate();">
 	<div class="panel-heading text-center">Rules</div>	
 	<div class="panel-body">
 	<div class="col-xs-8">
@@ -40,7 +40,9 @@
 		<table class="table table-striped">
 			<tbody>
 				<tr><td>Pick a team consisting of 2 drivers, 1 car, and 1 engine</td></tr>		
-				<tr><td>The budget for each team is &#163;{{rules.budget}}m</td></tr>				
+				<tr><td>The budget for each team is &#163;{{rules.budget}}m</td></tr>
+				<tr><td>The window for entering a team closes on {{seasonStartDate|date:'mediumDate'}}</td></tr>
+				<tr><td>After entering, you can modify your team (using the My Team page) until the entry window closes</td></tr>								
 				<tr><td>You score a 'both cars finished' bonus if both of your cars are classified at the end of the race</td></tr>
 				<tr><td>You score a 'fastest lap bonus' if either of your drivers set the fastest lap of the race</td></tr>
 				<tr><td>You score (engine) points for every driver using your chosen engine</td></tr>

@@ -2,6 +2,7 @@ package net.ddns.f1.web;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -278,7 +279,13 @@ public class MainController implements ErrorController {
 	@RequestMapping({ "/seasonstarted", "/{subpage}/seasonstarted" })
 	@ResponseBody
 	public boolean seasonStarted() {
-		return teamService.seasonStarted();
+		return leagueService.seasonStarted();
+	}
+
+	@RequestMapping({ "/seasonstartdate", "/{subpage}/seasonstartdate" })
+	@ResponseBody
+	public Date seasonStartDate() {
+		return leagueService.getSeasonStartDate();
 	}
 
 	@RequestMapping("/myaccount")
