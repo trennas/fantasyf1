@@ -58,11 +58,6 @@ public class TeamServiceImpl implements TeamService {
 	@Value("${num-drivers-per-team}")
 	private int numDriversPerTeam;
 
-	@Override
-	public List<Team> getAllRealTeams() {
-		return teamRepo.findByTheoretical(false);
-	}
-
 	private boolean dataCreationProfile() {
 		final String[] profiles = environment.getActiveProfiles();
 		for (final String profile : profiles) {
@@ -81,7 +76,6 @@ public class TeamServiceImpl implements TeamService {
 	@Override
 	public void saveTeam(final Team team) throws ValidationException {
 		final boolean newTeam = team.getId() == null;
-		team.setTheoretical(false);
 		if (leagueService.seasonStarted()) {
 			if (newTeam) {
 				if (!dataCreationProfile()) {

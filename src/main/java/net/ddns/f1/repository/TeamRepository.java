@@ -12,6 +12,4 @@ public interface TeamRepository extends CrudRepository<Team, Integer> {
 	List<Team> findByName(final String name);
 
 	List<Team> findByEmail(final String email);
-
-	List<Team> findByTheoretical(final boolean theoretical);
 }

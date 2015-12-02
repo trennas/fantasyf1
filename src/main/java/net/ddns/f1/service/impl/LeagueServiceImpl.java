@@ -54,7 +54,7 @@ public class LeagueServiceImpl implements LeagueService {
 
 	@Override
 	public List<Team> calculateLeagueStandings() throws Ff1Exception {
-		final List<Team> teams = teamService.getAllRealTeams();
+		final List<Team> teams = teamService.findAll();
 
 		if (refreshResultsOnPageLoad && eventService.checkForNewResults(true)) {
 			calculateAllResults(teams);
@@ -66,7 +66,7 @@ public class LeagueServiceImpl implements LeagueService {
 
 	@Override
 	public synchronized void recalculateAllResults() throws Ff1Exception {
-		calculateAllResults(teamService.getAllRealTeams());
+		calculateAllResults(teamService.findAll());
 	}
 
 	private synchronized void calculateAllResults(final List<Team> teams)

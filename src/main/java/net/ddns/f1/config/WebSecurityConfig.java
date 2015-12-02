@@ -120,14 +120,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		final Iterator<Team> itr = teamRepo.findAll().iterator();
 		while (itr.hasNext()) {
 			final Team team = itr.next();
-			if (!team.isTheoretical()) {
 				final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 				for (final String role : team.getRoles()) {
 					authorities.add(new SimpleGrantedAuthority(role));
 				}
 				users.add(new User(team.getEmail(), team.getPassword(),
 						authorities));
-			}
 		}
 
 		return new InMemoryUserDetailsManager(users);

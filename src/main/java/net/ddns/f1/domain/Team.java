@@ -31,8 +31,6 @@ public class Team implements Comparable<Team>, PointScorer {
 	@Column(unique = true)
 	private String name;
 
-	private boolean theoretical;
-
 	private String owner;
 
 	@Column(unique = true)
@@ -73,7 +71,6 @@ public class Team implements Comparable<Team>, PointScorer {
 		this.drivers = drivers;
 		this.car = car;
 		this.engine = engine;
-		theoretical = false;
 	}
 
 	@Override
