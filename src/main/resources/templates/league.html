@@ -38,38 +38,38 @@
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
-	      	<th>Position</th>
+	      	<th class="text-center">Position</th>
 	        <th>Team Name</th>
-	        <th>Owner</th>
-	        <th>Driver 1</th>
-	        <th>Driver 2</th>
-	        <th>Car</th>
-	        <th>Engine</th>
-	        <th>Cost</th>
+	        <th class="text-center">Owner</th>
+	        <th class="text-center">Driver 1</th>
+	        <th class="text-center">Driver 2</th>
+	        <th class="text-center">Car</th>
+	        <th class="text-center">Engine</th>
+	        <th class="text-center">Cost</th>
 	        <th class="text-center">Last Race</th>
 	        <th class="text-center">Overall</th>
 	      </tr>
 	    </thead>
 	    <tbody>
 	      <tr class="warning">
-	      	<td>N/A</td>
+	      	<td class="text-center">N/A</td>
 	      	<th colspan="2">{{bestTheoreticalTeam.name}}</th>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].name)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].name)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(bestTheoreticalTeam.engine.name)">{{bestTheoreticalTeam.engine.name}}</a></td>
+	      	<td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].name)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
+	      	<td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].name)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
+	      	<td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
+	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(bestTheoreticalTeam.engine.name)">{{bestTheoreticalTeam.engine.name}}</a></td>
 	        <td class="text-center">&#163;{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}m</td>
 	        <td></td>
 	        <td class="text-center">{{bestTheoreticalTeam.points}}</td>
 	      </tr>
 	      <tr ng-repeat="team in teams">
-	      	<td>{{$index + 1}}</td>
+	      	<td class="text-center">{{$index + 1}}</td>
 	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#teamModal" ng-click="getTeam(team.id)">{{team.name}}</a></td>
-	        <td>{{team.owner}}</td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[0].name)">{{team.drivers[0].name}}</a></td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[1].name)">{{team.drivers[1].name}}</a></td>	        
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(team.car.name)">{{team.car.name}}</a></td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(team.engine.name)">{{team.engine.name}}</a></td>
+	        <td class="text-center">{{team.owner}}</td>
+	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[0].name)">{{team.drivers[0].name}}</a></td>
+	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[1].name)">{{team.drivers[1].name}}</a></td>	        
+	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(team.car.name)">{{team.car.name}}</a></td>
+	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(team.engine.name)">{{team.engine.name}}</a></td>
 	        <td class="text-center">&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</td>
 	        <td class="text-center">{{team.pointsPerEvent[getLength(team.pointsPerEvent)]}}</td>
 	        <td class="text-center">{{team.totalPoints}}</td>
