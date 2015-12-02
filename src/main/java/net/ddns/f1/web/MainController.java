@@ -15,6 +15,7 @@ import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
 import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Position;
+import net.ddns.f1.domain.Rules;
 import net.ddns.f1.domain.Team;
 import net.ddns.f1.domain.TheoreticalTeam;
 import net.ddns.f1.service.ComponentService;
@@ -317,6 +318,17 @@ public class MainController implements ErrorController {
 		} catch (final ValidationException e) {
 			return jsonMessage(e.getMessage());
 		}
+	}
+
+	@RequestMapping("rules")
+	public String rules() {
+		return "rules";
+	}
+
+	@RequestMapping({ "/getRules", "/{subpage}/getRules" })
+	@ResponseBody
+	public Rules getRules() {
+		return leagueService.getRules();
 	}
 
 	private String jsonMessage(final String message) {

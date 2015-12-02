@@ -19,6 +19,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login<span class="sr-only">(current)</span></a></li>
+        <li><a th:href="@{/rules}">Rules</a></li>
         <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Create Team</a></li>
         <li sec:authorize="hasRole(@environment.getProperty('auth.admin-role'))"><a th:href="@{/addresult}">Add Result</a></li>        
         <li sec:authorize="hasRole(@environment.getProperty('auth.admin-role'))" ng-click="refreshAllResults();"><a href="#">Refetch All Reuslts</a></li>

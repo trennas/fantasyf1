@@ -6,6 +6,7 @@ function($scope, $http, $location) {
     $scope.drivers = [];
     $scope.cars = [];
     $scope.engines = [];
+    $scope.rules = [];
     $scope.event;
     $scope.team = {};
     $scope.bestTheoreticalTeam = {};
@@ -58,6 +59,16 @@ function($scope, $http, $location) {
         $http.get('teams')
             .success(function(response) {
                 $scope.teams = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);                
+            });        
+    };
+    
+    $scope.getRules = function() {
+        $http.get('getRules')
+            .success(function(response) {
+                $scope.rules = response;
             })
             .error(function(response, status) {
                 alert("Status: " + status);                
