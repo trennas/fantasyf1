@@ -21,10 +21,6 @@
 				<table class="table table-striped">	
 				    <tbody>
 				      <tr>
-				      	<th>Name</th>
-				        <td>{{team.name}}</td>
-				      </tr>
-				      <tr>
 				        <th>Owner</th>
 				        <td>{{team.owner}}</td>
 				      </tr>				      
@@ -76,20 +72,18 @@
 				<table class="table table-striped">				
 					<thead>
 				      <tr>
-				        <th>Name</th>
 				        <th>Car</th>
-				        <th>Fastest Laps</th>
-				        <th>Points</th>
-				        <th>Price</th>
+				        <th class="text-center">Fastest Laps</th>
+				        <th class="text-center">Points</th>
+				        <th class="text-center">Price</th>
 				      </tr>
 				    </thead>
 				    <tbody>
 				      <tr>
-				        <td>{{driver.name}}</td>
 				        <td>{{driver.car.name}}</td>
-				        <td>{{driver.fastestLaps}}</td>
-				        <td>{{driver.totalPoints}}</td>
-				        <td>&#163;{{driver.price}}m</td>
+				        <td class="text-center">{{driver.fastestLaps}}</td>
+				        <td class="text-center">{{driver.totalPoints}}</td>
+				        <td class="text-center">&#163;{{driver.price}}m</td>
 				      </tr>				
 				    </tbody>
 				 </table>
@@ -116,20 +110,18 @@
 				<table class="table table-striped">				
 					<thead>
 				      <tr>
-				        <th>Name</th>
 				        <th>Engine</th>
-				        <th>Points</th>
-				        <th>Finishing Bonuses</th>
-				        <th>Price</th>
+				        <th class="text-center">Points</th>
+				        <th class="text-center">Finishing Bonuses</th>
+				        <th class="text-center">Price</th>
 				      </tr>
 				    </thead>
 				    <tbody>
 				      <tr>
-				        <td>{{car.name}}</td>
 				        <td>{{car.engine.name}}</td>
-				        <td>{{car.totalPoints}}</td>
-				        <td>{{car.bothCarsFinishBonuses}}</td>
-				        <td>&#163;{{car.price}}m</td>
+				        <td class="text-center">{{car.totalPoints}}</td>
+				        <td class="text-center">{{car.bothCarsFinishBonuses}}</td>
+				        <td class="text-center">&#163;{{car.price}}m</td>
 				      </tr>				
 				    </tbody>
 				 </table></div></div>
@@ -155,14 +147,12 @@
 				<table class="table table-striped">				
 					<thead>
 				      <tr>
-				        <th>Name</th>
 				        <th>Points</th>
 				        <th>Price</th>
 				      </tr>
 				    </thead>
 				    <tbody>
 				      <tr>
-				        <td>{{engine.name}}</td>
 				        <td>{{engine.totalPoints}}</td>
 				        <td>&#163;{{engine.price}}m</td>
 				      </tr>				
