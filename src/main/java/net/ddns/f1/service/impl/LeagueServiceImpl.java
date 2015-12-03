@@ -74,7 +74,6 @@ public class LeagueServiceImpl implements LeagueService {
 		LOG.info("Recalculating scores...");
 		final List<EventResult> results = eventService.getSeasonResults();
 		resetAllScores(teams);
-		teamService.deleteAllTheoreticalTeams();
 		for (final EventResult result : results) {
 			calculateResult(result, teams);
 		}
@@ -217,6 +216,7 @@ public class LeagueServiceImpl implements LeagueService {
 		for (final Engine engine : engines) {
 			resetPointsScorer(engine);
 		}
+		teamService.deleteAllTheoreticalTeams();
 	}
 
 	private void resetPointsScorer(final PointScorer scorer) {
