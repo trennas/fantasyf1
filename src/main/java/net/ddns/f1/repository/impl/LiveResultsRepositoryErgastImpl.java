@@ -92,7 +92,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				final Driver driver = findDriver(res, result);
 				qualResultDriverMap.put(res, driver);
 				result.getQualifyingOrder().put(driver.getName(),
-						new Position(res.getPosition().intValue(), true));
+						new Position(res.getPosition().intValue(), true, driver.getNumber()));
 			}
 
 			final List<Driver> drivers = componentService
@@ -142,7 +142,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 					result.getRaceOrder().put(
 							driver.getName(),
 							new Position(res.getPosition().intValue(),
-									classified));
+									classified, driver.getNumber()));
 				}
 
 				final Driver fastestLapDriver = componentService

@@ -76,6 +76,11 @@ public class MainController implements ErrorController {
 	public String editResult(final Integer round) {
 		return "editresult";
 	}
+	
+	@RequestMapping("/components")
+	public String components() {
+		return "components";
+	}
 
 	@RequestMapping("/addresult")
 	public String addResult(final Integer round) {
@@ -84,7 +89,7 @@ public class MainController implements ErrorController {
 
 	@RequestMapping("/updateresults")
 	@ResponseBody
-	public int updateResults() throws Ff1Exception {
+	public int updateResults() {
 		final int res = eventService.updateResults();
 		LOG.info("updateresults: " + res);
 		return res;
@@ -110,13 +115,12 @@ public class MainController implements ErrorController {
 	public EventResult createEvent() {
 		final EventResult result = new EventResult();
 		final Map<String, Position> order = new HashMap<String, Position>();
-		final Position pos = new Position(0, false);
 		final List<Driver> drivers = componentService.findAllDrivers();
 		final List<String> remarks = new ArrayList<String>();
 		remarks.add("This result was manually created");
 		Collections.sort(drivers);
 		for (final Driver driver : drivers) {
-			order.put(driver.getName(), pos);
+			order.put(driver.getName(), new Position(0, false, driver.getNumber()));
 		}
 		result.setRound(eventService.getSeasonResults().size() + 1);
 		result.setQualifyingOrder(order);
@@ -131,32 +135,32 @@ public class MainController implements ErrorController {
 
 	@RequestMapping("/editresult/refreshresult")
 	@ResponseBody
-	public EventResult refreshResult(final int round) throws Ff1Exception {
+	public EventResult refreshResult(final int round) {
 		return eventService.refreshEvent(round);
 	}
 
 	@RequestMapping("/refreshAllResults")
 	@ResponseBody
-	public Boolean refreshAllResults() throws Ff1Exception {
+	public Boolean refreshAllResults() {
 		eventService.refreshAllEvents();
 		return true;
 	}
 
 	@RequestMapping({ "/teams", "/{subpage}/teams" })
 	@ResponseBody
-	public List<Team> getTeams() throws Ff1Exception {
+	public List<Team> getTeams() {
 		return maskPreSeasonTeams(leagueService.calculateLeagueStandings());
 	}
 
 	@RequestMapping({ "/team", "/{subpage}/team" })
 	@ResponseBody
-	public Team getTeam(final Integer id) throws Ff1Exception {
+	public Team getTeam(final Integer id) {
 		return maskPreSeasonTeam(teamService.findById(id));
 	}
 
 	@RequestMapping({ "/besttheoreticalteam" })
 	@ResponseBody
-	public TheoreticalTeam getBestTheoreticalTeam() throws Ff1Exception {
+	public TheoreticalTeam getBestTheoreticalTeam() {
 		return teamService.findTheoreticalTeamByName(bestTheoreticalTeamName);
 	}
 
@@ -176,7 +180,7 @@ public class MainController implements ErrorController {
 
 	@RequestMapping("/editresult/deleteevent")
 	@ResponseBody
-	public int deleteEvent(final int round) throws Ff1Exception {
+	public int deleteEvent(final int round) {
 		return eventService.deleteEvent(round);
 	}
 
@@ -189,13 +193,13 @@ public class MainController implements ErrorController {
 
 	@RequestMapping({ "/drivers", "/{subpage}/drivers" })
 	@ResponseBody
-	public List<Driver> drivers() throws Ff1Exception {
+	public List<Driver> drivers() {
 		return drivers(false);
 	}
 
 	@RequestMapping({ "/alldrivers", "/{subpage}/alldrivers" })
 	@ResponseBody
-	public List<Driver> allDrivers() throws Ff1Exception {
+	public List<Driver> allDrivers() {
 		return drivers(true);
 	}
 
@@ -213,19 +217,19 @@ public class MainController implements ErrorController {
 
 	@RequestMapping({ "/driver", "/{subpage}/driver" })
 	@ResponseBody
-	public Driver driver(final String name) throws Ff1Exception {
-		return componentService.findDriverByName(name);
+	public Driver driver(final Integer number) {
+		return componentService.findDriverByNumber(number);
 	}
 
 	@RequestMapping({ "/car", "/{subpage}/car" })
 	@ResponseBody
-	public Car car(final String name) throws Ff1Exception {
+	public Car car(final String name) {
 		return componentService.findCarByName(name);
 	}
 
 	@RequestMapping({ "/engine", "/{subpage}/engine" })
 	@ResponseBody
-	public Engine engine(final String name) throws Ff1Exception {
+	public Engine engine(final String name) {
 		return componentService.findEngineByName(name);
 	}
 
@@ -247,7 +251,7 @@ public class MainController implements ErrorController {
 
 	@RequestMapping({ "/event", "/{subpage}/event" })
 	@ResponseBody
-	public EventResult event(final int round) throws Ff1Exception {
+	public EventResult event(final int round) {
 		final EventResult result = eventService.findByRound(round);
 		result.setQualifyingOrder(sortPositions(result.getQualifyingOrder()));
 		result.setRaceOrder(sortPositions(result.getRaceOrder()));
@@ -300,7 +304,7 @@ public class MainController implements ErrorController {
 
 	@RequestMapping("/myaccount/myteam")
 	@ResponseBody
-	public Team myTeam() throws Ff1Exception {
+	public Team myTeam() {
 		return teamService.findByEmail(SecurityContextHolder.getContext()
 				.getAuthentication().getName());
 	}
@@ -314,6 +318,27 @@ public class MainController implements ErrorController {
 		} catch (final ValidationException e) {
 			return jsonMessage(e.getMessage());
 		}
+	}
+	
+	@RequestMapping(value = "/components/savedrivers", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean saveDrivers(@RequestBody final List<Driver> drivers) {
+		componentService.saveDrivers(drivers);
+		return true;
+	}
+	
+	@RequestMapping(value = "/components/savecars", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean saveCars(@RequestBody final List<Car> cars) {
+		componentService.saveCars(cars);
+		return true;
+	}
+	
+	@RequestMapping(value = "/components/saveengines", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean saveEngines(@RequestBody final List<Engine> engines) {
+		componentService.saveEngines(engines);
+		return true;
 	}
 
 	@RequestMapping(value = "/register/savemyteam", method = RequestMethod.POST)

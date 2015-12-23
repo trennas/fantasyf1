@@ -87,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.authorizeRequests()
 				.antMatchers("/editresult/**", "/addresult/**",
-						"/deleteteam/**", "/refreshAllResults/**")
+						"/deleteteam/**", "/refreshAllResults/**", "/components/**")
 				.hasAuthority(adminRole)
 
 				.and().authorizeRequests().antMatchers("/myaccount/**")

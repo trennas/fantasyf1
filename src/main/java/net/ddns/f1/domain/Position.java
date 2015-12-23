@@ -12,14 +12,18 @@ public class Position implements Comparable<Position> {
 	private int position;
 	@Getter
 	@Setter
-	private boolean classified;
+	private boolean classified;	
+	@Getter
+	@Setter
+	private int driverNumber;
 
 	public Position() {
 	}
 
-	public Position(final int position, final boolean classified) {
+	public Position(final int position, final boolean classified, final int driverNumber) {
 		this.position = position;
 		this.classified = classified;
+		this.driverNumber = driverNumber;
 	}
 
 	@Override

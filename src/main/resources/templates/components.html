@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+<link rel="stylesheet" th:href="@{/css/spinner.css}" type="text/css" />
+<script>
+	// Weblogic doesn't add trailing / to URL and this breaks AngularJS.
+	var url = window.location.href;
+	url = url.replace(/\/?(\?|#|$)/, '/$1');
+	if(window.location.href != url) {
+		window.location.href = url;
+	}
+</script>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/angular.min.js}"></script>
+<script th:src="@{/js/angular-cookies.js}"></script>
+<script th:src="@{/js/ff1.js}"></script>
+
+<title>Fantasy F1 League</title>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+	  	<script src="js/html5shiv.min.js"></script>
+	  	<script src="js/respond.min.js"></script>
+		<![endif]-->
+</head>
+<body ng-app="ff1App" ng-controller="controller">		
+	<div th:replace="header :: header"/>	
+	
+	<div class="panel panel-primary" ng-init="getComponents();">
+	<div class="panel-heading text-center">Components</div>	
+	<div class="panel-body">
+		<div class="panel panel-info">
+		<div class="panel-heading text-center">Drivers</div>	
+		<div class="panel-body">
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<th>Name</th>
+					<th>Number</th>
+					<th>Car</th>
+					<th>Stand In</th>
+					<th>Price</th>
+					<th>Action</th>
+				</tr>
+				<tr ng-repeat="driver in drivers">
+					<td><input type="text" class="form-control" ng-model="driver.name"/></td>
+					<td><input type="number" class="form-control" ng-model="driver.number"/></td>
+					<td>
+						<div class="dropdown">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="carDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    {{driver.car.name}}
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="carDropdown">
+						  <table class="table table-striped table-responsive">
+						    <thead>
+						      <tr>
+						        <th>Car</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						      <tr ng-repeat="car in cars | orderBy:'name'">
+						        <td>					        	
+						        	<a href="#" class="a-unstyled" ng-click="driver.car = car;">{{car.name}}</a>
+						        	<span ng-if="driver.car.name==car.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
+						        </td>
+						      </tr>
+						    </tbody>
+						    </table>
+						  </ul>
+						</div>
+					</td>
+					<td><select class="form-control" ng-model="driver.standin" ng-options="o.v as o.n for o in [{ n: 'No', v: false }, { n: 'Yes', v: true }]"></select></td>
+					<td><input type="number" class="form-control" ng-model="driver.price"/></td>
+					<td><button type="button" class="btn btn-danger" ng-click="deleteDriver($index);">Delete</button></td>
+				</tr>				
+			</tbody>			
+		</table>
+		<button type="button" class="btn btn-danger" ng-click="addDriver();">Add</button>
+		</div>
+		</div>
+		
+		<div class="panel panel-info">
+		<div class="panel-heading text-center">Cars</div>	
+		<div class="panel-body">
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<th>Name</th>					
+					<th>Engine</th>
+					<th>Price</th>
+					<th>Action</th>
+				</tr>
+				<tr ng-repeat="car in cars">
+					<td><input type="text" class="form-control" ng-model="car.name"/></td>
+					<td>
+						<div class="dropdown">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="carEngineDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    {{car.engine.name}}
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="carEngineDropdown">
+						  <table class="table table-striped table-responsive">
+						    <thead>
+						      <tr>
+						        <th>Engine</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						      <tr ng-repeat="engine in engines | orderBy:'name'">
+						        <td>					        	
+						        	<a href="#" class="a-unstyled" ng-click="car.engine = engine;">{{engine.name}}</a>
+						        	<span ng-if="car.engine.name==engine.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
+						        </td>
+						      </tr>
+						    </tbody>
+						    </table>
+						  </ul>
+						</div>
+					</td>
+					<td><input type="number" class="form-control" ng-model="car.price"/></td>
+					<td><button type="button" class="btn btn-danger" ng-click="deleteCar($index);">Delete</button></td>
+				</tr>				
+			</tbody>			
+		</table>
+		<button type="button" class="btn btn-danger" ng-click="addCar();">Add</button>
+		</div>
+		</div>
+		
+		<div class="panel panel-info">
+		<div class="panel-heading text-center">Engines</div>	
+		<div class="panel-body">
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<th>Name</th>
+					<th>Price</th>
+					<th>Action</th>
+				</tr>
+				<tr ng-repeat="engine in engines">
+					<td><input type="text" class="form-control" ng-model="engine.name"/></td>
+					<td><input type="number" class="form-control" ng-model="engine.price"/></td>
+					<td><button type="button" class="btn btn-danger" ng-click="deleteEngine($index);">Delete</button></td>
+				</tr>				
+			</tbody>			
+		</table>
+		<button type="button" class="btn btn-danger" ng-click="addEngine();">Add</button>
+		</div>
+		</div>
+	</div>
+	</div>
+	<button type="button" class="btn btn-success" ng-click="saveComponents();">Save</button>
+	<div id="spinner" class="spinner-loader pull-right">Updating...</div>
+    {{status}}
+	  
+  <div th:replace="footer :: footer" />
+</body>
+</html>

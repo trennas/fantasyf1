@@ -29,12 +29,12 @@ public class ComponentServiceImpl implements ComponentService {
 	ServiceUtils utils;
 
 	@Override
-	public Driver findDriverByName(final String name) throws Ff1Exception {
+	public Driver findDriverByName(final String name) {
 		return utils.get(driverRepo.findByName(name), name);
 	}
 
 	@Override
-	public Driver findDriverByNumber(final int number) throws Ff1Exception {
+	public Driver findDriverByNumber(final int number) {
 		return utils.get(driverRepo.findByNumber(number),
 				Integer.toString(number));
 	}
@@ -51,12 +51,30 @@ public class ComponentServiceImpl implements ComponentService {
 
 	@Override
 	public List<Driver> findDriversByCarAndStandin(final Car car,
-			final boolean standIn) throws Ff1Exception {
+			final boolean standIn) {
 		return driverRepo.findByCarAndStandin(car, true);
+	}
+	
+	@Override
+	public void saveDrivers(List<Driver> drivers) {
+		driverRepo.deleteAll();
+		driverRepo.save(drivers);
+	}
+	
+	@Override
+	public void saveCars(List<Car> cars) {
+		carRepo.deleteAll();
+		carRepo.save(cars);
+	}
+	
+	@Override
+	public void saveEngines(List<Engine> engines) {
+		engineRepo.deleteAll();
+		engineRepo.save(engines);
 	}
 
 	@Override
-	public Car findCarByName(final String name) throws Ff1Exception {
+	public Car findCarByName(final String name) {
 		return utils.get(carRepo.findByName(name), name);
 	}
 
@@ -66,7 +84,7 @@ public class ComponentServiceImpl implements ComponentService {
 	}
 
 	@Override
-	public Engine findEngineByName(final String name) throws Ff1Exception {
+	public Engine findEngineByName(final String name) {
 		return utils.get(engineRepo.findByName(name), name);
 	}
 

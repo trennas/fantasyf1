@@ -94,7 +94,7 @@
 	    </thead>
 	    <tbody>
 	      <tr>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(event.fastestLapDriver.name)">{{event.fastestLapDriver.name}}</a></td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(event.fastestLapDriver.number)">{{event.fastestLapDriver.name}}</a></td>
 	      </tr>
 	    </tbody>
 	  </table>
@@ -132,7 +132,7 @@
 	    </thead>
 	    <tbody>
 	      <tr ng-repeat="driver in drivers">
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver.name)">{{driver.name}}</a></td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver.number)">{{driver.name}}</a></td>
 	        <td class="text-center">{{driver.pointsPerEvent[event.round]}}</td>
 	      </tr>
 	    </tbody>
@@ -196,12 +196,12 @@
 	    </thead>
 	    <tbody>
 	      <tr>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].name)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].number)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
 	      	<td class="text-center">&#163;{{bestTheoreticalTeam.drivers[0].price}}m</td>
 	      	<td class="text-center">{{bestTheoreticalTeam.drivers[0].points}}</td>
 	      </tr>
 		  <tr>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].name)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].number)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
 	      	<td class="text-center">&#163;{{bestTheoreticalTeam.drivers[1].price}}m</td>
 	      	<td class="text-center">{{bestTheoreticalTeam.drivers[1].points}}</td>
 	      </tr>

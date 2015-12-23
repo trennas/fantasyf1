@@ -34,6 +34,28 @@ function($scope, $http, $location) {
             });        
     };
     
+    $scope.getComponents = function() {
+    	$scope.getAllDrivers();
+    	$scope.getCars();
+    	$scope.getEngines();
+    };
+    
+    $scope.saveComponents = function() {
+        $('#spinner').show();
+        $http.post('savedrivers', $scope.drivers)
+            .success(function(response) {
+            	$http.post('savecars', $scope.cars)
+                .success(function(response) {
+                	$http.post('saveengines', $scope.engines)
+                    .success(function(response) {
+                    	$scope.getComponents();
+                    	$scope.status = "Components Updated.";
+                        $('#spinner').hide();
+                });
+            });
+        });
+    };
+    
     $scope.getBestTheoreticalTeam = function() {        
         $http.get('besttheoreticalteam')
             .success(function(response) {
@@ -110,6 +132,27 @@ function($scope, $http, $location) {
     
     $scope.addRemark = function() {
         $scope.event.remarks.push("");
+    };
+    
+    $scope.addDriver = function() {
+        $scope.drivers.push({});
+    };
+    $scope.deleteDriver = function(index) {
+        $scope.drivers.splice(index, 1);
+    };
+    
+    $scope.addCar = function() {
+        $scope.cars.push({});
+    };
+    $scope.deleteCar = function(index) {
+        $scope.cars.splice(index, 1);
+    };
+    
+    $scope.addEngine = function() {
+        $scope.engines.push({});
+    };
+    $scope.deleteEngine = function(index) {
+        $scope.engines.splice(index, 1);
     };
     
     $scope.refreshResult = function(event) {
@@ -242,8 +285,8 @@ function($scope, $http, $location) {
             });
     };
     
-    $scope.getDriver = function(name) {
-        $http.get('driver?name=' + name)
+    $scope.getDriver = function(number) {
+        $http.get('driver?number=' + number)
             .success(function(response) {
                 $scope.driver = response;
             })
