@@ -44,8 +44,18 @@ public class CreateData {
 
 	@Value("${auth.admin-role}")
 	private String adminRole;
+	
+	@Profile("createAdmin")
+	@Bean
+	public int admin() {
+		Team team = new Team(null, null,
+				"mike.trenaman@gmail.com", "welcome1", null, null, null);
+		team.getRoles().add(adminRole);
+		teamService.saveTeamNoValidation(team);
+		return 0;
+	}
 
-	@Profile("create")
+	@Profile("create2015")
 	@Bean
 	public int createDummyData() {
 		LOG.info("Creating League Data...");

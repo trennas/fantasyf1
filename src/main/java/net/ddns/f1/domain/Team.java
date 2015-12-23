@@ -20,7 +20,6 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
 
 import lombok.Data;
-import net.ddns.f1.service.impl.ValidationException;
 
 @Entity
 @Data
@@ -61,7 +60,7 @@ public class Team implements Comparable<Team>, PointScorer {
 
 	public Team(final String name, final String owner, final String email,
 			final String password, final List<Driver> drivers, final Car car,
-			final Engine engine) throws ValidationException {
+			final Engine engine) {
 		this.name = name;
 		this.owner = owner;
 		this.email = email;
