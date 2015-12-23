@@ -47,7 +47,7 @@ public class EventServiceImpl implements EventService {
 	private long timeOfLastResultCheck = 0;
 
 	@Override
-	public EventResult refreshEvent(final int round) throws Ff1Exception {
+	public EventResult refreshEvent(final int round) {
 		LOG.info("Manually invoked refresh result round " + round + "...");
 		final EventResult result = liveRepo.fetchEventResult(round);
 		if (result != null) {
@@ -65,13 +65,13 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public EventResult findByRound(final int round) throws Ff1Exception {
+	public EventResult findByRound(final int round) {
 		return utils.get(eventRepo.findByRound(round), Integer.toString(round));
 	}
 
 	@Override
 	@Transactional
-	public int deleteEvent(final int round) throws Ff1Exception {
+	public int deleteEvent(final int round) {
 		LOG.info("Manually invoked delete result round " + round + "...");
 		final EventResult res = eventRepo.findByRound(round).get(0);
 		if (res != null) {
@@ -86,7 +86,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public synchronized void refreshAllEvents() throws Ff1Exception {
+	public synchronized void refreshAllEvents() {
 		LOG.info("Manually invoked refresh of all results..");
 		eventRepo.deleteAll();
 		timeOfLastResultCheck = 0;
@@ -95,7 +95,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public synchronized int updateResults() throws Ff1Exception {
+	public synchronized int updateResults() {
 		LOG.info("Updating results..");
 		timeOfLastResultCheck = 0;
 		if (checkForNewResults(true)) {
@@ -107,8 +107,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public synchronized boolean checkForNewResults(final boolean emailAlerts)
-			throws Ff1Exception {
+	public synchronized boolean checkForNewResults(final boolean emailAlerts) {
 		boolean newResults = false;
 		final Iterable<EventResult> itr = eventRepo.findAll();
 		final List<EventResult> results = IteratorUtils.toList(itr.iterator());

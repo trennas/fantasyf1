@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 public class ServiceUtils {
 	private static final Logger LOG = Logger.getLogger(ServiceUtils.class);
 
-	public <T> T get(final List<T> res, final String searchCriteria)
-			throws Ff1Exception {
+	public <T> T get(final List<T> res, final String searchCriteria) {
 		if (res.size() == 1) {
 			return res.get(0);
 		} else if (res.size() > 1) {

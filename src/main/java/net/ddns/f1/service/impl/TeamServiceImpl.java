@@ -219,17 +219,17 @@ public class TeamServiceImpl implements TeamService {
 			teamRepo.delete(id);
 		} catch (final Ff1Exception e) {
 			LOG.error("Couldn't delete team id: " + id
-					+ " as it couldn't be determine. " + e.getMessage());
+					+ " as it couldn't be determined. " + e.getMessage());
 		}
 	}
 
 	@Override
-	public Team findByEmail(final String email) throws Ff1Exception {
+	public Team findByEmail(final String email) {
 		return utils.get(teamRepo.findByEmail(email), email);
 	}
 
 	@Override
-	public Team findById(final int id) throws Ff1Exception {
+	public Team findById(final int id) {
 		return utils.get(teamRepo.findById(id), Integer.toBinaryString(id));
 	}
 
@@ -244,8 +244,7 @@ public class TeamServiceImpl implements TeamService {
 	}
 
 	@Override
-	public TheoreticalTeam findTheoreticalTeamByName(final String name)
-			throws Ff1Exception {
+	public TheoreticalTeam findTheoreticalTeamByName(final String name) {
 		return utils.get(theoreticalTeamRepo.findByName(name), name);
 	}
 

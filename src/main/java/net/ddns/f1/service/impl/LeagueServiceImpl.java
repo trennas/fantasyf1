@@ -53,7 +53,7 @@ public class LeagueServiceImpl implements LeagueService {
 	EventService eventService;
 
 	@Override
-	public List<Team> calculateLeagueStandings() throws Ff1Exception {
+	public List<Team> calculateLeagueStandings() {
 		final List<Team> teams = teamService.findAll();
 
 		if (refreshResultsOnPageLoad && eventService.checkForNewResults(true)) {
@@ -65,12 +65,11 @@ public class LeagueServiceImpl implements LeagueService {
 	}
 
 	@Override
-	public synchronized void recalculateAllResults() throws Ff1Exception {
+	public synchronized void recalculateAllResults() {
 		calculateAllResults(teamService.findAll());
 	}
 
-	private synchronized void calculateAllResults(final List<Team> teams)
-			throws Ff1Exception {
+	private synchronized void calculateAllResults(final List<Team> teams) {
 		LOG.info("Recalculating scores...");
 		final List<EventResult> results = eventService.getSeasonResults();
 		resetAllScores(teams);
@@ -80,8 +79,7 @@ public class LeagueServiceImpl implements LeagueService {
 		LOG.info("Scores recalculated.");
 	}
 
-	private void calculateBestTheoreticalTeam(final EventResult result)
-			throws Ff1Exception {
+	private void calculateBestTheoreticalTeam(final EventResult result) {
 		final List<Driver> allDrivers = componentService
 				.findDriversByStandin(false);
 		final List<Car> cars = componentService.findAllCars();
@@ -195,7 +193,7 @@ public class LeagueServiceImpl implements LeagueService {
 				+ team.getEngine().getTotalPoints();
 	}
 
-	private void resetAllScores(final List<Team> teams) throws Ff1Exception {
+	private void resetAllScores(final List<Team> teams) {
 		for (final Team team : teams) {
 			resetPointsScorer(team);
 		}
@@ -225,7 +223,7 @@ public class LeagueServiceImpl implements LeagueService {
 	}
 
 	private synchronized void calculateResult(final EventResult result,
-			final List<Team> teams) throws Ff1Exception {
+			final List<Team> teams) {
 		for (final Driver driver : componentService.findDriversByStandin(false)) {
 			int points = 0;
 			Position pos = result.getQualifyingOrder().get(driver.getName());

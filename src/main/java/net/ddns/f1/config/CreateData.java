@@ -12,7 +12,7 @@ import net.ddns.f1.repository.CarRepository;
 import net.ddns.f1.repository.CorrectionRepository;
 import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
-import net.ddns.f1.service.impl.TeamServiceImpl;
+import net.ddns.f1.service.TeamService;
 import net.ddns.f1.service.impl.ValidationException;
 
 import org.apache.log4j.Logger;
@@ -37,7 +37,7 @@ public class CreateData {
 	@Autowired
 	CorrectionRepository correctionRepo;
 	@Autowired
-	TeamServiceImpl teamService;
+	TeamService teamService;
 
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
