@@ -10,7 +10,6 @@ import net.ddns.f1.domain.EventResult;
 import net.ddns.f1.domain.Position;
 import net.ddns.f1.repository.LiveResultsRepository;
 import net.ddns.f1.service.ComponentService;
-import net.ddns.f1.service.impl.Ff1Exception;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 	ComponentService componentService;
 
 	@Override
-	public EventResult fetchEventResult(final int round) throws Ff1Exception {
+	public EventResult fetchEventResult(final int round) {
 		final String seasonUrl = ergastBaseUrl + season + "/";
 		final RestTemplate restTemplate = new RestTemplate();
 
@@ -169,7 +168,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 	}
 
 	private Driver findDriver(final ResultType res,
-			final EventResult eventResult) throws Ff1Exception {
+			final EventResult eventResult) {
 		int number;
 		if (res.getDriver().getPermanentNumber() != null) {
 			number = res.getDriver().getPermanentNumber().intValue();

@@ -12,6 +12,7 @@ import net.ddns.f1.service.ComponentService;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -57,19 +58,36 @@ public class ComponentServiceImpl implements ComponentService {
 	
 	@Override
 	public void saveDrivers(List<Driver> drivers) {
-		driverRepo.deleteAll();
+		removeDeleted(findAllDrivers(), drivers, driverRepo);
 		driverRepo.save(drivers);
+	}
+	
+	private <T> void removeDeleted(List<T> existingList, List<T> updatedList, CrudRepository<T, String> repo) {
+		for(T existing : existingList) {
+			boolean found = false;
+			
+			for(T updated : updatedList) {
+				if(existing.equals(updated)) {
+					found = true;
+					break;
+				}
+			}
+			
+			if(!found) {
+				repo.delete(existing);
+			}
+		}
 	}
 	
 	@Override
 	public void saveCars(List<Car> cars) {
-		carRepo.deleteAll();
+		removeDeleted(findAllCars(), cars, carRepo);
 		carRepo.save(cars);
 	}
 	
 	@Override
 	public void saveEngines(List<Engine> engines) {
-		engineRepo.deleteAll();
+		removeDeleted(findAllEngines(), engines, engineRepo);
 		engineRepo.save(engines);
 	}
 

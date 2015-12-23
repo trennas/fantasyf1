@@ -23,7 +23,6 @@ import net.ddns.f1.service.ComponentService;
 import net.ddns.f1.service.EventService;
 import net.ddns.f1.service.LeagueService;
 import net.ddns.f1.service.TeamService;
-import net.ddns.f1.service.impl.Ff1Exception;
 import net.ddns.f1.service.impl.ValidationException;
 
 import org.apache.log4j.Logger;
@@ -97,8 +96,7 @@ public class MainController implements ErrorController {
 
 	@RequestMapping(value = { "/editresult/saveresult", "/addresult/saveresult" }, method = RequestMethod.POST)
 	@ResponseBody
-	public EventResult saveResult(@RequestBody final EventResult result)
-			throws Ff1Exception {
+	public EventResult saveResult(@RequestBody final EventResult result) {
 		result.setFastestLapDriver(componentService.findDriverByName(result
 				.getFastestLapDriver().getName()));
 		eventService.save(result);
@@ -166,8 +164,7 @@ public class MainController implements ErrorController {
 
 	@RequestMapping({ "/race/besttheoreticalteamforround" })
 	@ResponseBody
-	public TheoreticalTeam getBestTheoreticalTeamForRound(final Integer round)
-			throws Ff1Exception {
+	public TheoreticalTeam getBestTheoreticalTeamForRound(final Integer round) {
 		final EventResult result = eventService.findByRound(round);
 		return result.getBestTheoreticalTeam();
 	}
@@ -203,8 +200,7 @@ public class MainController implements ErrorController {
 		return drivers(true);
 	}
 
-	private List<Driver> drivers(final boolean includeStandin)
-			throws Ff1Exception {
+	private List<Driver> drivers(final boolean includeStandin) {
 		List<Driver> drivers;
 		if (includeStandin) {
 			drivers = componentService.findAllDrivers();
