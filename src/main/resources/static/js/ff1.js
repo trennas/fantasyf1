@@ -42,15 +42,16 @@ function($scope, $http, $location) {
     
     $scope.saveComponents = function() {
         $('#spinner').show();
-        $http.post('savedrivers', $scope.drivers)
+        
+        $http.post('saveengines', $scope.engines)
+        .success(function(response) {
+        	$http.post('savecars', $scope.cars)
             .success(function(response) {
-            	$http.post('savecars', $scope.cars)
+            	$http.post('savedrivers', $scope.drivers)
                 .success(function(response) {
-                	$http.post('saveengines', $scope.engines)
-                    .success(function(response) {
-                    	$scope.getComponents();
-                    	$scope.status = "Components Updated.";
-                        $('#spinner').hide();
+                	$scope.getComponents();
+                	$scope.status = "Components Updated.";
+                    $('#spinner').hide();
                 });
             });
         });
