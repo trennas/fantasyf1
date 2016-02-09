@@ -26,13 +26,15 @@ public class TheoreticalTeam {
 	@AttributeOverrides({
 			@AttributeOverride(name = "name", column = @Column(name = "carName")),
 			@AttributeOverride(name = "price", column = @Column(name = "carPrice")),
-			@AttributeOverride(name = "points", column = @Column(name = "carPoints")) })
+			@AttributeOverride(name = "points", column = @Column(name = "carPoints")),
+			@AttributeOverride(name = "number", column = @Column(name = "carNumber"))})
 	private MinimalTeamComponent car;
 
 	@AttributeOverrides({
 			@AttributeOverride(name = "name", column = @Column(name = "engineName")),
 			@AttributeOverride(name = "price", column = @Column(name = "enginePrice")),
-			@AttributeOverride(name = "points", column = @Column(name = "enginePoints")) })
+			@AttributeOverride(name = "points", column = @Column(name = "enginePoints")),
+			@AttributeOverride(name = "number", column = @Column(name = "engineNumber"))})
 	private MinimalTeamComponent engine;
 
 	public TheoreticalTeam() {
@@ -43,7 +45,7 @@ public class TheoreticalTeam {
 		for (final Driver driver : team.getDrivers()) {
 			getDrivers().add(
 					new MinimalTeamComponent(driver.getName(), driver
-							.getPrice(), driver.getTotalPoints()));
+							.getPrice(), driver.getTotalPoints(), driver.getNumber()));
 		}
 		car = new MinimalTeamComponent(team.getCar().getName(), team.getCar()
 				.getPrice(), team.getCar().getTotalPoints());
