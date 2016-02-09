@@ -1,32 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-<link rel="stylesheet" th:href="@{/css/styles.css}" />
-<link rel="stylesheet" th:href="@{/css/spinner.css}" type="text/css" />
-<script>
-	// Weblogic doesn't add trailing / to URL and this breaks AngularJS.
-	var url = window.location.href;
-	url = url.replace(/\/?(\?|#|$)/, '/$1');
-	if(window.location.href != url) {
-		window.location.href = url;
-	}
-</script>
-
-<script th:src="@{/js/jquery.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/angular.min.js}"></script>
-<script th:src="@{/js/angular-cookies.js}"></script>
-<script th:src="@{/js/ff1.js}"></script>
-
-<title>Fantasy F1 League</title>
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
-	  	<script src="js/html5shiv.min.js"></script>
-	  	<script src="js/respond.min.js"></script>
-		<![endif]-->
-</head>
+<head th:replace="header :: head" />
 <body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header"/>	
 	
