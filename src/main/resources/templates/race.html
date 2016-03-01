@@ -169,15 +169,10 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].number)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
-	      	<td class="text-center">&#163;{{bestTheoreticalTeam.drivers[0].price}}m</td>
-	      	<td class="text-center">{{bestTheoreticalTeam.drivers[0].points}}</td>
-	      </tr>
-		  <tr>
-	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[1].number)">{{bestTheoreticalTeam.drivers[1].name}}</a></td>
-	      	<td class="text-center">&#163;{{bestTheoreticalTeam.drivers[1].price}}m</td>
-	      	<td class="text-center">{{bestTheoreticalTeam.drivers[1].points}}</td>
+	      <tr ng-repeat="driver in bestTheoreticalTeam.drivers">
+	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver.number)">{{driver.name}}</a></td>
+	      	<td class="text-center">&#163;{{driver.price}}m</td>
+	      	<td class="text-center">{{driver.points}}</td>
 	      </tr>
 		  <tr>
 	      	<td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>

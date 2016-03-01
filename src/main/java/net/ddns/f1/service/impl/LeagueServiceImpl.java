@@ -191,17 +191,23 @@ public class LeagueServiceImpl implements LeagueService {
 	}
 
 	private long calculateRoundScore(final int round, final Team team) {
-		return team.getDrivers().get(0).getPointsPerEvent().get(round)
-				+ team.getDrivers().get(1).getPointsPerEvent().get(round)
-				+ team.getCar().getPointsPerEvent().get(round)
-				+ team.getEngine().getPointsPerEvent().get(round);
+		long score = 0;		
+		for(Driver driver : team.getDrivers()) {
+			score += driver.getPointsPerEvent().get(round);
+		}		
+		score += team.getCar().getPointsPerEvent().get(round)
+			  + team.getEngine().getPointsPerEvent().get(round);		
+		return score;
 	}
 
 	private long calculateTotalScore(final Team team) {
-		return team.getDrivers().get(0).getTotalPoints()
-				+ team.getDrivers().get(1).getTotalPoints()
-				+ team.getCar().getTotalPoints()
-				+ team.getEngine().getTotalPoints();
+		long score = 0;
+		for(Driver driver : team.getDrivers()) {
+			score += driver.getTotalPoints();
+		}
+		score +=  team.getCar().getTotalPoints()
+			  + team.getEngine().getTotalPoints();
+		return score;
 	}
 
 	private void resetAllScores(final List<Team> teams) {
