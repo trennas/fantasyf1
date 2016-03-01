@@ -35,6 +35,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Value("${auth.admin-role}")
 	private String adminRole;
+	
+	@Value("${admin-user}")
+	private String adminUser;
+	
+	@Value("${admin-password}")
+	private String adminPassword;
 
 	@Autowired
 	private TeamRepository teamRepo;
@@ -112,11 +118,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			throws Exception {
 		auth.userDetailsService(inMemoryUserDetailsManager());
 	}
+	
+	private void createAdminUser(final List<UserDetails> users) {
+		final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority(adminRole));
+		users.add(new User(adminUser, adminPassword, authorities));
+	}
 
 	@Bean
 	public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-		final List<UserDetails> users = new ArrayList<UserDetails>();
-
+		final List<UserDetails> users = new ArrayList<UserDetails>();		
+		createAdminUser(users);	
+		
 		final Iterator<Team> itr = teamRepo.findAll().iterator();
 		while (itr.hasNext()) {
 			final Team team = itr.next();

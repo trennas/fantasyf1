@@ -1,6 +1,7 @@
 package net.ddns.f1.web;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,6 +28,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +45,9 @@ public class MainController {
 
 	@Value("${season}")
 	private int season;
+	
+	@Value("${auth.admin-role}")
+	private String adminRole;
 
 	@Value("${best-theoretical-team-name}")
 	private String bestTheoreticalTeamName;
@@ -132,7 +138,7 @@ public class MainController {
 		return eventService.refreshEvent(round);
 	}
 
-	@RequestMapping("/refreshAllResults")
+	@RequestMapping({"/refreshAllResults", "/{subpage}/refreshAllResults"})
 	@ResponseBody
 	public Boolean refreshAllResults() {
 		eventService.refreshAllEvents();
@@ -371,12 +377,22 @@ public class MainController {
 	}
 
 	private Team maskPreSeasonTeam(final Team team) {
-		if (!seasonStarted()) {
+		if (!isAdmin() && !seasonStarted()) {
 			team.setDrivers(new ArrayList<Driver>());
 			team.setCar(null);
 			team.setEngine(null);
 		}
 		team.setPassword(null);
 		return team;
+	}
+	
+	private boolean isAdmin() {
+		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		for(GrantedAuthority authority : authorities) {
+			if(authority.getAuthority().equals(adminRole)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

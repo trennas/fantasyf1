@@ -10,7 +10,7 @@
 	<div class="panel panel-primary" ng-init="getLeagueTable();">
 	<div class="panel-heading text-center">League Table</div>	
 	<div class="panel-body">
-		<h4 class="text-info text-center" ng-if="!seasonStarted">Team components will be shown once the registration cut-off has passed ({{seasonStartDate|date:'mediumDate'}})</h4>
+		<h4 sec:authorize="!hasRole(@environment.getProperty('auth.admin-role'))" class="text-info text-center" ng-if="!seasonStarted">Team components will be shown once the registration cut-off has passed ({{seasonStartDate|date:'mediumDate'}})</h4>
 		<table class="table table-striped">
 	    <thead>
 	      <tr>

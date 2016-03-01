@@ -38,22 +38,9 @@ public class CreateData {
 	CorrectionRepository correctionRepo;
 	@Autowired
 	TeamService teamService;
-
+	
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
-
-	@Value("${auth.admin-role}")
-	private String adminRole;
-	
-	@Profile("createAdmin")
-	@Bean
-	public int admin() {
-		Team team = new Team(null, null,
-				"mike.trenaman@gmail.com", "welcome1", null, null, null);
-		team.getRoles().add(adminRole);
-		teamService.saveTeamNoValidation(team);
-		return 0;
-	}
 
 	@Profile("create2016")
 	@Bean
@@ -265,7 +252,6 @@ public class CreateData {
 					"mike.trenaman@gmail.com", "welcome1", drivers, carRepo
 							.findByName("Manor").get(0), engineRepo.findByName(
 							"Mercedes").get(0));
-			team.getRoles().add(adminRole);
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();

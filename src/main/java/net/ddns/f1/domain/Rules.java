@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 public final class Rules {
 	@Value("${budget}")
 	private int budget;
+	@Value("${num-drivers-per-team}")
+	private String numDriversPerTeam;
 	private final Integer fastestLapBonus = 50;
 	private final Integer bothCarsFinishedBonus = 50;
 

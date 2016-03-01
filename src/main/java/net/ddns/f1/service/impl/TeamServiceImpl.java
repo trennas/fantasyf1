@@ -44,7 +44,9 @@ public class TeamServiceImpl implements TeamService {
 
 	@Autowired
 	LeagueService leagueService;
-
+	
+	@Value("${admin-user}")
+	private String adminUser;
 	@Value("${best-theoretical-team-name}")
 	private String bestTheoreticalTeamName;
 	@Value("${auth.myaccount-role}")
@@ -136,6 +138,8 @@ public class TeamServiceImpl implements TeamService {
 			throw new ValidationException("Your E-Mail address is required");
 		} else if (!team.getEmail().matches(emailRegex)) {
 			throw new ValidationException("Invalid E-Mail address");
+		} else if (team.getEmail().equalsIgnoreCase(adminUser)) {
+			throw new ValidationException("That E-Mail address is reserved");
 		}
 		if (team.getPassword() == null || team.getPassword().isEmpty()) {
 			throw new ValidationException("Password cannot be empty");
