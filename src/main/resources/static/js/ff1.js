@@ -296,6 +296,16 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.getDriverByName = function(name) {
+        $http.get('driverbyname?name=' + name)
+            .success(function(response) {
+                $scope.driver = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
     $scope.getCar = function(name) {
         $http.get('car?name=' + name)
             .success(function(response) {

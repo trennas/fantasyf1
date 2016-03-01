@@ -216,6 +216,12 @@ public class MainController {
 	public Driver driver(final Integer number) {
 		return componentService.findDriverByNumber(number);
 	}
+	
+	@RequestMapping({ "/driverbyname", "/{subpage}/driverbyname" })
+	@ResponseBody
+	public Driver driver(final String name) {
+		return componentService.findDriverByName(name);
+	}
 
 	@RequestMapping({ "/car", "/{subpage}/car" })
 	@ResponseBody

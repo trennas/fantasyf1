@@ -23,7 +23,7 @@
 	    <tbody>
 	      <tr ng-repeat="(driver, position) in event.qualifyingOrder">
 	        <td class="text-center">{{position.position}}</td>
-	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver)">{{driver}}</a></td>
+	        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriverByName(driver)">{{driver}}</a></td>
 	        <td><span ng-if="position.classified" class="glyphicon glyphicon-ok"></span>
 	        	<span ng-if="!position.classified" class="glyphicon glyphicon-remove"></span>
 	        </td>
@@ -47,7 +47,7 @@
 			    <tbody>
 			      <tr ng-repeat="(driver, position) in event.raceOrder">
 			        <td class="text-center">{{position.position}}</td>
-			        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver)">{{driver}}</a></td>
+			        <td><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriverByName(driver)">{{driver}}</a></td>
 			        <td><span ng-if="position.classified" class="glyphicon glyphicon-ok"></span>
 	        			<span ng-if="!position.classified" class="glyphicon glyphicon-remove"></span>
 	        	  	</td>
