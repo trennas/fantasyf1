@@ -36,7 +36,7 @@
 	      	<td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[2].number)">{{bestTheoreticalTeam.drivers[2].name}}</a></td>
 	      	<td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
 	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(bestTheoreticalTeam.engine.name)">{{bestTheoreticalTeam.engine.name}}</a></td>
-	        <td class="text-center"><span ng-show="team.drivers[0] || team.drivers[1] || team.drivers[2] || team.car || team.engine">&#163;{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}m</span></td>
+	        <td class="text-center"><span ng-show="team.drivers[0] || team.drivers[1] || team.drivers[2] || team.car || team.engine">&#163;{{bestTheoreticalTeam.drivers[0].price + bestTheoreticalTeam.drivers[1].price + bestTheoreticalTeam.drivers[2].price + bestTheoreticalTeam.car.price + bestTheoreticalTeam.engine.price}}m</span></td>
 	        <td></td>
 	        <td class="text-center">{{bestTheoreticalTeam.points}}</td>
 	      </tr>
@@ -49,7 +49,7 @@
 	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(team.drivers[2].number)">{{team.drivers[2].name}}</a></td>
 	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(team.car.name)">{{team.car.name}}</a></td>
 	        <td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#engineModal" ng-click="getEngine(team.engine.name)">{{team.engine.name}}</a></td>
-	        <td class="text-center"><span ng-show="team.drivers[0] || team.drivers[1] || team.car || team.engine">&#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</span></td>
+	        <td class="text-center"><span ng-show="team.drivers[0] || team.drivers[1] || team.drivers[2] || team.car || team.engine">&#163;{{team.drivers[0].price + team.drivers[1].price + team.drivers[2].price + team.car.price + team.engine.price}}m</span></td>
 	        <td class="text-center">{{team.pointsPerEvent[getLength(team.pointsPerEvent)]}}</td>
 	        <td class="text-center">{{team.totalPoints}}</td>
 	      </tr>
