@@ -3,6 +3,13 @@ package net.ddns.f1.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Correction;
 import net.ddns.f1.domain.Driver;
@@ -14,13 +21,6 @@ import net.ddns.f1.repository.DriverRepository;
 import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.service.TeamService;
 import net.ddns.f1.service.impl.ValidationException;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Profile("create")
 @Configuration
@@ -55,9 +55,57 @@ public class CreateData {
 		return 0;
 	}
 
+	@Profile("create2016")
+	@Bean
+	public int create2016Data() {
+		LOG.info("Creating League Data...");
+		engineRepo.save(new Engine("Mercedes", 30));
+		engineRepo.save(new Engine("Ferrari", 20));
+		engineRepo.save(new Engine("Renault", 19));
+		engineRepo.save(new Engine("Honda", 14));
+
+		carRepo.save(new Car("Mercedes", 25, engineRepo.findByName("Mercedes").get(0)));
+		carRepo.save(new Car("Red Bull", 20, engineRepo.findByName("Renault").get(0)));
+		carRepo.save(new Car("Williams", 19, engineRepo.findByName("Mercedes").get(0)));
+		carRepo.save(new Car("Ferrari", 18, engineRepo.findByName("Ferrari").get(0)));
+		carRepo.save(new Car("Mclaren", 14, engineRepo.findByName("Honda").get(0)));
+		carRepo.save(new Car("Force India", 13, engineRepo.findByName("Mercedes").get(0)));
+		carRepo.save(new Car("Toro Rosso", 12, engineRepo.findByName("Ferrari").get(0)));
+		carRepo.save(new Car("Renault", 11, engineRepo.findByName("Renault").get(0)));
+		carRepo.save(new Car("Sauber", 8, engineRepo.findByName("Ferrari").get(0)));
+		carRepo.save(new Car("Manor", 2, engineRepo.findByName("Mercedes").get(0)));
+		carRepo.save(new Car("Hass", 2, engineRepo.findByName("Ferrari").get(0)));
+
+		driverRepo.save(new Driver("Lewis Hamilton", 44, carRepo.findByName("Mercedes").get(0), 27, false));
+		driverRepo.save(new Driver("Nico Rosberg", 6, carRepo.findByName("Mercedes").get(0), 25, false));
+		driverRepo.save(new Driver("Sebastian Vettel", 5, carRepo.findByName("Ferrari").get(0), 19, false));
+		driverRepo.save(new Driver("Kimi Raikkonen", 7, carRepo.findByName("Ferrari").get(0), 17, false));
+		driverRepo.save(new Driver("Daniel Ricciardo", 3, carRepo.findByName("Red Bull").get(0), 21, false));
+		driverRepo.save(new Driver("Daniil Kvyat", 26, carRepo.findByName("Red Bull").get(0), 17, false));
+		driverRepo.save(new Driver("Felipe Massa", 19, carRepo.findByName("Williams").get(0), 18, false));
+		driverRepo.save(new Driver("Valtteri Bottas", 77, carRepo.findByName("Williams").get(0), 20, false));
+		driverRepo.save(new Driver("Nico Hulkenberg", 27, carRepo.findByName("Force India").get(0), 14, false));
+		driverRepo.save(new Driver("Sergio Perez", 11, carRepo.findByName("Force India").get(0), 13, false));
+		driverRepo.save(new Driver("Max Verstappen", 33, carRepo.findByName("Toro Rosso").get(0), 7, false));
+		driverRepo.save(new Driver("Carlos Sainz", 55, carRepo.findByName("Toro Rosso").get(0), 6, false));
+		driverRepo.save(new Driver("Romain Grosjean", 8, carRepo.findByName("Hass").get(0), 10, false));
+		driverRepo.save(new Driver("Est", 21, carRepo.findByName("Hass").get(0), 10, false));
+		driverRepo.save(new Driver("Kevin Magnussen", 20, carRepo.findByName("Renault").get(0), 8, false));
+		driverRepo.save(new Driver("Jolyon Palmer", 30, carRepo.findByName("Renault").get(0), 8, false));
+		driverRepo.save(new Driver("Marcus Ericsson", 9, carRepo.findByName("Sauber").get(0), 5, false));
+		driverRepo.save(new Driver("Felipe Nasr", 12, carRepo.findByName("Sauber").get(0), 4, false));
+		driverRepo.save(new Driver("Fernando Alonso", 14, carRepo.findByName("Mclaren").get(0), 16, false));
+		driverRepo.save(new Driver("Jenson Button", 22, carRepo.findByName("Mclaren").get(0), 15, false));
+		driverRepo.save(new Driver("Rio Haryanto", 88, carRepo.findByName("Manor").get(0), 1, false));
+		driverRepo.save(new Driver("Pascal Wehrlein", 94, carRepo.findByName("Manor").get(0), 1, false));
+
+		LOG.info("Complete.");
+		return 0;
+	}
+
 	@Profile("create2015")
 	@Bean
-	public int createDummyData() {
+	public int create2015Data() {
 		LOG.info("Creating League Data...");
 		engineRepo.save(new Engine("Mercedes", 30));
 		engineRepo.save(new Engine("Ferrari", 20));
