@@ -28,7 +28,7 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr class="warning">
+	      <tr ng-if="events.length > 0" class="warning">
 	      	<td class="text-center">N/A</td>
 	      	<th colspan="2">{{bestTheoreticalTeam.name}}</th>
 	      	<td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(bestTheoreticalTeam.drivers[0].number)">{{bestTheoreticalTeam.drivers[0].name}}</a></td>
