@@ -14,6 +14,7 @@ import net.ddns.f1.service.EventService;
 import net.ddns.f1.service.LeagueService;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -65,7 +66,8 @@ public class LeagueServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
-	@Test	
+	@Test
+	@Ignore
 	public void calculateAllResultsTest() throws Exception {
 		List<EventResult> results = new ArrayList<EventResult>();
 		EventResult res = new EventResult();
