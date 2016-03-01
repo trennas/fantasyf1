@@ -102,8 +102,8 @@ public class TeamServiceImpl implements TeamService {
 			}
 		}
 		validateTeam(team, newTeam);
-		teamRepo.save(team);
 		setCredentials(team);
+		teamRepo.save(team);
 	}
 
 	private void setCredentials(final Team team) {
