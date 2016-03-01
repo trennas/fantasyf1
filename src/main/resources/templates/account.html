@@ -1,198 +1,230 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="header :: head" />
 
-<head th:replace="header :: head" />
-
-<body>
-	<div th:fragment="account">
-	<div class="panel panel-primary" ng-init="getDrivers(); getCars(); getEngines(); getSeasonStarted();">
-	<div class="panel-heading text-center">My Account</div>	
-	<div class="panel-body form-group">		
-		<table class="table table-striped table-responsive">		    
-			<tbody>
-			  <tr>
-			 	 <th>Your Name</th>
-			 	 <td><input id="owner" type="text" class="form-control" ng-model="team.owner"/></td>
-			  </tr>
-			  <tr>
-			 	 <th>E-Mail</th>
-			 	 <td><input id="email" type="text" class="form-control" ng-model="team.email"/></td>
-			  </tr>
-			  <tr>
-			 	 <th>Password</th>
-			 	 <td><input id="password" type="password" class="form-control" ng-model="team.password"/></td>
-			  </tr>
-			  <tr>
-			 	 <th>Confirm Password</th>
-			 	 <td><input id="confirmPassword" type="password" class="form-control" ng-model="team.confirmPassword"/></td>
-			  </tr>
-			</tbody>
-		</table>
+	<body>
+		<div th:fragment="account">
+		<div class="panel panel-primary" ng-init="getDrivers(); getCars(); getEngines(); getSeasonStarted();getRules();">
+		<div class="panel-heading text-center">My Account</div>	
+		<div class="panel-body form-group">		
+			<table class="table table-striped table-responsive">		    
+				<tbody>
+				  <tr>
+				 	 <th>Your Name</th>
+				 	 <td><input id="owner" type="text" class="form-control" ng-model="team.owner"/></td>
+				  </tr>
+				  <tr>
+				 	 <th>E-Mail</th>
+				 	 <td><input id="email" type="text" class="form-control" ng-model="team.email"/></td>
+				  </tr>
+				  <tr>
+				 	 <th>Password</th>
+				 	 <td><input id="password" type="password" class="form-control" ng-model="team.password"/></td>
+				  </tr>
+				  <tr>
+				 	 <th>Confirm Password</th>
+				 	 <td><input id="confirmPassword" type="password" class="form-control" ng-model="team.confirmPassword"/></td>
+				  </tr>
+				</tbody>
+			</table>
+		  </div>
 	  </div>
-  </div>
-  
-  <form role="form">
-	  <div class="panel panel-info">
-		<div class="panel-heading text-center">My Team</div>
-		<div class="panel-body form-group">
-		
-		<table class="table table-striped table-responsive">
-		    <thead>
-		      <tr>
-			      <th>Item</th>
-			      <th>Selection</th>
-			      <th>Info</th>
-			      <th>Cost</th>
-			  </tr>
-			 </thead>
-			 <tbody>
-			 	<tr>
-			 		<th>Team Name</th>
-			 		<td><input id="name" type="text" class="form-control" ng-model="team.name"/></td>
-			 		<td/>
-			 		<td/>
-			 	</tr>
-			 	<tr>
-			 		<th>Driver 1</th>
-			 		<td ng-init="getDrivers();">
-			 			<div class="dropdown">
-						  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="driverDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						    {{team.drivers[0].name}}
-						    <span class="caret"></span>
-						  </button>
-						  <ul class="dropdown-menu" aria-labelledby="driverDropdown">
-						  <table class="table table-striped table-responsive">
-						    <thead>
-						      <tr>
-						        <th>Driver</th>
-						        <th>Price</th>
-						      </tr>
-						    </thead>
-						    <tbody>
-						      <tr ng-repeat="driver in drivers | orderBy:'-price'">
-						        <td>					        	
-						        	<a href="#" class="a-unstyled" ng-click="team.drivers[0] = driver;">{{driver.name}}</a>
-						        	<span ng-if="team.drivers[0].name==driver.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
-						        </td>
-						        <td>&#163;{{driver.price}}m</td>
-						      </tr>
-						    </tbody>
-						    </table>
-						  </ul>
-						</div>
-					</td>
-					<td><span ng-show="team.drivers[0]">{{team.drivers[0].car.name}} Driver</span></td>
-					<td><span ng-show="team.drivers[0]">&#163;{{team.drivers[0].price}}m</span></td>
-				</tr>
-			 	<tr>
-			 		<th>Driver 2</th>
-					<td>
-						<div class="dropdown">
-						  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="driverDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						    {{team.drivers[1].name}}
-						    <span class="caret"></span>
-						  </button>
-						  <ul class="dropdown-menu" aria-labelledby="driverDropdown">
-						  <table class="table table-striped table-responsive">
-						    <thead>
-						      <tr>
-						        <th>Driver</th>
-						        <th>Price</th>
-						      </tr>
-						    </thead>
-						    <tbody>
-						      <tr ng-repeat="driver in drivers | orderBy:'-price'">
-						        <td>					        	
-						        	<a href="#" class="a-unstyled" ng-click="team.drivers[1] = driver;">{{driver.name}}</a>
-						        	<span ng-if="team.drivers[1].name==driver.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
-						        </td>
-						        <td>&#163;{{driver.price}}m</td>
-						      </tr>
-						    </tbody>
-						    </table>
-						  </ul>
-						</div>
-					</td>
-					<td><span ng-show="team.drivers[1]">{{team.drivers[1].car.name}}  Driver</span></td>
-					<td><span ng-show="team.drivers[1]">&#163;{{team.drivers[1].price}}m</span></td>
-				</tr>
-			 	<tr>
-			 		<th>Car</th>
-					<td ng-init="getCars();">
-						<div class="dropdown">
-						  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="carDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						    {{team.car.name}}
-						    <span class="caret"></span>
-						  </button>
-						  <ul class="dropdown-menu" aria-labelledby="carDropdown">
-						  <table class="table table-striped table-responsive">
-						    <thead>
-						      <tr>
-						        <th>Car</th>
-						        <th>Price</th>
-						      </tr>
-						    </thead>
-						    <tbody>
-						      <tr ng-repeat="car in cars | orderBy:'-price'">
-						        <td>					        	
-						        	<a href="#" class="a-unstyled" ng-click="team.car = car;">{{car.name}}</a>
-						        	<span ng-if="team.car.name==car.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
-						        </td>
-						        <td>&#163;{{car.price}}m</td>
-						      </tr>
-						    </tbody>
-						    </table>
-						  </ul>
-						</div>
-					</td>
-					<td><span ng-show="team.car">Uses {{team.car.engine.name}} Engine</span></td>
-					<td><span ng-show="team.car">&#163;{{team.car.price}}m</span></td>
-				</tr>
-			 	<tr>
-			 		<th>Engine</th>
-					<td ng-init="getEngines();">
-						<div class="dropdown">
-						  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="engineDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						    {{team.engine.name}}
-						    <span class="caret"></span>
-						  </button>
-						  <ul class="dropdown-menu" aria-labelledby="engineDropdown">
-						  <table class="table table-striped table-responsive">
-						    <thead>
-						      <tr>
-						        <th>Engine</th>
-						        <th>Price</th>
-						      </tr>
-						    </thead>
-						    <tbody>
-						      <tr ng-repeat="engine in engines | orderBy:'-price'">
-						        <td>					        	
-						        	<a href="#" class="a-unstyled" ng-click="team.engine = engine;">{{engine.name}}</a>
-						        	<span ng-if="team.engine.name==engine.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
-						        </td>
-						        <td>&#163;{{engine.price}}m</td>
-						      </tr>
-						    </tbody>
-						    </table>
-						  </ul>
-						</div>
-					</td>
-					<td></td>
-					<td><span ng-show="team.engine">&#163;{{team.engine.price}}m</span></td>
-			 	</tr>
-			 	<tr>
-			 		<th colspan="3">Total Cost</th>
-			 		<th><span ng-show="team.drivers[0] || team.drivers[1] || team.car || team.engine"> &#163;{{team.drivers[0].price + team.drivers[1].price + team.car.price + team.engine.price}}m</span></th>
-			 	</tr>
-			 </tbody>
-		  </table>
+	  
+	  <form role="form">
+		  <div class="panel panel-info">
+			<div class="panel-heading text-center">My Team</div>
+			<div class="panel-body form-group">
+			
+			<table class="table table-striped table-responsive">
+			    <thead>
+			      <tr>
+				      <th>Item</th>
+				      <th>Selection</th>
+				      <th>Info</th>
+				      <th>Cost</th>
+				  </tr>
+				 </thead>
+				 <tbody>
+				 	<tr>
+				 		<th>Team Name</th>
+				 		<td><input id="name" type="text" class="form-control" ng-model="team.name"/></td>
+				 		<td/>
+				 		<td/>
+				 	</tr>
+				 	<tr>
+				 		<th>Driver 1</th>
+				 		<td ng-init="getDrivers();">
+				 			<div class="dropdown">
+							  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="driverDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							    {{team.drivers[0].name}}
+							    <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu" aria-labelledby="driverDropdown">
+								  <table class="table table-striped table-responsive">
+								    <thead>
+								      <tr>
+								        <th>Driver</th>
+								        <th>Price</th>
+								      </tr>
+								    </thead>
+								    <tbody>
+								      <tr ng-repeat="driver in drivers | orderBy:'-price'">
+								        <td>					        	
+								        	<a href="#" class="a-unstyled" ng-click="team.drivers[0] = driver;">{{driver.name}}</a>
+								        	<span ng-if="team.drivers[0].name==driver.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
+								        </td>
+								        <td>&#163;{{driver.price}}m</td>
+								      </tr>
+								    </tbody>
+								    </table>
+								  </ul>
+								</div>
+							</td>
+							<td><span ng-show="team.drivers[0]">{{team.drivers[0].car.name}} Driver</span></td>
+							<td><span ng-show="team.drivers[0]">&#163;{{team.drivers[0].price}}m</span></td>
+						</tr>
+					 	<tr>
+					 		<th>Driver 2</th>
+							<td>
+								<div class="dropdown">
+								  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="driverDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								    {{team.drivers[1].name}}
+								    <span class="caret"></span>
+								  </button>
+								  <ul class="dropdown-menu" aria-labelledby="driverDropdown">
+								  <table class="table table-striped table-responsive">
+								    <thead>
+								      <tr>
+								        <th>Driver</th>
+								        <th>Price</th>
+								      </tr>
+								    </thead>
+								    <tbody>
+								      <tr ng-repeat="driver in drivers | orderBy:'-price'">
+								        <td>					        	
+								        	<a href="#" class="a-unstyled" ng-click="team.drivers[1] = driver;">{{driver.name}}</a>
+								        	<span ng-if="team.drivers[1].name==driver.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
+								        </td>
+								        <td>&#163;{{driver.price}}m</td>
+								      </tr>
+								    </tbody>
+								    </table>
+								  </ul>
+								</div>
+							</td>
+							<td><span ng-show="team.drivers[1]">{{team.drivers[1].car.name}}  Driver</span></td>
+							<td><span ng-show="team.drivers[1]">&#163;{{team.drivers[1].price}}m</span></td>
+						</tr>
+					 	<tr>
+					 		<th>Driver 3</th>
+							<td>
+								<div class="dropdown">
+								  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="driverDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								    {{team.drivers[2].name}}
+								    <span class="caret"></span>
+								  </button>
+								  <ul class="dropdown-menu" aria-labelledby="driverDropdown">
+								  <table class="table table-striped table-responsive">
+								    <thead>
+								      <tr>
+								        <th>Driver</th>
+								        <th>Price</th>
+								      </tr>
+								    </thead>
+								    <tbody>
+								      <tr ng-repeat="driver in drivers | orderBy:'-price'">
+								        <td>					        	
+								        	<a href="#" class="a-unstyled" ng-click="team.drivers[2] = driver;">{{driver.name}}</a>
+								        	<span ng-if="team.drivers[2].name==driver.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
+								        </td>
+								        <td>&#163;{{driver.price}}m</td>
+								      </tr>
+								    </tbody>
+								    </table>
+								  </ul>
+								</div>
+							</td>
+							<td><span ng-show="team.drivers[1]">{{team.drivers[2].car.name}}  Driver</span></td>
+							<td><span ng-show="team.drivers[1]">&#163;{{team.drivers[2].price}}m</span></td>
+						</tr>
+					 	<tr>
+					 		<th>Car</th>
+							<td ng-init="getCars();">
+								<div class="dropdown">
+								  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="carDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								    {{team.car.name}}
+								    <span class="caret"></span>
+								  </button>
+								  <ul class="dropdown-menu" aria-labelledby="carDropdown">
+								  <table class="table table-striped table-responsive">
+								    <thead>
+								      <tr>
+								        <th>Car</th>
+								        <th>Price</th>
+								      </tr>
+								    </thead>
+								    <tbody>
+								      <tr ng-repeat="car in cars | orderBy:'-price'">
+								        <td>					        	
+								        	<a href="#" class="a-unstyled" ng-click="team.car = car;">{{car.name}}</a>
+								        	<span ng-if="team.car.name==car.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
+								        </td>
+								        <td>&#163;{{car.price}}m</td>
+								      </tr>
+								    </tbody>
+								    </table>
+								  </ul>
+								</div>
+							</td>
+							<td><span ng-show="team.car">Uses {{team.car.engine.name}} Engine</span></td>
+							<td><span ng-show="team.car">&#163;{{team.car.price}}m</span></td>
+						</tr>
+					 	<tr>
+					 		<th>Engine</th>
+							<td ng-init="getEngines();">
+								<div class="dropdown">
+								  <button class="btn btn-default dropdown-toggle" ng-class="seasonStarted ? 'disabled' : ''" type="button" id="engineDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								    {{team.engine.name}}
+								    <span class="caret"></span>
+								  </button>
+								  <ul class="dropdown-menu" aria-labelledby="engineDropdown">
+								  <table class="table table-striped table-responsive">
+								    <thead>
+								      <tr>
+								        <th>Engine</th>
+								        <th>Price</th>
+								      </tr>
+								    </thead>
+								    <tbody>
+								      <tr ng-repeat="engine in engines | orderBy:'-price'">
+								        <td>					        	
+								        	<a href="#" class="a-unstyled" ng-click="team.engine = engine;">{{engine.name}}</a>
+								        	<span ng-if="team.engine.name==engine.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>					        	
+								        </td>
+								        <td>&#163;{{engine.price}}m</td>
+								      </tr>
+								    </tbody>
+								    </table>
+								  </ul>
+								</div>
+							</td>
+							<td></td>
+							<td><span ng-show="team.engine">&#163;{{team.engine.price}}m</span></td>
+					 	</tr>
+					 	<tr>
+					 		<th colspan="3">Total Cost (&#163;{{rules.budget}}m budget)</th>
+					 		<th><span ng-show="team.drivers[0] || team.drivers[1] || team.drivers[2] || team.car || team.engine"> &#163;{{team.drivers[0].price + team.drivers[1].price + team.drivers[2].price + team.car.price + team.engine.price}}m</span></th>
+					 	</tr>
+					 </tbody>
+				  </table>
+				  
+			  </div>
+			</div>
+			<button type="submit" class="btn btn-success" ng-click="saveMyTeam(team);">Submit</button>
+			{{status}}		  
+			<div id="spinner" class="spinner-loader pull-right" style="display: none;">Loading...</div>
+		  </form>
 		  
-	  </div>
-	</div>
-	<button type="submit" class="btn btn-success" ng-click="saveMyTeam(team);">Submit</button>
-	{{status}}		  
-	<div id="spinner" class="spinner-loader pull-right" style="display: none;">Loading...</div>
-  </form>
-  
-  </div>
-</body>
+		  </div>
+	</body>
 </html>

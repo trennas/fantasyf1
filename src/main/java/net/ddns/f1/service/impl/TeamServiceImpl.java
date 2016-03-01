@@ -88,6 +88,8 @@ public class TeamServiceImpl implements TeamService {
 						.equals(team.getDrivers().get(0).getName())
 						|| !prevTeam.getDrivers().get(1).getName()
 								.equals(team.getDrivers().get(1).getName())
+						|| !prevTeam.getDrivers().get(2).getName()
+								.equals(team.getDrivers().get(2).getName())
 						|| !prevTeam.getCar().getName()
 								.equals(team.getCar().getName())
 						|| !prevTeam.getEngine().getName()
@@ -188,8 +190,8 @@ public class TeamServiceImpl implements TeamService {
 
 		final List<Driver> drivers = team.getDrivers();
 
-		if (drivers.get(0).equals(drivers.get(1))) {
-			throw new ValidationException("Both drivers are the same");
+		if (drivers.get(0).equals(drivers.get(1)) || drivers.get(0).equals(drivers.get(2)) || drivers.get(1).equals(drivers.get(2))) {
+			throw new ValidationException("You cannot choose the same driver multiple times");
 		}
 
 		if (team.getCar().getEngine().equals(team.getEngine())) {
@@ -197,10 +199,11 @@ public class TeamServiceImpl implements TeamService {
 		}
 
 		for (final Driver driver : drivers) {
-			if (driver.getCar().getEngine().equals(team.getEngine())) {
-				throw new ValidationException("Driver (" + driver.getName()
-						+ ") cannot use chosen engine");
-			}
+			// This rule is currently disabled as of the change from 2 -> 3 drivers
+//			if (driver.getCar().getEngine().equals(team.getEngine())) {
+//				throw new ValidationException("Driver (" + driver.getName()
+//						+ ") cannot use chosen engine");
+//			}
 			cost += driver.getPrice();
 		}
 		cost += team.getCar().getPrice();

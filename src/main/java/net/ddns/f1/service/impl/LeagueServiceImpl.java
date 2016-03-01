@@ -110,65 +110,76 @@ public class LeagueServiceImpl implements LeagueService {
 		long totalHighScore = bestOverallTeam.getPoints() == null ? 0
 				: bestOverallTeam.getPoints();
 
-		for (final Driver driver : allDrivers) {
+		for (final Driver driver1 : allDrivers) {
 			final Team team = new Team();
 			for (final Driver driver2 : allDrivers) {
-				if (driver2.getNumber() != driver.getNumber()) {
-					team.setDrivers(new ArrayList<Driver>());
-					team.getDrivers().add(driver);
-					team.getDrivers().add(driver2);
-					for (final Car car : cars) {
-						team.setCar(car);
-						for (final Engine engine : engines) {
-							team.setEngine(engine);
-							try {
-								teamService.validateTeamComponents(team);
-								final long roundScore = calculateRoundScore(
-										result.getRound(), team);
-								final long totalScore = calculateTotalScore(team);
-
-								if (roundScore > roundHighScore) {
-									roundHighScore = roundScore;
-									bestTeamForRound.setComponents(team);
-
-									bestTeamForRound
-											.getDrivers()
-											.get(0)
-											.setPoints(
-													(long) team
-															.getDrivers()
-															.get(0)
-															.getPointsPerEvent()
-															.get(result
-																	.getRound()));
-									bestTeamForRound
-											.getDrivers()
-											.get(1)
-											.setPoints(
-													(long) team
-															.getDrivers()
-															.get(1)
-															.getPointsPerEvent()
-															.get(result
-																	.getRound()));
-									bestTeamForRound.getCar().setPoints(
-											(long) team.getCar()
-													.getPointsPerEvent()
-													.get(result.getRound()));
-									bestTeamForRound.getEngine().setPoints(
-											(long) team.getEngine()
-													.getPointsPerEvent()
-													.get(result.getRound()));
-
-									bestTeamForRound.setPoints(roundScore);
+				for (final Driver driver3 : allDrivers) {
+					if (driver1.getNumber() != driver2.getNumber() && driver1.getNumber() != driver3.getNumber() && driver2.getNumber() != driver3.getNumber()) {
+						team.setDrivers(new ArrayList<Driver>());
+						team.getDrivers().add(driver1);
+						team.getDrivers().add(driver2);
+						team.getDrivers().add(driver3);
+						for (final Car car : cars) {
+							team.setCar(car);
+							for (final Engine engine : engines) {
+								team.setEngine(engine);
+								try {
+									teamService.validateTeamComponents(team);
+									final long roundScore = calculateRoundScore(
+											result.getRound(), team);
+									final long totalScore = calculateTotalScore(team);
+	
+									if (roundScore > roundHighScore) {
+										roundHighScore = roundScore;
+										bestTeamForRound.setComponents(team);
+	
+										bestTeamForRound
+												.getDrivers()
+												.get(0)
+												.setPoints(
+														(long) team
+																.getDrivers()
+																.get(0)
+																.getPointsPerEvent()
+																.get(result.getRound()));
+										bestTeamForRound
+												.getDrivers()
+												.get(1)
+												.setPoints(
+														(long) team
+																.getDrivers()
+																.get(1)
+																.getPointsPerEvent()
+																.get(result.getRound()));
+										
+										bestTeamForRound
+										.getDrivers()
+										.get(2)
+										.setPoints(
+												(long) team
+														.getDrivers()
+														.get(2)
+														.getPointsPerEvent()
+														.get(result.getRound()));
+										bestTeamForRound.getCar().setPoints(
+												(long) team.getCar()
+														.getPointsPerEvent()
+														.get(result.getRound()));
+										bestTeamForRound.getEngine().setPoints(
+												(long) team.getEngine()
+														.getPointsPerEvent()
+														.get(result.getRound()));
+	
+										bestTeamForRound.setPoints(roundScore);
+									}
+									if (totalScore > totalHighScore) {
+										totalHighScore = totalScore;
+										bestOverallTeam.setComponents(team);
+										bestOverallTeam.setPoints(totalScore);
+									}
+								} catch (final ValidationException e) {
+									continue;
 								}
-								if (totalScore > totalHighScore) {
-									totalHighScore = totalScore;
-									bestOverallTeam.setComponents(team);
-									bestOverallTeam.setPoints(totalScore);
-								}
-							} catch (final ValidationException e) {
-								continue;
 							}
 						}
 					}
