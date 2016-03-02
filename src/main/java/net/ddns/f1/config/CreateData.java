@@ -96,6 +96,45 @@ public class CreateData {
 		driverRepo.save(new Driver("Romain Grosjean", 8, carRepo.findByName("Haas").get(0), 10, false));
 		driverRepo.save(new Driver("Esteban Gutierrez", 21, carRepo.findByName("Haas").get(0), 10, false));
 
+		try {
+			List<Driver> drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+			drivers.add(driverRepo.findByName("Daniil Kvyat").get(0));
+			drivers.add(driverRepo.findByName("Fernando Alonso").get(0));
+			Team team = new Team("Brawlers Lifters", "Brawler", "alan.bates2@baesystems.com", "welcome1", drivers,
+					carRepo.findByName("Sauber").get(0), engineRepo.findByName("Honda").get(0));
+			teamService.saveTeam(team);
+
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Sergio Perez").get(0));
+			drivers.add(driverRepo.findByName("Rio Haryanto").get(0));
+			drivers.add(driverRepo.findByName("Esteban Gutierrez").get(0));
+			team = new Team("Millimetres_Per_Sec_Type'last", "Mike Trenaman", "mike.trenaman@gmail.com",
+ "welcome1",
+					drivers, carRepo.findByName("Ferrari").get(0),
+					engineRepo.findByName("Mercedes").get(0));
+			teamService.saveTeam(team);
+
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+			drivers.add(driverRepo.findByName("Jenson Button").get(0));
+			drivers.add(driverRepo.findByName("Valtteri Bottas").get(0));
+			team = new Team("Aiden", "Brendan", "brendan.poole@gmail.com", "welcome1", drivers,
+					carRepo.findByName("Toro Rosso").get(0), engineRepo.findByName("Honda").get(0));
+			teamService.saveTeam(team);
+
+			drivers = new ArrayList<Driver>();
+			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+			drivers.add(driverRepo.findByName("Fernando Alonso").get(0));
+			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
+			team = new Team("questus scire caseum", "coma_g", "FF1-winner@bc108.f9.co.uk", "welcome1", drivers,
+					carRepo.findByName("Toro Rosso").get(0), engineRepo.findByName("Renault").get(0));
+			teamService.saveTeam(team);
+
+		} catch (final ValidationException e) {
+			LOG.info("Team Invalid: " + e.getMessage());
+		}
+
 		LOG.info("Complete.");
 		return 0;
 	}
