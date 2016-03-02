@@ -10,6 +10,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import net.ddns.f1.domain.Car;
 import net.ddns.f1.domain.Driver;
 import net.ddns.f1.domain.Engine;
@@ -23,18 +35,6 @@ import net.ddns.f1.service.EventService;
 import net.ddns.f1.service.LeagueService;
 import net.ddns.f1.service.TeamService;
 import net.ddns.f1.service.impl.ValidationException;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Profile("!create")
 @Controller
@@ -382,12 +382,14 @@ public class MainController {
 	}
 
 	private Team maskPreSeasonTeam(final Team team) {
-		if (!isAdmin() && !seasonStarted()) {
-			team.setDrivers(new ArrayList<Driver>());
-			team.setCar(null);
-			team.setEngine(null);
+		if (!isAdmin()) {
+			if (!seasonStarted()) {
+				team.setDrivers(new ArrayList<Driver>());
+				team.setCar(null);
+				team.setEngine(null);
+			}
+			team.setPassword(null);
 		}
-		team.setPassword(null);
 		return team;
 	}
 	
