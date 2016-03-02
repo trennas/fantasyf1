@@ -61,7 +61,7 @@ public class CreateData {
 		carRepo.save(new Car("Sauber", 17, engineRepo.findByName("Ferrari").get(0)));
 		carRepo.save(new Car("Mclaren", 16, engineRepo.findByName("Honda").get(0)));		
 		carRepo.save(new Car("Manor", 15, engineRepo.findByName("Mercedes").get(0)));
-		carRepo.save(new Car("Hass", 15, engineRepo.findByName("Ferrari").get(0)));
+		carRepo.save(new Car("Haas", 15, engineRepo.findByName("Ferrari").get(0)));
 
 		driverRepo.save(new Driver("Lewis Hamilton", 44, carRepo.findByName("Mercedes").get(0), 40, false));
 		driverRepo.save(new Driver("Nico Rosberg", 6, carRepo.findByName("Mercedes").get(0), 35, false));
