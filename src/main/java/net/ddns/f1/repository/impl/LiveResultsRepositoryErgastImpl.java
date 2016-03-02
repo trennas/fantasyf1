@@ -5,12 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.ddns.f1.domain.Driver;
-import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.domain.Position;
-import net.ddns.f1.repository.LiveResultsRepository;
-import net.ddns.f1.service.ComponentService;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +13,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ergast.mrd._1.MRDataType;
 import com.ergast.mrd._1.ResultType;
+
+import net.ddns.f1.domain.Driver;
+import net.ddns.f1.domain.EventResult;
+import net.ddns.f1.domain.Position;
+import net.ddns.f1.repository.LiveResultsRepository;
+import net.ddns.f1.service.ComponentService;
 
 @Service
 public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
@@ -35,11 +35,12 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 	@Autowired
 	ComponentService componentService;
 
+	@Autowired
+	RestTemplate restTemplate;
+
 	@Override
 	public EventResult fetchEventResult(final int round) {
 		final String seasonUrl = ergastBaseUrl + season + "/";
-		final RestTemplate restTemplate = new RestTemplate();
-
 		final MRDataType qual;
 		final MRDataType race;
 		final MRDataType fastestLap;

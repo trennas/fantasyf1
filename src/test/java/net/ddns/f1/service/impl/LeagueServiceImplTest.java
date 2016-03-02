@@ -1,90 +1,78 @@
 package net.ddns.f1.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-import net.ddns.f1.FantasyF1Application;
-import net.ddns.f1.domain.EventResult;
-import net.ddns.f1.domain.Position;
-import net.ddns.f1.repository.DriverRepository;
-import net.ddns.f1.repository.EventResultRepository;
-import net.ddns.f1.service.EventService;
-import net.ddns.f1.service.LeagueService;
+import java.io.StringWriter;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.RestTemplate;
+
+import net.ddns.f1.FantasyF1Application;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
 public class LeagueServiceImplTest {
-	
-	@InjectMocks
-    private LeagueServiceImpl testingObject;
+	private MockRestServiceServer mockServer;
 
-	@Mock
-    private EventService eventService;
-	
+	@Value("${ergast-base-url}")
+	private String ergastUrl;
+
+	@Value("${season}")
+	private String season;
+
 	@Autowired
-	private DriverRepository driverRepo;
-	
+	private LeagueServiceImpl service;
+
 	@Autowired
-	private EventResultRepository eventRepo;
-	
-	private static final Map<String, Position> QUAL_ORDER = new HashMap<String, Position>();
-	static {
-		QUAL_ORDER.put("Lewis Hamilton", new Position(1, true, 44));
-		QUAL_ORDER.put("Sebastian Vettel", new Position(2, true, 5));
-		QUAL_ORDER.put("Raikkenen", new Position(3, true, 7));
-		QUAL_ORDER.put("Ros Tos", new Position(4, true, 6));
-	}
-	
-	private static final Map<String, Position> RACE_ORDER = new HashMap<String, Position>();
-	static {
-		RACE_ORDER.put("Lewis Hamilton", new Position(2, true, 44));
-		RACE_ORDER.put("Sebastian Vettel", new Position(1, true, 5));
-		RACE_ORDER.put("Raikkenen", new Position(4, true, 7));
-		RACE_ORDER.put("Ros Tos", new Position(3, true, 6));
-	}
+	RestTemplate template;
 
     @Before
-    public void initMocks(){
-        MockitoAnnotations.initMocks(this);
+    public void setup(){
+		mockServer = MockRestServiceServer.createServer(template);
     }
 
 	@Test
 	@Ignore
 	public void calculateAllResultsTest() throws Exception {
-		List<EventResult> results = new ArrayList<EventResult>();
-		EventResult res = new EventResult();
-		res.setFastestLapDriver(driverRepo.findByNumber(44).get(0));
-		res.setRound(1);
-		res.setVenue("Australia");
-		res.setSeason(2016);
-		res.setRaceComplete(true);
-		res.setQualifyingOrder(QUAL_ORDER);
-		res.setRaceOrder(RACE_ORDER);
-		results.add(res);
-		
-		eventRepo.save(res);
-		
-		Mockito.when(eventService.checkForNewResults(true)).thenReturn(true);
-		Mockito.when(eventService.getSeasonResults()).thenReturn(results);
-		//testingObject.calculateLeagueStandings();
+		String url = ergastUrl + season + "/1";
+
+		final StringWriter qualWriter = new StringWriter();
+		IOUtils.copy(new ClassPathResource("qual.xml").getInputStream(), qualWriter);
+		final StringWriter raceWriter = new StringWriter();
+		IOUtils.copy(new ClassPathResource("race.xml").getInputStream(), raceWriter);
+		final StringWriter fastWriter = new StringWriter();
+		IOUtils.copy(new ClassPathResource("fastestlap.xml").getInputStream(), fastWriter);
+
+		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
+				.andRespond(withSuccess(qualWriter.toString(), MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url + "/results.xml")).andExpect(method(HttpMethod.GET))
+				.andRespond(withSuccess(raceWriter.toString(), MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
+				.andRespond(withSuccess(fastWriter.toString(), MediaType.APPLICATION_XML));
+
+		service.calculateLeagueStandings();
+		assertTrue(true);
 	}
 
 }
