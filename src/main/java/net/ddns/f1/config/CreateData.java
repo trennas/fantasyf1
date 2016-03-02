@@ -93,8 +93,8 @@ public class CreateData {
 		driverRepo.save(new Driver("Rio Haryanto", 88, carRepo.findByName("Manor").get(0), 10, false));
 		driverRepo.save(new Driver("Pascal Wehrlein", 94, carRepo.findByName("Manor").get(0), 10, false));
 
-		driverRepo.save(new Driver("Romain Grosjean", 8, carRepo.findByName("Hass").get(0), 10, false));
-		driverRepo.save(new Driver("Esteban Gutierrez", 21, carRepo.findByName("Hass").get(0), 10, false));
+		driverRepo.save(new Driver("Romain Grosjean", 8, carRepo.findByName("Haas").get(0), 10, false));
+		driverRepo.save(new Driver("Esteban Gutierrez", 21, carRepo.findByName("Haas").get(0), 10, false));
 
 		LOG.info("Complete.");
 		return 0;
