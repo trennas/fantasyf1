@@ -22,8 +22,8 @@ import net.ddns.f1.repository.EngineRepository;
 import net.ddns.f1.service.TeamService;
 import net.ddns.f1.service.impl.ValidationException;
 
-@Profile("create")
 @Configuration
+@Profile({"create", "test"})
 public class CreateData {
 
 	private static final Logger LOG = Logger.getLogger(CreateData.class);
@@ -42,7 +42,7 @@ public class CreateData {
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
 
-	@Profile("create2016")
+	@Profile({"create2016", "test"})
 	@Bean
 	public int create2016Data() {
 		LOG.info("Creating 2016 League Data...");

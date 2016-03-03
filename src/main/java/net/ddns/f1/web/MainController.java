@@ -36,7 +36,7 @@ import net.ddns.f1.service.LeagueService;
 import net.ddns.f1.service.TeamService;
 import net.ddns.f1.service.impl.ValidationException;
 
-@Profile("!create")
+@Profile({"!create", "!test"})
 @Controller
 public class MainController {
 

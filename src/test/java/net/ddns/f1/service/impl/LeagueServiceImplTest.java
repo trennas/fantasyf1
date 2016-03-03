@@ -29,7 +29,7 @@ import net.ddns.f1.FantasyF1Application;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
-@ActiveProfiles({"test", "create", "create2016"})
+@ActiveProfiles("test")
 public class LeagueServiceImplTest {
 	private MockRestServiceServer mockServer;
 
