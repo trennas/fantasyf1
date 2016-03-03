@@ -29,7 +29,7 @@ import net.ddns.f1.FantasyF1Application;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "create", "create2016"})
 public class LeagueServiceImplTest {
 	private MockRestServiceServer mockServer;
 
@@ -51,25 +51,41 @@ public class LeagueServiceImplTest {
     }
 
 	@Test
-	@Ignore
 	public void calculateAllResultsTest() throws Exception {
 		String url = ergastUrl + season + "/1";
 
-		final StringWriter qualWriter = new StringWriter();
-		IOUtils.copy(new ClassPathResource("qual.xml").getInputStream(), qualWriter);
-		final StringWriter raceWriter = new StringWriter();
-		IOUtils.copy(new ClassPathResource("race.xml").getInputStream(), raceWriter);
-		final StringWriter fastWriter = new StringWriter();
-		IOUtils.copy(new ClassPathResource("fastestlap.xml").getInputStream(), fastWriter);
+		StringWriter sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("qual.xml").getInputStream(), sw);
+		String qualXml = sw.toString();
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("qual-null.xml").getInputStream(), sw);
+		String qualNullXml = sw.toString();	
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("race.xml").getInputStream(), sw);
+		String raceXml = sw.toString();				
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("fastestlap.xml").getInputStream(), sw);
+		String fastestLapXml = sw.toString();
 
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
-				.andRespond(withSuccess(qualWriter.toString(), MediaType.APPLICATION_XML));
+				.andRespond(withSuccess(qualXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/results.xml")).andExpect(method(HttpMethod.GET))
-				.andRespond(withSuccess(raceWriter.toString(), MediaType.APPLICATION_XML));
+				.andRespond(withSuccess(raceXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-				.andRespond(withSuccess(fastWriter.toString(), MediaType.APPLICATION_XML));
+				.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+		
+		url = ergastUrl + season + "/2";
+		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(qualNullXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url + "/results.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(raceXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+		
 
 		service.calculateLeagueStandings();
 		assertTrue(true);
