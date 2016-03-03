@@ -106,13 +106,13 @@ public class CreateData {
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
-			drivers.add(driverRepo.findByName("Sergio Perez").get(0));
-			drivers.add(driverRepo.findByName("Rio Haryanto").get(0));
-			drivers.add(driverRepo.findByName("Esteban Gutierrez").get(0));
+			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+			drivers.add(driverRepo.findByName("Marcus Ericsson").get(0));
+			drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
 			team = new Team("Millimetres_Per_Sec_Type'last", "Mike Trenaman", "mike.trenaman@gmail.com",
  "welcome1",
-					drivers, carRepo.findByName("Ferrari").get(0),
-					engineRepo.findByName("Mercedes").get(0));
+					drivers, carRepo.findByName("Mercedes").get(0),
+					engineRepo.findByName("Honda").get(0));
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
