@@ -1,6 +1,6 @@
 package net.ddns.f1.service.impl;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -9,7 +9,6 @@ import java.io.StringWriter;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
 import net.ddns.f1.FantasyF1Application;
+import net.ddns.f1.web.MainController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
@@ -44,6 +44,9 @@ public class LeagueServiceImplTest {
 
 	@Autowired
 	RestTemplate template;
+
+	@Autowired
+	MainController controller;
 
     @Before
     public void setup(){
@@ -88,7 +91,17 @@ public class LeagueServiceImplTest {
 		
 
 		service.calculateLeagueStandings();
-		assertTrue(true);
+		assertEquals(1, controller.driver(44).getFastestLaps());
+		assertEquals(0, controller.driver(6).getFastestLaps());
+		assertEquals(750, controller.driver(44).getTotalPoints());
+		assertEquals(154, controller.driver(55).getTotalPoints());
+
+		assertEquals(new Integer(6), controller.getBestTheoreticalTeam().getDrivers().get(0).getNumber());
+		assertEquals(new Integer(9), controller.getBestTheoreticalTeam().getDrivers().get(1).getNumber());
+		assertEquals(new Integer(94), controller.getBestTheoreticalTeam().getDrivers().get(2).getNumber());
+		assertEquals(new Integer(6), controller.event(1).getBestTheoreticalTeam().getDrivers().get(0).getNumber());
+		assertEquals(new Integer(9), controller.event(1).getBestTheoreticalTeam().getDrivers().get(1).getNumber());
+		assertEquals(new Integer(94), controller.event(1).getBestTheoreticalTeam().getDrivers().get(2).getNumber());
 	}
 
 }
