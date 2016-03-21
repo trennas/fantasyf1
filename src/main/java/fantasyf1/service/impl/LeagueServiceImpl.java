@@ -86,14 +86,18 @@ public class LeagueServiceImpl implements LeagueService {
 		final List<Engine> engines = componentService.findAllEngines();
 
 		TheoreticalTeam bestTeamForRound;
-		if (result.getBestTheoreticalTeam() == null) {
-			bestTeamForRound = new TheoreticalTeam();
-			bestTeamForRound.setName("Best Theoretical Team For "
-					+ result.getVenue());
-			result.setBestTheoreticalTeam(bestTeamForRound);
-		} else {
+
+		if(result.getBestTheoreticalTeam() != null) {
 			bestTeamForRound = result.getBestTheoreticalTeam();
+			bestTeamForRound.reset();
+		} else {
+			bestTeamForRound = new TheoreticalTeam();
 		}
+
+		bestTeamForRound.setName("Best Theoretical Team For Round "
+				+ result.getRound());
+
+		result.setBestTheoreticalTeam(bestTeamForRound);
 
 		TheoreticalTeam bestOverallTeam;
 		final TheoreticalTeam res = teamService
@@ -128,11 +132,11 @@ public class LeagueServiceImpl implements LeagueService {
 									final long roundScore = calculateRoundScore(
 											result.getRound(), team);
 									final long totalScore = calculateTotalScore(team);
-	
+
 									if (roundScore > roundHighScore) {
 										roundHighScore = roundScore;
 										bestTeamForRound.setComponents(team);
-	
+
 										bestTeamForRound
 												.getDrivers()
 												.get(0)
@@ -151,7 +155,7 @@ public class LeagueServiceImpl implements LeagueService {
 																.get(1)
 																.getPointsPerEvent()
 																.get(result.getRound()));
-										
+
 										bestTeamForRound
 										.getDrivers()
 										.get(2)
@@ -169,7 +173,7 @@ public class LeagueServiceImpl implements LeagueService {
 												(long) team.getEngine()
 														.getPointsPerEvent()
 														.get(result.getRound()));
-	
+
 										bestTeamForRound.setPoints(roundScore);
 									}
 									if (totalScore > totalHighScore) {
@@ -191,18 +195,18 @@ public class LeagueServiceImpl implements LeagueService {
 	}
 
 	private long calculateRoundScore(final int round, final Team team) {
-		long score = 0;		
-		for(Driver driver : team.getDrivers()) {
+		long score = 0;
+		for(final Driver driver : team.getDrivers()) {
 			score += driver.getPointsPerEvent().get(round);
-		}		
+		}
 		score += team.getCar().getPointsPerEvent().get(round)
-			  + team.getEngine().getPointsPerEvent().get(round);		
+			  + team.getEngine().getPointsPerEvent().get(round);
 		return score;
 	}
 
 	private long calculateTotalScore(final Team team) {
 		long score = 0;
-		for(Driver driver : team.getDrivers()) {
+		for(final Driver driver : team.getDrivers()) {
 			score += driver.getTotalPoints();
 		}
 		score +=  team.getCar().getTotalPoints()
@@ -213,25 +217,29 @@ public class LeagueServiceImpl implements LeagueService {
 	private void resetAllScores(final List<Team> teams) {
 		for (final Team team : teams) {
 			resetPointsScorer(team);
+			teamService.saveTeamNoValidation(team);
 		}
 		final List<Driver> drivers = componentService
-				.findDriversByStandin(false);
+				.findAllDrivers();
 		for (final Driver driver : drivers) {
 			driver.setFastestLaps(0);
 			resetPointsScorer(driver);
+			componentService.saveDriver(driver);
 		}
 
 		final List<Car> cars = componentService.findAllCars();
 		for (final Car car : cars) {
 			car.setBothCarsFinishBonuses(0);
 			resetPointsScorer(car);
+			componentService.saveCar(car);
 		}
 
 		final List<Engine> engines = componentService.findAllEngines();
 		for (final Engine engine : engines) {
 			resetPointsScorer(engine);
+			componentService.saveEngine(engine);
 		}
-		teamService.deleteAllTheoreticalTeams();
+		teamService.resetBestTheoreticalTeam();
 	}
 
 	private void resetPointsScorer(final PointScorer scorer) {

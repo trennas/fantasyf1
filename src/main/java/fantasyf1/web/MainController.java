@@ -13,7 +13,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -36,7 +35,6 @@ import fantasyf1.service.LeagueService;
 import fantasyf1.service.TeamService;
 import fantasyf1.service.impl.ValidationException;
 
-@Profile({"!create", "!test"})
 @Controller
 public class MainController {
 
@@ -44,7 +42,7 @@ public class MainController {
 
 	@Value("${season}")
 	private int season;
-	
+
 	@Value("${auth.admin-role}")
 	private String adminRole;
 
@@ -216,7 +214,7 @@ public class MainController {
 	public Driver driver(final Integer number) {
 		return componentService.findDriverByNumber(number);
 	}
-	
+
 	@RequestMapping({ "/driverbyname", "/{subpage}/driverbyname" })
 	@ResponseBody
 	public Driver driver(final String name) {
@@ -392,10 +390,10 @@ public class MainController {
 		}
 		return team;
 	}
-	
+
 	private boolean isAdmin() {
-		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		for(GrantedAuthority authority : authorities) {
+		final Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		for(final GrantedAuthority authority : authorities) {
 			if(authority.getAuthority().equals(adminRole)) {
 				return true;
 			}

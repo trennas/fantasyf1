@@ -25,7 +25,9 @@ public interface TeamService {
 
 	public List<Team> findAll();
 
-	public void deleteAllTheoreticalTeams();
+	public void resetBestTheoreticalTeam();
+
+	public void deleteTheoreticalTeam(TheoreticalTeam theoreticalTeam);
 
 	public TheoreticalTeam findTheoreticalTeamByName(final String name);
 

@@ -41,7 +41,6 @@ public class CreateData {
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
 
-	@Profile({"create2016", "test"})
 	@Bean
 	public int create2016Data() {
 		LOG.info("Creating 2016 League Data...");

@@ -116,13 +116,14 @@ public class EventServiceImpl implements EventService {
 			timeOfLastResultCheck = System.currentTimeMillis();
 			LOG.info("Checking for new race results...");
 			if (results.size() > 0) {
-				EventResult result = results.get(results.size() - 1);
+				final EventResult result = results.get(results.size() - 1);
 				if (!result.isRaceComplete()) {
-					result = liveRepo.fetchEventResult(result.getRound());
-					if (result.isRaceComplete()) {
-						applyCorrections(result);
-						eventRepo.save(result);
-						mailService.sendNewResultsMail(result);
+					final EventResult newResult = liveRepo.fetchEventResult(result.getRound());
+					if (newResult.isRaceComplete()) {
+						applyCorrections(newResult);
+						eventRepo.delete(result);
+						eventRepo.save(newResult);
+						mailService.sendNewResultsMail(newResult);
 						newResults = true;
 					}
 				}

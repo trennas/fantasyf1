@@ -27,6 +27,7 @@ import fantasyf1.service.TeamService;
 public class TeamServiceImpl implements TeamService {
 
 	private static final Logger LOG = Logger.getLogger(TeamServiceImpl.class);
+
 	@Autowired
 	private TeamRepository teamRepo;
 
@@ -44,7 +45,7 @@ public class TeamServiceImpl implements TeamService {
 
 	@Autowired
 	LeagueService leagueService;
-	
+
 	@Value("${admin-user}")
 	private String adminUser;
 	@Value("${best-theoretical-team-name}")
@@ -246,8 +247,16 @@ public class TeamServiceImpl implements TeamService {
 	}
 
 	@Override
-	public void deleteAllTheoreticalTeams() {
-		theoreticalTeamRepo.deleteAll();
+	public void resetBestTheoreticalTeam() {
+		final List<TheoreticalTeam> teams = IteratorUtils.toList(theoreticalTeamRepo.findByName(bestTheoreticalTeamName).iterator());
+		if(teams.size() == 1) {
+			theoreticalTeamRepo.delete(teams.get(0));
+		}
+	}
+
+	@Override
+	public void deleteTheoreticalTeam(final TheoreticalTeam theoreticalTeam) {
+		theoreticalTeamRepo.delete(theoreticalTeam);
 	}
 
 	@Override
