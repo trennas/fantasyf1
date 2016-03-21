@@ -60,16 +60,16 @@ public class LeagueServiceImplTest {
 
 		StringWriter sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual.xml").getInputStream(), sw);
-		String qualXml = sw.toString();
+		final String qualXml = sw.toString();
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual-null.xml").getInputStream(), sw);
-		String qualNullXml = sw.toString();	
+		final String qualNullXml = sw.toString();
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("race.xml").getInputStream(), sw);
-		String raceXml = sw.toString();				
+		final String raceXml = sw.toString();
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("fastestlap.xml").getInputStream(), sw);
-		String fastestLapXml = sw.toString();
+		final String fastestLapXml = sw.toString();
 
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 				.andRespond(withSuccess(qualXml, MediaType.APPLICATION_XML));
@@ -79,7 +79,7 @@ public class LeagueServiceImplTest {
 
 		mockServer.expect(requestTo(url + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 				.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
-		
+
 		url = ergastUrl + season + "/2";
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(qualNullXml, MediaType.APPLICATION_XML));
@@ -89,20 +89,31 @@ public class LeagueServiceImplTest {
 
 		mockServer.expect(requestTo(url + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
-		
+
 
 		service.calculateLeagueStandings();
-		assertEquals(1, controller.driver(44).getFastestLaps());
+		assertEquals(1, controller.driver(3).getFastestLaps());
 		assertEquals(0, controller.driver(6).getFastestLaps());
-		assertEquals(750, controller.driver(44).getTotalPoints());
-		assertEquals(154, controller.driver(55).getTotalPoints());
 
-		assertEquals(new Integer(6), controller.getBestTheoreticalTeam().getDrivers().get(0).getNumber());
-		assertEquals(new Integer(9), controller.getBestTheoreticalTeam().getDrivers().get(1).getNumber());
-		assertEquals(new Integer(94), controller.getBestTheoreticalTeam().getDrivers().get(2).getNumber());
-		assertEquals(new Integer(6), controller.event(1).getBestTheoreticalTeam().getDrivers().get(0).getNumber());
-		assertEquals(new Integer(9), controller.event(1).getBestTheoreticalTeam().getDrivers().get(1).getNumber());
-		assertEquals(new Integer(94), controller.event(1).getBestTheoreticalTeam().getDrivers().get(2).getNumber());
+		assertEquals(600, controller.driver(44).getTotalPoints());
+		assertEquals(232, controller.driver(55).getTotalPoints());
+
+		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
+		assertTrue(containsDriver(6, controller.getBestTheoreticalTeam().getDrivers()));
+		assertTrue(containsDriver(94, controller.getBestTheoreticalTeam().getDrivers()));
+
+		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
+		assertTrue(containsDriver(6, controller.getBestTheoreticalTeam().getDrivers()));
+		assertTrue(containsDriver(94, controller.getBestTheoreticalTeam().getDrivers()));
+	}
+
+	private boolean containsDriver(final int number, final List<MinimalTeamComponent> drivers) {
+		for (final MinimalTeamComponent driver : drivers) {
+			if(driver.getNumber() == number) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
