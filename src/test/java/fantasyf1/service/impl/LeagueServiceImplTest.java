@@ -56,24 +56,27 @@ public class LeagueServiceImplTest {
     }
 
     @Test
-    public void endToEndTest() throws IOException {
-    	final String url = ergastUrl + season + "/1";
-
-		StringWriter sw = new StringWriter();
-		IOUtils.copy(new ClassPathResource("qual.xml").getInputStream(), sw);
-		final String qualXml = sw.toString();
-		sw = new StringWriter();
+    public void integrationTest() throws IOException {
+    	final String url  = ergastUrl + season + "/1";
+		final String url2 = ergastUrl + season + "/2";
+		final String url3 = ergastUrl + season + "/3";
+    	
+    	StringWriter sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual-null.xml").getInputStream(), sw);
 		final String qualNullXml = sw.toString();
 		sw = new StringWriter();
-		IOUtils.copy(new ClassPathResource("race.xml").getInputStream(), sw);
-		final String raceXml = sw.toString();
-		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("race-null.xml").getInputStream(), sw);
 		final String raceNullXml = sw.toString();
+    	
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("qual.xml").getInputStream(), sw);
+		final String qual1Xml = sw.toString();		
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("race.xml").getInputStream(), sw);
+		final String race1Xml = sw.toString();		
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("fastestlap.xml").getInputStream(), sw);
-		final String fastestLapXml = sw.toString();
+		final String fastestLap1Xml = sw.toString();
 
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual2.xml").getInputStream(), sw);
@@ -85,17 +88,14 @@ public class LeagueServiceImplTest {
 		IOUtils.copy(new ClassPathResource("fastestlap2.xml").getInputStream(), sw);
 		final String fastestLap2Xml = sw.toString();
 
-		final String url2 = ergastUrl + season + "/2";
-		final String url3 = ergastUrl + season + "/3";
-
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
-				.andRespond(withSuccess(qualXml, MediaType.APPLICATION_XML));
+				.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/results.xml")).andExpect(method(HttpMethod.GET))
 				.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+		.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url2 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(qualNullXml, MediaType.APPLICATION_XML));
@@ -104,16 +104,16 @@ public class LeagueServiceImplTest {
 			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(qualXml, MediaType.APPLICATION_XML));
+		.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/results.xml")).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(raceXml, MediaType.APPLICATION_XML));
+		.andRespond(withSuccess(race1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+		.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url2 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(qualNullXml, MediaType.APPLICATION_XML));
@@ -122,7 +122,7 @@ public class LeagueServiceImplTest {
 			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url2 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(qual2Xml, MediaType.APPLICATION_XML));
@@ -140,16 +140,16 @@ public class LeagueServiceImplTest {
 			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url3 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(qualXml, MediaType.APPLICATION_XML));
+		.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/results.xml")).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(raceXml, MediaType.APPLICATION_XML));
+		.andRespond(withSuccess(race1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+		.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url2 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 		.andRespond(withSuccess(qual2Xml, MediaType.APPLICATION_XML));
@@ -167,40 +167,101 @@ public class LeagueServiceImplTest {
 			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url3 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
+		// Race 1, Qual complete but race not complete
 		controller.updateResults();
 
 		assertFalse(controller.event(1).isRaceComplete());
+		
+		assertEquals(0, controller.driver(3).getFastestLaps());
+		assertEquals(0, controller.driver(55).getFastestLaps());
+		assertEquals(0, controller.driver(44).getFastestLaps());
+		
+		assertEquals(200, controller.driver(44).getTotalPoints());
+		assertEquals(160, controller.driver(6).getTotalPoints());		
+		assertEquals(104, controller.driver(7).getTotalPoints());		
+		assertEquals(68, controller.driver(3).getTotalPoints());
+		assertEquals(128, controller.driver(5).getTotalPoints());
+		assertEquals(72, controller.driver(55).getTotalPoints());
+		
+		assertTrue(containsDriver(33, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertTrue(containsDriver(55, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertTrue(containsDriver(14, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertEquals("Toro Rosso", controller.getBestTheoreticalTeamForRound(1).getCar().getName());
+		assertEquals("Mercedes", controller.getBestTheoreticalTeamForRound(1).getEngine().getName());
+		assertTrue(containsDriver(33, controller.getBestTheoreticalTeam().getDrivers()));
+		assertTrue(containsDriver(55, controller.getBestTheoreticalTeam().getDrivers()));
+		assertTrue(containsDriver(14, controller.getBestTheoreticalTeam().getDrivers()));
+		assertEquals("Toro Rosso", controller.getBestTheoreticalTeam().getCar().getName());
+		assertEquals("Mercedes", controller.getBestTheoreticalTeam().getEngine().getName());
 
+		// Race 1, Qual and race complete
 		controller.updateResults();
 
 		assertTrue(controller.event(1).isRaceComplete());
-
+		
 		assertEquals(1, controller.driver(3).getFastestLaps());
-		assertEquals(0, controller.driver(6).getFastestLaps());
-
+		assertEquals(0, controller.driver(55).getFastestLaps());
+		assertEquals(0, controller.driver(44).getFastestLaps());
+		
 		assertEquals(600, controller.driver(44).getTotalPoints());
+		assertEquals(660, controller.driver(6).getTotalPoints());		
+		assertEquals(104, controller.driver(7).getTotalPoints());		
+		assertEquals(378, controller.driver(3).getTotalPoints());
+		assertEquals(448, controller.driver(5).getTotalPoints());
 		assertEquals(232, controller.driver(55).getTotalPoints());
-
+		
+		assertTrue(containsDriver(8, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertTrue(containsDriver(6, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertTrue(containsDriver(94, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertEquals("Mercedes", controller.getBestTheoreticalTeamForRound(1).getCar().getName());
+		assertEquals("Honda", controller.getBestTheoreticalTeamForRound(1).getEngine().getName());
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
 		assertTrue(containsDriver(6, controller.getBestTheoreticalTeam().getDrivers()));
 		assertTrue(containsDriver(94, controller.getBestTheoreticalTeam().getDrivers()));
+		assertEquals("Mercedes", controller.getBestTheoreticalTeam().getCar().getName());
+		assertEquals("Honda", controller.getBestTheoreticalTeam().getEngine().getName());
 
-		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
-		assertTrue(containsDriver(6, controller.getBestTheoreticalTeam().getDrivers()));
-		assertTrue(containsDriver(94, controller.getBestTheoreticalTeam().getDrivers()));
-
+		// Race 2, Qual and race complete
 		controller.updateResults();
+		checkFinalResults();
 
-		assertEquals(1200, controller.driver(44).getTotalPoints());
-		assertEquals(2, controller.driver(3).getFastestLaps());
-
+		// Refresh everything, should all stay the same
 		controller.refreshAllResults();
-
-		assertEquals(1200, controller.driver(44).getTotalPoints());
-		assertEquals(464, controller.driver(55).getTotalPoints());
-		assertEquals(2, controller.driver(3).getFastestLaps());
+		checkFinalResults();
+    }
+    
+    private void checkFinalResults() {
+    	assertTrue(controller.event(1).isRaceComplete());
+		assertTrue(controller.event(2).isRaceComplete());
+		
+		assertEquals(1, controller.driver(3).getFastestLaps());
+		assertEquals(1, controller.driver(55).getFastestLaps());
+		assertEquals(0, controller.driver(44).getFastestLaps());
+		
+		assertEquals(1048, controller.driver(44).getTotalPoints());
+		assertEquals(1024, controller.driver(6).getTotalPoints());		
+		assertEquals(664, controller.driver(7).getTotalPoints());
+		assertEquals(666, controller.driver(3).getTotalPoints());
+		assertEquals(1148, controller.driver(5).getTotalPoints());
+		assertEquals(514, controller.driver(55).getTotalPoints());
+		
+		assertTrue(containsDriver(8, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertTrue(containsDriver(6, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertTrue(containsDriver(94, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
+		assertEquals("Mercedes", controller.getBestTheoreticalTeamForRound(1).getCar().getName());
+		assertEquals("Honda", controller.getBestTheoreticalTeamForRound(1).getEngine().getName());
+		assertTrue(containsDriver(5, controller.getBestTheoreticalTeamForRound(2).getDrivers()));
+		assertTrue(containsDriver(55, controller.getBestTheoreticalTeamForRound(2).getDrivers()));
+		assertTrue(containsDriver(8, controller.getBestTheoreticalTeamForRound(2).getDrivers()));
+		assertEquals("Ferrari", controller.getBestTheoreticalTeamForRound(2).getCar().getName());
+		assertEquals("Honda", controller.getBestTheoreticalTeamForRound(2).getEngine().getName());
+		assertTrue(containsDriver(5, controller.getBestTheoreticalTeam().getDrivers()));
+		assertTrue(containsDriver(55, controller.getBestTheoreticalTeam().getDrivers()));
+		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
+		assertEquals("Mclaren", controller.getBestTheoreticalTeam().getCar().getName());
+		assertEquals("Ferrari", controller.getBestTheoreticalTeam().getEngine().getName());
     }
 
 	private boolean containsDriver(final int number, final List<MinimalTeamComponent> drivers) {

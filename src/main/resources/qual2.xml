@@ -14,39 +14,8 @@
 			<Date>2016-03-20</Date>
 			<Time>05:00:00Z</Time>
 			<QualifyingList>
-				<QualifyingResult number="44" position="1">
-					<Driver driverId="hamilton" code="HAM" url="http://en.wikipedia.org/wiki/Lewis_Hamilton">
-						<PermanentNumber>44</PermanentNumber>
-						<GivenName>Lewis</GivenName>
-						<FamilyName>Hamilton</FamilyName>
-						<DateOfBirth>1985-01-07</DateOfBirth>
-						<Nationality>British</Nationality>
-					</Driver>
-					<Constructor constructorId="mercedes" url="http://en.wikipedia.org/wiki/Mercedes-Benz_in_Formula_One">
-						<Name>Mercedes</Name>
-						<Nationality>German</Nationality>
-					</Constructor>
-					<Q1>1:25.351</Q1>
-					<Q2>1:24.605</Q2>
-					<Q3>1:23.837</Q3>
-				</QualifyingResult>
-				<QualifyingResult number="6" position="2">
-					<Driver driverId="rosberg" code="ROS" url="http://en.wikipedia.org/wiki/Nico_Rosberg">
-						<PermanentNumber>6</PermanentNumber>
-						<GivenName>Nico</GivenName>
-						<FamilyName>Rosberg</FamilyName>
-						<DateOfBirth>1985-06-27</DateOfBirth>
-						<Nationality>German</Nationality>
-					</Driver>
-					<Constructor constructorId="mercedes" url="http://en.wikipedia.org/wiki/Mercedes-Benz_in_Formula_One">
-						<Name>Mercedes</Name>
-						<Nationality>German</Nationality>
-					</Constructor>
-					<Q1>1:26.934</Q1>
-					<Q2>1:24.796</Q2>
-					<Q3>1:24.197</Q3>
-				</QualifyingResult>
-				<QualifyingResult number="5" position="3">
+				
+				<QualifyingResult number="5" position="1">
 					<Driver driverId="vettel" code="VET" url="http://en.wikipedia.org/wiki/Sebastian_Vettel">
 						<PermanentNumber>5</PermanentNumber>
 						<GivenName>Sebastian</GivenName>
@@ -62,7 +31,7 @@
 					<Q2>1:25.257</Q2>
 					<Q3>1:24.675</Q3>
 				</QualifyingResult>
-				<QualifyingResult number="7" position="4">
+				<QualifyingResult number="7" position="2">
 					<Driver driverId="raikkonen" code="RAI" url="http://en.wikipedia.org/wiki/Kimi_R%C3%A4ikk%C3%B6nen">
 						<PermanentNumber>7</PermanentNumber>
 						<GivenName>Kimi</GivenName>
@@ -77,6 +46,38 @@
 					<Q1>1:26.579</Q1>
 					<Q2>1:25.615</Q2>
 					<Q3>1:25.033</Q3>
+				</QualifyingResult>
+				<QualifyingResult number="44" position="3">
+					<Driver driverId="hamilton" code="HAM" url="http://en.wikipedia.org/wiki/Lewis_Hamilton">
+						<PermanentNumber>44</PermanentNumber>
+						<GivenName>Lewis</GivenName>
+						<FamilyName>Hamilton</FamilyName>
+						<DateOfBirth>1985-01-07</DateOfBirth>
+						<Nationality>British</Nationality>
+					</Driver>
+					<Constructor constructorId="mercedes" url="http://en.wikipedia.org/wiki/Mercedes-Benz_in_Formula_One">
+						<Name>Mercedes</Name>
+						<Nationality>German</Nationality>
+					</Constructor>
+					<Q1>1:25.351</Q1>
+					<Q2>1:24.605</Q2>
+					<Q3>1:23.837</Q3>
+				</QualifyingResult>
+				<QualifyingResult number="6" position="4">
+					<Driver driverId="rosberg" code="ROS" url="http://en.wikipedia.org/wiki/Nico_Rosberg">
+						<PermanentNumber>6</PermanentNumber>
+						<GivenName>Nico</GivenName>
+						<FamilyName>Rosberg</FamilyName>
+						<DateOfBirth>1985-06-27</DateOfBirth>
+						<Nationality>German</Nationality>
+					</Driver>
+					<Constructor constructorId="mercedes" url="http://en.wikipedia.org/wiki/Mercedes-Benz_in_Formula_One">
+						<Name>Mercedes</Name>
+						<Nationality>German</Nationality>
+					</Constructor>
+					<Q1>1:26.934</Q1>
+					<Q2>1:24.796</Q2>
+					<Q3>1:24.197</Q3>
 				</QualifyingResult>
 				<QualifyingResult number="33" position="5">
 					<Driver driverId="max_verstappen" code="VES" url="http://en.wikipedia.org/wiki/Max_Verstappen">
