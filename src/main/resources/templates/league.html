@@ -31,7 +31,7 @@
 	      <tr ng-if="events.length > 0" class="warning">
 	      	<td class="text-center">N/A</td>
 	      	<th colspan="2">{{bestTheoreticalTeam.name}}</th>
-	      	<td ng-repeat="drivers in bestTheoreticalTeam.drivers" class="text-center">
+	      	<td ng-repeat="driver in bestTheoreticalTeam.drivers" class="text-center">
 	      		<a class="a-unstyled" href="#" data-toggle="modal" data-target="#driverModal" ng-click="getDriver(driver.number)">{{driver.name}}</a>
 	      	</td>
 	      	<td class="text-center"><a class="a-unstyled" href="#" data-toggle="modal" data-target="#carModal" ng-click="getCar(bestTheoreticalTeam.car.name)">{{bestTheoreticalTeam.car.name}}</a></td>
