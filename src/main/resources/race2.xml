@@ -427,11 +427,11 @@
 						<AverageSpeed units="kph">205.281</AverageSpeed>
 					</FastestLap>
 				</Result>
-				<Result number="14" position="21" positionText="R" points="0">
-					<Driver driverId="alonso" code="ALO" url="http://en.wikipedia.org/wiki/Fernando_Alonso">
-						<PermanentNumber>14</PermanentNumber>
-						<GivenName>Fernando</GivenName>
-						<FamilyName>Alonso</FamilyName>
+				<Result number="47" position="21" positionText="R" points="0">
+					<Driver driverId="vandoorne" code="VAN" url="http://en.wikipedia.org/wiki/Fernando_Alonso">
+						<PermanentNumber>47</PermanentNumber>
+						<GivenName>Stoffel</GivenName>
+						<FamilyName>Vandoorne</FamilyName>
 						<DateOfBirth>1981-07-29</DateOfBirth>
 						<Nationality>Spanish</Nationality>
 					</Driver>

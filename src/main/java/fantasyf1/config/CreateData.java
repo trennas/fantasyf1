@@ -84,6 +84,7 @@ public class CreateData {
 
 		driverRepo.save(new Driver("Fernando Alonso", 14, carRepo.findByName("Mclaren").get(0), 14, false));
 		driverRepo.save(new Driver("Jenson Button", 22, carRepo.findByName("Mclaren").get(0), 14, false));
+		driverRepo.save(new Driver("Stoffel Vandoorne", 47, carRepo.findByName("Mclaren").get(0), 0, true));
 
 		driverRepo.save(new Driver("Felipe Nasr", 12, carRepo.findByName("Sauber").get(0), 13, false));
 		driverRepo.save(new Driver("Marcus Ericsson", 9, carRepo.findByName("Sauber").get(0), 12, false));
