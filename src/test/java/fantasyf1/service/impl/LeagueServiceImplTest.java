@@ -211,6 +211,7 @@ public class LeagueServiceImplTest {
 		assertEquals(378, controller.driver(3).getTotalPoints());
 		assertEquals(448, controller.driver(5).getTotalPoints());
 		assertEquals(232, controller.driver(55).getTotalPoints());
+		assertEquals(52, controller.driver(14).getTotalPoints());
 		
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
 		assertTrue(containsDriver(6, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
@@ -233,6 +234,12 @@ public class LeagueServiceImplTest {
     }
     
     private void checkFinalResults() {
+    	assertEquals(4, controller.event(2).getRemarks().size());
+    	assertEquals("Fernando Alonso did not participate in qualifying", controller.event(2).getRemarks().get(0));
+    	assertEquals("Fernando Alonso did not participate in the race", controller.event(2).getRemarks().get(1));
+    	assertEquals("Fernando Alonso scores qualifying points from stand-in driver Stoffel Vandoorne", controller.event(2).getRemarks().get(2));
+    	assertEquals("Fernando Alonso scores race points from stand-in driver Stoffel Vandoorne", controller.event(2).getRemarks().get(3));
+    	
     	assertTrue(controller.event(1).isRaceComplete());
 		assertTrue(controller.event(2).isRaceComplete());
 		
@@ -246,6 +253,7 @@ public class LeagueServiceImplTest {
 		assertEquals(666, controller.driver(3).getTotalPoints());
 		assertEquals(1148, controller.driver(5).getTotalPoints());
 		assertEquals(514, controller.driver(55).getTotalPoints());
+		assertEquals(104, controller.driver(14).getTotalPoints());
 		
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
 		assertTrue(containsDriver(6, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
