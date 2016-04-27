@@ -49,6 +49,9 @@ public class MainController {
 	@Value("${best-theoretical-team-name}")
 	private String bestTheoreticalTeamName;
 
+	@Value("${num-drivers-per-team}")
+	private int numDriversPerTeam;
+
 	@Autowired
 	private ComponentService componentService;
 	@Autowired
@@ -383,6 +386,9 @@ public class MainController {
 		if (!isAdmin()) {
 			if (!seasonStarted()) {
 				team.setDrivers(new ArrayList<Driver>());
+				for(int i = 0; i < numDriversPerTeam; i++) {
+					team.getDrivers().add(new Driver());
+				}
 				team.setCar(null);
 				team.setEngine(null);
 			}
