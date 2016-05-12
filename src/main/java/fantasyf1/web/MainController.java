@@ -119,7 +119,7 @@ public class MainController {
 		Collections.sort(drivers);
 		for (final Driver driver : drivers) {
 			order.put(driver.getName(),
-					new Position(0, false, driver.getNumber()));
+					new Position(0, false, driver.getNumber(), driver.getCar().getName()));
 		}
 		result.setRound(eventService.getSeasonResults().size() + 1);
 		result.setQualifyingOrder(order);

@@ -29,13 +29,13 @@ public class Correction {
 	public Correction() {
 	}
 
-	public Correction(final int round, final String driver, final int driverNumber, 
+	public Correction(final int round, final String driver, final int driverNumber, final String carName, 
 			final int qualPosition, final boolean qualClassified,
 			final int racePosition, final boolean raceClassified) {
 		this.round = round;
 		this.driver = driver;
-		positions = new ArrayList<Position>();
-		positions.add(new Position(qualPosition, qualClassified, driverNumber));
-		positions.add(new Position(racePosition, raceClassified, driverNumber));
+		positions = new ArrayList<>();
+		positions.add(new Position(qualPosition, qualClassified, driverNumber, carName));
+		positions.add(new Position(racePosition, raceClassified, driverNumber, carName));
 	}
 }

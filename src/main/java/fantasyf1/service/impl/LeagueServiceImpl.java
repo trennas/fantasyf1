@@ -319,6 +319,7 @@ public class LeagueServiceImpl implements LeagueService {
 		}
 
 		final List<Car> cars = componentService.findAllCars();
+		final List<Engine> engines = componentService.findAllEngines();
 		final Map <String, Integer> carPoints = new HashMap<>();
 		final Map <String, Integer> numCarsParticipated = new HashMap<>();
 		final Map <String, Integer> numCarsFinished = new HashMap<>();
@@ -327,6 +328,8 @@ public class LeagueServiceImpl implements LeagueService {
 	    for(final Position pos : result.getQualifyingOrder().values()) {
 			if (pos.isClassified()) {
 				add(carPoints, pos.getCarName(), rules.getCarQualPoints().get(pos.getPosition()));
+				add(enginePoints, componentService.findCarByName(pos.getCarName()).getEngine().getName(),
+						rules.getEngineQualPoints().get(pos.getPosition()));
 			}
 	    }
 
@@ -338,21 +341,24 @@ public class LeagueServiceImpl implements LeagueService {
 					if(numCarsFinished.get(pos.getCarName()) == 2) {
 						add(carPoints, pos.getCarName(), rules.getBothCarsFinishedBonus());
 					}
-					cars.
+					add(enginePoints, componentService.findCarByName(pos.getCarName()).getEngine().getName(),
+							rules.getEngineRacePoints().get(pos.getPosition()));
 				}
 				add(numCarsParticipated, pos.getCarName(), 1);
 		    }
 	    }
 
 	    for(final Car car : cars) {
-		car.getPointsPerEvent().put(result.getRound(), carPoints.get(car.getName()));
-		car.setTotalPoints(car.getTotalPoints() + carPoints.get(car.getName()));
-		componentService.saveCar(car);
+			car.getPointsPerEvent().put(result.getRound(), carPoints.get(car.getName()));
+			car.setTotalPoints(car.getTotalPoints() + carPoints.get(car.getName()));			
+	    }
+	    componentService.saveCars(cars);
 
-		engine.getPointsPerEvent().put(result.getRound(), carPoints);
-		engine.setTotalPoints(engine.getTotalPoints() + carPoints);
-		componentService.saveEngine(engine);
-
+	    for(final Engine engine : engines) {
+			engine.getPointsPerEvent().put(result.getRound(), enginePoints.get(engine.getName()));
+			engine.setTotalPoints(engine.getTotalPoints() + enginePoints.get(engine.getName()));
+	    }
+	    componentService.saveEngines(engines);
 
 		final Iterator<Team> teamItr = teamService.findAll().iterator();
 		while (teamItr.hasNext()) {

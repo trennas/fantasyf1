@@ -57,9 +57,9 @@ public class CreateData {
 		carRepo.save(new Car("Renault", 21, engineRepo.findByName("Renault").get(0)));
 		carRepo.save(new Car("Toro Rosso", 19, engineRepo.findByName("Ferrari").get(0)));
 		carRepo.save(new Car("Sauber", 17, engineRepo.findByName("Ferrari").get(0)));
-		carRepo.save(new Car("Mclaren", 16, engineRepo.findByName("Honda").get(0)));
-		carRepo.save(new Car("Manor", 15, engineRepo.findByName("Mercedes").get(0)));
-		carRepo.save(new Car("Haas", 15, engineRepo.findByName("Ferrari").get(0)));
+		carRepo.save(new Car("McLaren", 16, engineRepo.findByName("Honda").get(0)));
+		carRepo.save(new Car("Manor Marussia", 15, engineRepo.findByName("Mercedes").get(0)));
+		carRepo.save(new Car("Haas F1 Team", 15, engineRepo.findByName("Ferrari").get(0)));
 
 		driverRepo.save(new Driver("Lewis Hamilton", 44, carRepo.findByName("Mercedes").get(0), 40, false));
 		driverRepo.save(new Driver("Nico Rosberg", 6, carRepo.findByName("Mercedes").get(0), 35, false));
@@ -82,18 +82,18 @@ public class CreateData {
 		driverRepo.save(new Driver("Kevin Magnussen", 20, carRepo.findByName("Renault").get(0), 16, false));
 		driverRepo.save(new Driver("Jolyon Palmer", 30, carRepo.findByName("Renault").get(0), 15, false));
 
-		driverRepo.save(new Driver("Fernando Alonso", 14, carRepo.findByName("Mclaren").get(0), 14, false));
-		driverRepo.save(new Driver("Jenson Button", 22, carRepo.findByName("Mclaren").get(0), 14, false));
-		driverRepo.save(new Driver("Stoffel Vandoorne", 47, carRepo.findByName("Mclaren").get(0), 0, true));
+		driverRepo.save(new Driver("Fernando Alonso", 14, carRepo.findByName("McLaren").get(0), 14, false));
+		driverRepo.save(new Driver("Jenson Button", 22, carRepo.findByName("McLaren").get(0), 14, false));
+		driverRepo.save(new Driver("Stoffel Vandoorne", 47, carRepo.findByName("McLaren").get(0), 0, true));
 
 		driverRepo.save(new Driver("Felipe Nasr", 12, carRepo.findByName("Sauber").get(0), 13, false));
 		driverRepo.save(new Driver("Marcus Ericsson", 9, carRepo.findByName("Sauber").get(0), 12, false));
 
-		driverRepo.save(new Driver("Rio Haryanto", 88, carRepo.findByName("Manor").get(0), 10, false));
-		driverRepo.save(new Driver("Pascal Wehrlein", 94, carRepo.findByName("Manor").get(0), 10, false));
+		driverRepo.save(new Driver("Rio Haryanto", 88, carRepo.findByName("Manor Marussia").get(0), 10, false));
+		driverRepo.save(new Driver("Pascal Wehrlein", 94, carRepo.findByName("Manor Marussia").get(0), 10, false));
 
-		driverRepo.save(new Driver("Romain Grosjean", 8, carRepo.findByName("Haas").get(0), 10, false));
-		driverRepo.save(new Driver("Esteban Gutierrez", 21, carRepo.findByName("Haas").get(0), 10, false));
+		driverRepo.save(new Driver("Romain Grosjean", 8, carRepo.findByName("Haas F1 Team").get(0), 10, false));
+		driverRepo.save(new Driver("Esteban Gutierrez", 21, carRepo.findByName("Haas F1 Team").get(0), 10, false));
 
 		try {
 			List<Driver> drivers = new ArrayList<Driver>();
@@ -126,7 +126,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Valtteri Bottas").get(0));
 			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
 			team = new Team("questus scire caseum", "coma_g", "FF1-winner@bc108.f9.co.uk", "welcome1", drivers,
-					carRepo.findByName("Haas").get(0), engineRepo.findByName("Honda").get(0));
+					carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Honda").get(0));
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
@@ -134,7 +134,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Felipe Nasr").get(0));
 			drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
 			team = new Team("Jane haas the winning formula", "Jane Trenaman", "jane.trenaman@yahoo.co.uk", "welcome1", drivers,
-					carRepo.findByName("Haas").get(0), engineRepo.findByName("Mercedes").get(0));
+					carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Mercedes").get(0));
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
@@ -142,7 +142,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
 			drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
 			team = new Team("Second is the first loser", "Schmooze", "andrew.rousell@baesystems.com", "welcome1", drivers,
-					carRepo.findByName("Manor").get(0), engineRepo.findByName("Ferrari").get(0));
+					carRepo.findByName("Manor Marussia").get(0), engineRepo.findByName("Ferrari").get(0));
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
@@ -150,7 +150,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Marcus Ericsson").get(0));
 			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
 			team = new Team("Gunboat Verity", "Jez Newby", "jeremy.s.newby@gmail.com", "welcome1", drivers,
-					carRepo.findByName("Mclaren").get(0), engineRepo.findByName("Mercedes").get(0));
+					carRepo.findByName("McLaren").get(0), engineRepo.findByName("Mercedes").get(0));
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
@@ -158,7 +158,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Kevin Magnussen").get(0));
 			drivers.add(driverRepo.findByName("Carlos Sainz").get(0));
 			team = new Team("Rosberger & Fries", "Paul Butcher", "paul_butcher_1@yahoo.co.uk", "welcome1", drivers,
-					carRepo.findByName("Haas").get(0), engineRepo.findByName("Renault").get(0));
+					carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Renault").get(0));
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
@@ -166,7 +166,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
 			drivers.add(driverRepo.findByName("Fernando Alonso").get(0));
 			team = new Team("Arrowmaker", "Pete Garratt", "peter@garratt.org.uk", "welcome1", drivers,
-					carRepo.findByName("Mclaren").get(0), engineRepo.findByName("Ferrari").get(0));
+					carRepo.findByName("McLaren").get(0), engineRepo.findByName("Ferrari").get(0));
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
@@ -182,7 +182,7 @@ public class CreateData {
 			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
 			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
 			team = new Team("Ruby's Racers", "Coma_F", "coma_f@bc108.f9.co.uk", "welcome1", drivers,
-					carRepo.findByName("Manor").get(0), engineRepo.findByName("Honda").get(0));
+					carRepo.findByName("Manor Marussia").get(0), engineRepo.findByName("Honda").get(0));
 			teamService.saveTeam(team);
 
 			drivers = new ArrayList<Driver>();
