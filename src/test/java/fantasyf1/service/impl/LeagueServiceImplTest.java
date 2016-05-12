@@ -310,7 +310,7 @@ public class LeagueServiceImplTest {
 		assertTrue(containsDriver(5, controller.getBestTheoreticalTeam().getDrivers()));
 		assertTrue(containsDriver(55, controller.getBestTheoreticalTeam().getDrivers()));
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
-		assertEquals("Mclaren", controller.getBestTheoreticalTeam().getCar().getName());
+		assertEquals("McLaren", controller.getBestTheoreticalTeam().getCar().getName());
 		assertEquals("Ferrari", controller.getBestTheoreticalTeam().getEngine().getName());
 
 		// Race 3, Kvyat swapped with Verstappen
@@ -328,8 +328,8 @@ public class LeagueServiceImplTest {
 
 		assertEquals(576, controller.car("Red Bull").getTotalPoints());
 		assertEquals(730, controller.car("Toro Rosso").getTotalPoints());
-		//assertEquals(772, controller.engine("Ferrari").getTotalPoints());
-		//assertEquals(294, controller.engine("Renault").getTotalPoints());
+		assertEquals(1212, controller.engine("Ferrari").getTotalPoints());
+		assertEquals(486, controller.engine("Renault").getTotalPoints());
     }
 
 	private boolean containsDriver(final int number, final List<MinimalTeamComponent> drivers) {
