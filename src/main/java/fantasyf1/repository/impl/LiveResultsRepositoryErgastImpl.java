@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import com.ergast.mrd._1.MRDataType;
 import com.ergast.mrd._1.ResultType;
 
+import fantasyf1.domain.Car;
 import fantasyf1.domain.Driver;
 import fantasyf1.domain.EventResult;
 import fantasyf1.domain.Position;
@@ -91,8 +92,9 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 				final Driver driver = findDriver(res, result);
 				qualResultDriverMap.put(res, driver);
+				final Car car = findCar(res, result);
 				result.getQualifyingOrder().put(driver.getName(),
-						new Position(res.getPosition().intValue(), true, driver.getNumber()));
+						new Position(res.getPosition().intValue(), true, driver.getNumber(), car.getName()));
 			}
 
 			final List<Driver> drivers = componentService
@@ -139,10 +141,11 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 							"[0-9]{1,2}");
 					final Driver driver = findDriver(res, result);
 					raceResultDriverMap.put(res, driver);
+					final Car car = findCar(res, result);
 					result.getRaceOrder().put(
 							driver.getName(),
 							new Position(res.getPosition().intValue(),
-									classified, driver.getNumber()));
+									classified, driver.getNumber(), car.getName()));
 				}
 
 				final Driver fastestLapDriver = componentService
@@ -193,6 +196,22 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				eventResult.addRemark(message);
 				return null;
 			}
+		}
+	}
+
+	private Car findCar(final ResultType res,
+			final EventResult eventResult) {
+		final String name = res.getConstructor().getName();
+
+		final Car car = componentService.findCarByName(name);
+		if (car != null) {
+			return car;
+		} else {
+			final String message = "Car: "
+					+ name + " in results list could not be found.";
+			LOG.error(message);
+			eventResult.addRemark(message);
+			return null;
 		}
 	}
 
