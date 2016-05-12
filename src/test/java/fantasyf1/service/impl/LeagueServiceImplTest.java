@@ -60,20 +60,21 @@ public class LeagueServiceImplTest {
     	final String url  = ergastUrl + season + "/1";
 		final String url2 = ergastUrl + season + "/2";
 		final String url3 = ergastUrl + season + "/3";
-    	
+		final String url4 = ergastUrl + season + "/4";
+
     	StringWriter sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual-null.xml").getInputStream(), sw);
 		final String qualNullXml = sw.toString();
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("race-null.xml").getInputStream(), sw);
 		final String raceNullXml = sw.toString();
-    	
+
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual.xml").getInputStream(), sw);
-		final String qual1Xml = sw.toString();		
+		final String qual1Xml = sw.toString();
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("race.xml").getInputStream(), sw);
-		final String race1Xml = sw.toString();		
+		final String race1Xml = sw.toString();
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("fastestlap.xml").getInputStream(), sw);
 		final String fastestLap1Xml = sw.toString();
@@ -88,6 +89,17 @@ public class LeagueServiceImplTest {
 		IOUtils.copy(new ClassPathResource("fastestlap2.xml").getInputStream(), sw);
 		final String fastestLap2Xml = sw.toString();
 
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("qual3.xml").getInputStream(), sw);
+		final String qual3Xml = sw.toString();
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("race3.xml").getInputStream(), sw);
+		final String race3Xml = sw.toString();
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("fastestlap3.xml").getInputStream(), sw);
+		final String fastestLap3Xml = sw.toString();
+
+		// Race 1 Qual Complete, Race Not Complete
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 				.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
@@ -106,6 +118,7 @@ public class LeagueServiceImplTest {
 		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
+		// Race 1 Qual Complete, Race Complete
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 		.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
@@ -124,6 +137,7 @@ public class LeagueServiceImplTest {
 		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
+		// Race 2 Qual Complete, Race Complete
 		mockServer.expect(requestTo(url2 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(qual2Xml, MediaType.APPLICATION_XML));
 
@@ -142,6 +156,26 @@ public class LeagueServiceImplTest {
 		mockServer.expect(requestTo(url3 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
+		// Race 3 Qual Complete, Race Complete
+		mockServer.expect(requestTo(url3 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(qual3Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url3 + "/results.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(race3Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url3 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fastestLap3Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(qualNullXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/results.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
+
+		// Recalculate all results
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 		.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
@@ -161,30 +195,39 @@ public class LeagueServiceImplTest {
 			.andRespond(withSuccess(fastestLap2Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url3 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(qualNullXml, MediaType.APPLICATION_XML));
+		.andRespond(withSuccess(qual3Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url3 + "/results.xml")).andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
+			.andRespond(withSuccess(race3Xml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url3 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fastestLap3Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(qualNullXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/results.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
 		// Race 1, Qual complete but race not complete
 		controller.updateResults();
 
 		assertFalse(controller.event(1).isRaceComplete());
-		
+
 		assertEquals(0, controller.driver(3).getFastestLaps());
 		assertEquals(0, controller.driver(55).getFastestLaps());
 		assertEquals(0, controller.driver(44).getFastestLaps());
-		
+
 		assertEquals(200, controller.driver(44).getTotalPoints());
-		assertEquals(160, controller.driver(6).getTotalPoints());		
-		assertEquals(104, controller.driver(7).getTotalPoints());		
+		assertEquals(160, controller.driver(6).getTotalPoints());
+		assertEquals(104, controller.driver(7).getTotalPoints());
 		assertEquals(68, controller.driver(3).getTotalPoints());
 		assertEquals(128, controller.driver(5).getTotalPoints());
 		assertEquals(72, controller.driver(55).getTotalPoints());
-		
+
 		assertTrue(containsDriver(33, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
 		assertTrue(containsDriver(55, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
 		assertTrue(containsDriver(14, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
@@ -200,19 +243,19 @@ public class LeagueServiceImplTest {
 		controller.updateResults();
 
 		assertTrue(controller.event(1).isRaceComplete());
-		
+
 		assertEquals(1, controller.driver(3).getFastestLaps());
 		assertEquals(0, controller.driver(55).getFastestLaps());
 		assertEquals(0, controller.driver(44).getFastestLaps());
-		
+
 		assertEquals(600, controller.driver(44).getTotalPoints());
-		assertEquals(660, controller.driver(6).getTotalPoints());		
-		assertEquals(104, controller.driver(7).getTotalPoints());		
+		assertEquals(660, controller.driver(6).getTotalPoints());
+		assertEquals(104, controller.driver(7).getTotalPoints());
 		assertEquals(378, controller.driver(3).getTotalPoints());
 		assertEquals(448, controller.driver(5).getTotalPoints());
 		assertEquals(232, controller.driver(55).getTotalPoints());
 		assertEquals(52, controller.driver(14).getTotalPoints());
-		
+
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
 		assertTrue(containsDriver(6, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
 		assertTrue(containsDriver(94, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
@@ -226,35 +269,34 @@ public class LeagueServiceImplTest {
 
 		// Race 2, Qual and race complete
 		controller.updateResults();
-		checkFinalResults();
-
-		// Refresh everything, should all stay the same
-		controller.refreshAllResults();
-		checkFinalResults();
-    }
-    
-    private void checkFinalResults() {
-    	assertEquals(4, controller.event(2).getRemarks().size());
+		assertEquals(4, controller.event(2).getRemarks().size());
     	assertEquals("Fernando Alonso did not participate in qualifying", controller.event(2).getRemarks().get(0));
     	assertEquals("Fernando Alonso did not participate in the race", controller.event(2).getRemarks().get(1));
     	assertEquals("Fernando Alonso scores qualifying points from stand-in driver Stoffel Vandoorne", controller.event(2).getRemarks().get(2));
     	assertEquals("Fernando Alonso scores race points from stand-in driver Stoffel Vandoorne", controller.event(2).getRemarks().get(3));
-    	
+
     	assertTrue(controller.event(1).isRaceComplete());
 		assertTrue(controller.event(2).isRaceComplete());
-		
+
 		assertEquals(1, controller.driver(3).getFastestLaps());
 		assertEquals(1, controller.driver(55).getFastestLaps());
 		assertEquals(0, controller.driver(44).getFastestLaps());
-		
+
 		assertEquals(1048, controller.driver(44).getTotalPoints());
-		assertEquals(1024, controller.driver(6).getTotalPoints());		
+		assertEquals(1024, controller.driver(6).getTotalPoints());
 		assertEquals(664, controller.driver(7).getTotalPoints());
 		assertEquals(666, controller.driver(3).getTotalPoints());
 		assertEquals(1148, controller.driver(5).getTotalPoints());
 		assertEquals(514, controller.driver(55).getTotalPoints());
 		assertEquals(104, controller.driver(14).getTotalPoints());
-		
+
+		assertEquals(476, controller.driver(33).getTotalPoints());
+		assertEquals(56, controller.driver(26).getTotalPoints());
+		assertEquals(288, controller.car("Red Bull").getTotalPoints());
+		assertEquals(508, controller.car("Toro Rosso").getTotalPoints());
+		assertEquals(772, controller.engine("Ferrari").getTotalPoints());
+		assertEquals(294, controller.engine("Renault").getTotalPoints());
+
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
 		assertTrue(containsDriver(6, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
 		assertTrue(containsDriver(94, controller.getBestTheoreticalTeamForRound(1).getDrivers()));
@@ -270,6 +312,24 @@ public class LeagueServiceImplTest {
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
 		assertEquals("Mclaren", controller.getBestTheoreticalTeam().getCar().getName());
 		assertEquals("Ferrari", controller.getBestTheoreticalTeam().getEngine().getName());
+
+		// Race 3, Kvyat swapped with Verstappen
+		controller.updateResults();
+		checkFinalResults();
+
+		// Refresh everything, should all stay the same
+		controller.refreshAllResults();
+		checkFinalResults();
+    }
+
+    private void checkFinalResults() {
+    	assertEquals(740, controller.driver(33).getTotalPoints());
+		assertEquals(280, controller.driver(26).getTotalPoints());
+
+		assertEquals(576, controller.car("Red Bull").getTotalPoints());
+		assertEquals(730, controller.car("Toro Rosso").getTotalPoints());
+		//assertEquals(772, controller.engine("Ferrari").getTotalPoints());
+		//assertEquals(294, controller.engine("Renault").getTotalPoints());
     }
 
 	private boolean containsDriver(final int number, final List<MinimalTeamComponent> drivers) {
