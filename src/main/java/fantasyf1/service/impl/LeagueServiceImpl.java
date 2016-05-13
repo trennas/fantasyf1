@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -319,45 +321,47 @@ public class LeagueServiceImpl implements LeagueService {
 		}
 
 		final List<Car> cars = componentService.findAllCars();
-		final List<Engine> engines = componentService.findAllEngines();
-		final Map <String, Integer> carPoints = new HashMap<>();
+		final List<Engine> engines = componentService.findAllEngines();		
 		final Map <String, Integer> numCarsParticipated = new HashMap<>();
 		final Map <String, Integer> numCarsFinished = new HashMap<>();
-		final Map <String, Integer> enginePoints = new HashMap<>();
+		
+		Map<String, Car> carMap =
+				cars.stream().collect(Collectors.toMap(Car::getName, Function.identity()));
+		Map<String, Engine> engineMap =
+				engines.stream().collect(Collectors.toMap(Engine::getName, Function.identity()));
 
 	    for(final Position pos : result.getQualifyingOrder().values()) {
 			if (pos.isClassified()) {
-				add(carPoints, pos.getCarName(), rules.getCarQualPoints().get(pos.getPosition()));
-				add(enginePoints, componentService.findCarByName(pos.getCarName()).getEngine().getName(),
-						rules.getEngineQualPoints().get(pos.getPosition()));
+				Car car = carMap.get(pos.getCarName());
+				Engine engine = engineMap.get(car.getEngine().getName());
+				add(car.getPointsPerEvent(), result.getRound(), rules.getCarQualPoints().get(pos.getPosition()));				
+				car.setTotalPoints(car.getTotalPoints() + rules.getCarQualPoints().get(pos.getPosition()));				
+				add(engine.getPointsPerEvent(), result.getRound(), rules.getEngineQualPoints().get(pos.getPosition()));
+				engine.setTotalPoints(engine.getTotalPoints() + rules.getEngineQualPoints().get(pos.getPosition()));
 			}
 	    }
 
 	    if (result.isRaceComplete()) {
 		    for(final Position pos : result.getRaceOrder().values()) {
 				if (pos.isClassified()) {
-					add(carPoints, pos.getCarName(), rules.getCarRacePoints().get(pos.getPosition()));
-					add(numCarsFinished, pos.getCarName(), 1);
-					if(numCarsFinished.get(pos.getCarName()) == 2) {
-						add(carPoints, pos.getCarName(), rules.getBothCarsFinishedBonus());
+					Car car = carMap.get(pos.getCarName());
+					Engine engine = engineMap.get(car.getEngine().getName());
+					add(car.getPointsPerEvent(), result.getRound(), rules.getCarRacePoints().get(pos.getPosition()));				
+					car.setTotalPoints(car.getTotalPoints() + rules.getCarRacePoints().get(pos.getPosition()));				
+					add(engine.getPointsPerEvent(), result.getRound(), rules.getEngineRacePoints().get(pos.getPosition()));
+					engine.setTotalPoints(engine.getTotalPoints() + rules.getEngineRacePoints().get(pos.getPosition()));
+					
+					add(numCarsFinished, car.getName(), 1);
+					if(numCarsFinished.get(car.getName()) == 2) {
+						add(car.getPointsPerEvent(), result.getRound(), rules.getBothCarsFinishedBonus());						
+						car.setTotalPoints(car.getTotalPoints() + rules.getBothCarsFinishedBonus());
+						car.setBothCarsFinishBonuses(car.getBothCarsFinishBonuses() + 1);
 					}
-					add(enginePoints, componentService.findCarByName(pos.getCarName()).getEngine().getName(),
-							rules.getEngineRacePoints().get(pos.getPosition()));
 				}
 				add(numCarsParticipated, pos.getCarName(), 1);
 		    }
-	    }
-
-	    for(final Car car : cars) {
-			car.getPointsPerEvent().put(result.getRound(), carPoints.get(car.getName()));
-			car.setTotalPoints(car.getTotalPoints() + carPoints.get(car.getName()));			
-	    }
+	    }	    
 	    componentService.saveCars(cars);
-
-	    for(final Engine engine : engines) {
-			engine.getPointsPerEvent().put(result.getRound(), enginePoints.get(engine.getName()));
-			engine.setTotalPoints(engine.getTotalPoints() + enginePoints.get(engine.getName()));
-	    }
 	    componentService.saveEngines(engines);
 
 		final Iterator<Team> teamItr = teamService.findAll().iterator();
@@ -380,7 +384,7 @@ public class LeagueServiceImpl implements LeagueService {
 		calculateBestTheoreticalTeam(result);
 	}
 
-	private void add(final Map <String, Integer> map, final String key, final Integer value) {
+	private <T> void add(final Map <T, Integer> map, final T key, final Integer value) {
 		Integer newValue;
 		if(map.containsKey(key)) {
 			newValue = map.get(key) + value;

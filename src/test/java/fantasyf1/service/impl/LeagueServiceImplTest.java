@@ -331,6 +331,7 @@ public class LeagueServiceImplTest {
 		assertEquals(1212, controller.engine("Ferrari").getTotalPoints());
 		assertEquals(486, controller.engine("Renault").getTotalPoints());
 		assertEquals(3, controller.car("Mercedes").getBothCarsFinishBonuses());
+		assertEquals(1, controller.car("Red Bull").getBothCarsFinishBonuses());
     }
 
 	private boolean containsDriver(final int number, final List<MinimalTeamComponent> drivers) {
