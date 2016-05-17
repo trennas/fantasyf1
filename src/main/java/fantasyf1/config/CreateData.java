@@ -79,12 +79,12 @@ public class CreateData {
 		driverRepo.save(new Driver("Felipe Massa", 19, carRepo.findByName("Williams").get(0), 25));
 
 		driverRepo.save(new Driver("Daniel Ricciardo", 3, carRepo.findByName("Red Bull").get(0), 23));
-		driverRepo.save(new Driver("Daniil Kvyat", 26, carRepo.findByName("Red Bull").get(0), 21));
+		driverRepo.save(new Driver("Max Verstappen", 33, carRepo.findByName("Red Bull").get(0), 18));		
 
 		driverRepo.save(new Driver("Sergio Perez", 11, carRepo.findByName("Force India").get(0), 20));
 		driverRepo.save(new Driver("Nico Hulkenberg", 27, carRepo.findByName("Force India").get(0), 19));
 
-		driverRepo.save(new Driver("Max Verstappen", 33, carRepo.findByName("Toro Rosso").get(0), 18));
+		driverRepo.save(new Driver("Daniil Kvyat", 26, carRepo.findByName("Toro Rosso").get(0), 21));
 		driverRepo.save(new Driver("Carlos Sainz", 55, carRepo.findByName("Toro Rosso").get(0), 17));
 
 		driverRepo.save(new Driver("Kevin Magnussen", 20, carRepo.findByName("Renault").get(0), 16));
