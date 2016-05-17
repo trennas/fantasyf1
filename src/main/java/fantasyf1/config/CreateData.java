@@ -104,7 +104,7 @@ public class CreateData {
 		driverRepo.save(new Driver("Esteban Gutierrez", 21, carRepo.findByName("Haas F1 Team").get(0), 10));
 		
 		// Stand-in drivers
-		driverRepo.save(new Driver("Stoffel Vandoorne", 47, carRepo.findByName("McLaren").get(0), 0, true, StoffelVandoorneStandIns));
+		driverRepo.save(new Driver("Stoffel Vandoorne", 47, carRepo.findByName("McLaren").get(0), 0, StoffelVandoorneStandIns));
 
 		try {
 			List<Driver> drivers = new ArrayList<Driver>();
