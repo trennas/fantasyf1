@@ -276,7 +276,7 @@ public class LeagueServiceImpl implements LeagueService {
 			Driver driver = getDriver(pos, driverMap, standinDriverMap, result);
 			
 			if (pos.isClassified()) {
-				add(driver.getPointsPerEvent(), result.getRound(), rules.getDriverQualPoints().get(pos.getPosition()));				
+				add(driver.getPointsPerEvent(), result.getRound(), rules.getDriverQualPoints().get(pos.getPosition()));
 				driver.setTotalPoints(driver.getTotalPoints() + rules.getDriverQualPoints().get(pos.getPosition()));
 				add(car.getPointsPerEvent(), result.getRound(), rules.getCarQualPoints().get(pos.getPosition()));				
 				car.setTotalPoints(car.getTotalPoints() + rules.getCarQualPoints().get(pos.getPosition()));				
@@ -316,9 +316,9 @@ public class LeagueServiceImpl implements LeagueService {
 				add(numCarsParticipated, pos.getCarName(), 1);
 		    }
 	    }
-	    componentService.saveDrivers(drivers);
-	    componentService.saveCars(cars);
-	    componentService.saveEngines(engines);
+	    componentService.saveDrivers(drivers, true);
+	    componentService.saveCars(cars, true);
+	    componentService.saveEngines(engines, true);
 
 		final Iterator<Team> teamItr = teamService.findAll().iterator();
 		while (teamItr.hasNext()) {

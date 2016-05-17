@@ -18,7 +18,7 @@ public interface ComponentService {
 	public List<Driver> findDriversByCarAndStandin(final Car car,
 			final boolean standIn);
 	
-	public void saveDrivers(List<Driver> drivers);
+	public void saveDrivers(List<Driver> drivers, final boolean merge);
 
 	public Car findCarByName(final String name);
 
@@ -30,11 +30,11 @@ public interface ComponentService {
 
 	public List<Car> findAllCars();
 	
-	public void saveCars(List<Car> cars);
+	public void saveCars(List<Car> cars, final boolean merge);
 
 	public List<Engine> findAllEngines();
 	
-	public void saveEngines(List<Engine> engines);
+	public void saveEngines(List<Engine> engines, final boolean merge);
 
 	public void saveDriver(final Driver driver);
 

@@ -58,8 +58,10 @@ public class ComponentServiceImpl implements ComponentService {
 	}
 	
 	@Override
-	public void saveDrivers(List<Driver> drivers) {
-		removeDeleted(findAllDrivers(), drivers, driverRepo);
+	public void saveDrivers(List<Driver> drivers, final boolean merge) {
+		if(!merge) {
+			removeDeleted(findAllDrivers(), drivers, driverRepo);
+		}
 		driverRepo.save(drivers);
 	}
 	
@@ -82,14 +84,18 @@ public class ComponentServiceImpl implements ComponentService {
 	}
 	
 	@Override
-	public void saveCars(List<Car> cars) {
-		removeDeleted(findAllCars(), cars, carRepo);
+	public void saveCars(List<Car> cars, final boolean merge) {
+		if(!merge) {
+			removeDeleted(findAllCars(), cars, carRepo);
+		}
 		carRepo.save(cars);
 	}
 	
 	@Override
-	public void saveEngines(List<Engine> engines) {
-		removeDeleted(findAllEngines(), engines, engineRepo);
+	public void saveEngines(List<Engine> engines, final boolean merge) {
+		if(!merge) {
+			removeDeleted(findAllEngines(), engines, engineRepo);
+		}
 		engineRepo.save(engines);
 	}
 
