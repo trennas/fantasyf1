@@ -273,7 +273,7 @@ public class LeagueServiceImpl implements LeagueService {
 	    for(final Position pos : result.getQualifyingOrder().values()) {
 	    	Car car = carMap.get(pos.getCarName());
 			Engine engine = engineMap.get(car.getEngine().getName());
-			Driver driver = getDriver(pos, driverMap, standinDriverMap, result);
+			Driver driver = getDriver(pos, driverMap, standinDriverMap, result, Session.QUALIFYING);
 			
 			if (pos.isClassified()) {
 				add(driver.getPointsPerEvent(), result.getRound(), rules.getDriverQualPoints().get(pos.getPosition()));
@@ -289,7 +289,7 @@ public class LeagueServiceImpl implements LeagueService {
 		    for(final Position pos : result.getRaceOrder().values()) {
 		    	Car car = carMap.get(pos.getCarName());
 				Engine engine = engineMap.get(car.getEngine().getName());
-				Driver driver = getDriver(pos, driverMap, standinDriverMap, result);
+				Driver driver = getDriver(pos, driverMap, standinDriverMap, result, Session.RACE);
 				
 				if (pos.isClassified()) {
 					add(driver.getPointsPerEvent(), result.getRound(), rules.getDriverRacePoints().get(pos.getPosition()));				
@@ -340,13 +340,30 @@ public class LeagueServiceImpl implements LeagueService {
 		calculateBestTheoreticalTeam(result);
 	}
 	
-	private Driver getDriver(Position pos, Map<Integer, Driver> driverMap, Map<Integer, Driver> standinDriverMap, EventResult result) {
+	private Driver getDriver(Position pos, Map<Integer, Driver> driverMap, Map<Integer, Driver> standinDriverMap, EventResult result, final Session session) {
 		Driver driver = driverMap.get(pos.getDriverNumber());					
-		if (standinDriverMap.containsKey(pos.getDriverNumber()) &&
-				standinDriverMap.get(pos.getDriverNumber()).getStandinRoundsDrivers().containsKey(result.getRound())) {
+		if (driver == null && (standinDriverMap.containsKey(pos.getDriverNumber()) &&
+				standinDriverMap.get(pos.getDriverNumber()).getStandinRoundsDrivers().containsKey(result.getRound()))) {
 			driver = driverMap.get(standinDriverMap.get(pos.getDriverNumber()).getStandinRoundsDrivers().get(result.getRound()));
+			result.getRemarks().add(driverMap.get(standinDriverMap.get(pos.getDriverNumber()).getStandinRoundsDrivers().get(result.getRound())).getName() + " scores " + session + " points from stand-in driver " + standinDriverMap.get(pos.getDriverNumber()).getName());
 		}
 		return driver;
+	}
+	
+	private enum Session {
+		QUALIFYING("qualifying"),
+		RACE("race");
+		
+		private final String name;       
+
+	    private Session(String s) {
+	        name = s;
+	    }
+
+	    @Override
+	    public String toString() {
+	       return this.name;
+	    }
 	}
 
 	private <T> void add(final Map <T, Integer> map, final T key, final Integer value) {

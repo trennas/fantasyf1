@@ -45,8 +45,7 @@ public class CreateData {
 	private String myAccountRole;
 	
 	private static final Map<Integer, Integer> StoffelVandoorneStandIns = new HashMap<>();
-    static
-    {
+    static {
     	StoffelVandoorneStandIns.put(2, 14); // Round 2 (Bahrain) for Alonso (14)
     }
 
