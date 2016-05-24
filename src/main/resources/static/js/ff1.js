@@ -1,4 +1,4 @@
-var app = angular.module('ff1App', [ 'ngCookies' ]);
+var app = angular.module('ff1App', [ 'ngCookies', 'angular-loading-bar' ]);
 app.controller('controller',
 function($scope, $http, $location) {    
     $scope.teams = [];
