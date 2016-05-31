@@ -123,7 +123,7 @@ public class LeagueServiceImpl implements LeagueService {
 			for (final Driver driver2 : allDrivers) {
 				for (final Driver driver3 : allDrivers) {
 					if (driver1.getNumber() != driver2.getNumber() && driver1.getNumber() != driver3.getNumber() && driver2.getNumber() != driver3.getNumber()) {
-						team.setDrivers(new ArrayList<Driver>());
+						team.setDrivers(new ArrayList<>());
 						team.getDrivers().add(driver1);
 						team.getDrivers().add(driver2);
 						team.getDrivers().add(driver3);
@@ -248,7 +248,7 @@ public class LeagueServiceImpl implements LeagueService {
 
 	private void resetPointsScorer(final PointScorer scorer) {
 		scorer.setTotalPoints(0);
-		scorer.setPointsPerEvent(new LinkedHashMap<Integer, Integer>());
+		scorer.setPointsPerEvent(new LinkedHashMap<>());
 	}
 
 	private synchronized void calculateResult(final EventResult result,

@@ -120,20 +120,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	private void createAdminUser(final List<UserDetails> users) {
-		final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		final List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(adminRole));
 		users.add(new User(adminUser, adminPassword, authorities));
 	}
 
 	@Bean
 	public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-		final List<UserDetails> users = new ArrayList<UserDetails>();		
+		final List<UserDetails> users = new ArrayList<>();		
 		createAdminUser(users);	
 		
 		final Iterator<Team> itr = teamRepo.findAll().iterator();
 		while (itr.hasNext()) {
 			final Team team = itr.next();
-				final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+				final List<GrantedAuthority> authorities = new ArrayList<>();
 				for (final String role : team.getRoles()) {
 					authorities.add(new SimpleGrantedAuthority(role));
 				}

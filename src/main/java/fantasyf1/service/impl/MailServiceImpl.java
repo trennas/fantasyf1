@@ -73,7 +73,7 @@ public class MailServiceImpl implements MailService {
 
 		@Override
 		public void prepare(final MimeMessage mimeMessage) throws Exception {
-			final List<Address> addresses = new ArrayList<Address>();
+			final List<Address> addresses = new ArrayList<>();
 			for (final Team team : teams) {
 				addresses.add(new InternetAddress(team.getEmail()));
 			}

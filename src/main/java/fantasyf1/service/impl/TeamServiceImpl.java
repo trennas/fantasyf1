@@ -114,7 +114,7 @@ public class TeamServiceImpl implements TeamService {
 		}
 		try {
 			inMemoryUserDetailsManager.deleteUser(team.getEmail());
-			final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+			final List<GrantedAuthority> authorities = new ArrayList<>();
 			for (final String role : team.getRoles()) {
 				authorities.add(new SimpleGrantedAuthority(role));
 			}

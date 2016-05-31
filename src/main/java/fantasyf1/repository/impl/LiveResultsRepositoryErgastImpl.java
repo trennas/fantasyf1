@@ -72,11 +72,11 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 					.intValue());
 			result.setSeason(qual.getRaceTable().getRace().get(0).getSeason()
 					.intValue());
-			result.setQualifyingOrder(new LinkedHashMap<String, Position>());
+			result.setQualifyingOrder(new LinkedHashMap<>());
 
 			long fastestQ1Time = 0;
 
-			final Map<ResultType, Driver> qualResultDriverMap = new HashMap<ResultType, Driver>();
+			final Map<ResultType, Driver> qualResultDriverMap = new HashMap<>();
 
 			for (final ResultType res : qual.getRaceTable().getRace().get(0)
 					.getQualifyingList().getQualifyingResult()) {
@@ -133,8 +133,8 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			if (race.getRaceTable().getRace().size() > 0) {
 				LOG.info("Retrieving race results for round " + round + " "
 						+ result.getVenue());
-				result.setRaceOrder(new LinkedHashMap<String, Position>());
-				final Map<ResultType, Driver> raceResultDriverMap = new HashMap<ResultType, Driver>();
+				result.setRaceOrder(new LinkedHashMap<>());
+				final Map<ResultType, Driver> raceResultDriverMap = new HashMap<>();
 				for (final ResultType res : race.getRaceTable().getRace()
 						.get(0).getResultsList().getResult()) {
 					final boolean classified = res.getPositionText().matches(
