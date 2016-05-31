@@ -250,12 +250,26 @@ public class LeagueServiceImpl implements LeagueService {
 		scorer.setTotalPoints(0);
 		scorer.setPointsPerEvent(new LinkedHashMap<>());
 	}
+	
+	private void initialiseComponentsForNewResult(int round, List<Driver> drivers, List<Car> cars, List<Engine> engines) {
+		for (Driver driver : drivers) {
+			driver.getPointsPerEvent().put(round, 0);
+		}
+		for(Car car : cars) {
+			car.getPointsPerEvent().put(round, 0);
+		}
+		for(Engine engine : engines) {
+			engine.getPointsPerEvent().put(round, 0);
+		}
+	}
 
 	private synchronized void calculateResult(final EventResult result) {
 		final List<Driver> drivers = componentService.findDriversByStandin(false);
 		final List<Driver> standinDrivers = componentService.findDriversByStandin(true);
 		final List<Car> cars = componentService.findAllCars();
 		final List<Engine> engines = componentService.findAllEngines();
+		
+		initialiseComponentsForNewResult(result.getRound(), drivers, cars, engines);
 		
 		Map<Integer, Driver> driverMap =
 				drivers.stream().collect(Collectors.toMap(Driver::getNumber, Function.identity()));
