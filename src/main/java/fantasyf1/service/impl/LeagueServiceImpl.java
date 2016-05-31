@@ -78,7 +78,7 @@ public class LeagueServiceImpl implements LeagueService {
 		final List<EventResult> results = eventService.getSeasonResults();
 		resetAllScores(teams);
 		for (final EventResult result : results) {
-			calculateResult(result, teams);
+			calculateResult(result);
 		}
 		LOG.info("Scores recalculated.");
 	}
@@ -251,8 +251,7 @@ public class LeagueServiceImpl implements LeagueService {
 		scorer.setPointsPerEvent(new LinkedHashMap<>());
 	}
 
-	private synchronized void calculateResult(final EventResult result,
-			final List<Team> teams) {
+	private synchronized void calculateResult(final EventResult result) {
 		final List<Driver> drivers = componentService.findDriversByStandin(false);
 		final List<Driver> standinDrivers = componentService.findDriversByStandin(true);
 		final List<Car> cars = componentService.findAllCars();
