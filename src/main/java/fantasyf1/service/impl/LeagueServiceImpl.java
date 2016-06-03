@@ -64,20 +64,10 @@ public class LeagueServiceImpl implements LeagueService {
 		Collections.sort(teams);
 		return teams;
 	}
-	
-	@Override
-	public synchronized void recalculateAllResults() {		
-		LOG.info("Recalculating scores...");
-		final List<Team> teams = teamService.findAll();
-		final List<EventResult> results = eventService.getSeasonResults();
-		resetAllScores(teams);
-		for (final EventResult result : results) {
-			calculateResult(result);
-		}
-		LOG.info("Scores recalculated.");
-	}
 
-	private void resetAllScores(final List<Team> teams) {
+	@Override
+	public void resetAllScores() {
+		final List<Team> teams = teamService.findAll();
 		for (final Team team : teams) {
 			resetPointsScorer(team);
 			teamService.saveTeamNoValidation(team);
@@ -270,6 +260,7 @@ public class LeagueServiceImpl implements LeagueService {
 	}
 	
 	private void calculateBestTheoreticalTeam(final List<Driver> allDrivers, final List<Car> cars, final List<Engine> engines) {
+		LOG.info("Calculating best theoretical team...");
 		TheoreticalTeam bestTheoreticalTeam;
 		final TheoreticalTeam res = teamService
 				.getBestTheoreticalTeam();
@@ -313,10 +304,11 @@ public class LeagueServiceImpl implements LeagueService {
 			}
 		}
 		teamService.saveTheoreticalTeam(bestTheoreticalTeam);
+		LOG.info("Done.");
 	}
 
 	private void calculateBestTheoreticalTeamForRound(final EventResult result, final List<Driver> allDrivers, final List<Car> cars, final List<Engine> engines) {
-		
+		LOG.info("Calculating best theoretical team for round " + result.getRound() + "...");
 		TheoreticalTeam bestTeamForRound;
 
 		if(result.getBestTheoreticalTeam() != null) {
@@ -424,6 +416,7 @@ public class LeagueServiceImpl implements LeagueService {
 		}
 		teamService.saveTheoreticalTeam(bestOverallTeam);
 		eventService.save(result);
+		LOG.info("Done.");
 	}
 
 	private long calculateRoundScore(final int round, final Team team) {

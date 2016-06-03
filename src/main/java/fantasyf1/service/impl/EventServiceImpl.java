@@ -54,6 +54,7 @@ public class EventServiceImpl implements EventService {
 			applyCorrections(result);
 			eventRepo.deleteByRound(round);
 			eventRepo.save(result);
+			leagueService.deletePointsForRound(result.getRound());
 			leagueService.calculateResult(result);
 		}
 		return result;
@@ -90,8 +91,8 @@ public class EventServiceImpl implements EventService {
 		LOG.info("Manually invoked refresh of all results..");
 		eventRepo.deleteAll();
 		timeOfLastResultCheck = 0;
-		checkForNewResults(false);
-		leagueService.recalculateAllResults();
+		leagueService.resetAllScores();
+		checkForNewResults(false);		
 	}
 
 	@Override
@@ -108,10 +109,10 @@ public class EventServiceImpl implements EventService {
 		Collections.sort(results);
 		if (System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
 			timeOfLastResultCheck = System.currentTimeMillis();			
-
+			LOG.info("Checking for new race results...");
+			
 			// Start by checking for race results for existing result where only qual is complete.
-			if (!results.isEmpty() && !results.get(results.size()-1).isRaceComplete()) {
-				LOG.info("Checking for race result from previously qualifying only result...");				
+			if (!results.isEmpty() && !results.get(results.size()-1).isRaceComplete()) {								
 				final EventResult newResult = liveRepo.fetchEventResult(results.get(results.size()-1).getRound());
 				if (newResult.isRaceComplete()) {
 					applyCorrections(newResult);
@@ -124,8 +125,7 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 			
-			// Now check for brand new results
-			LOG.info("Checking for new race results...");
+			// Now check for brand new results			
 			EventResult result = liveRepo.fetchEventResult(results.size() + 1);
 			if (result != null) {
 				int num = 0;

@@ -21,4 +21,6 @@ public interface LeagueService {
 	public Date getSeasonStartDate();
 	
 	public void deletePointsForRound(int round);
+	
+	public void resetAllScores();
 }
