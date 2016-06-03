@@ -1,6 +1,5 @@
 package fantasyf1.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -99,16 +98,12 @@ public class EventServiceImpl implements EventService {
 	public synchronized int updateResults() {
 		LOG.info("Updating results..");
 		timeOfLastResultCheck = 0;
-		List<EventResult> results = checkForNewResults(true);		
-		for(EventResult result : results) {
-			leagueService.calculateResult(result);
-		}
-		return results.size();		
+		return checkForNewResults(true);		
 	}
 
 	@Override
-	public synchronized List<EventResult> checkForNewResults(final boolean emailAlerts) {
-		List<EventResult> newResults = new ArrayList<>();
+	public synchronized int checkForNewResults(final boolean emailAlerts) {
+		int numFound = 0;
 		final List<EventResult> results = IteratorUtils.toList(eventRepo.findAll().iterator());
 		Collections.sort(results);
 		if (System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
@@ -122,8 +117,10 @@ public class EventServiceImpl implements EventService {
 					applyCorrections(newResult);
 					eventRepo.delete(results.get(results.size()-1));
 					eventRepo.save(newResult);
+					leagueService.deletePointsForRound(newResult.getRound());
+					leagueService.calculateResult(newResult);
 					mailService.sendNewResultsMail(newResult);
-					newResults.add(newResult);
+					numFound++;
 				}
 			}
 			
@@ -138,8 +135,9 @@ public class EventServiceImpl implements EventService {
 					applyCorrections(result);
 					results.add(result);
 					eventRepo.save(result);
-					newResults.add(result);
-					result = liveRepo.fetchEventResult(result.getRound() + 1);
+					leagueService.calculateResult(result);
+					numFound++;
+					result = liveRepo.fetchEventResult(result.getRound() + 1);					
 				}
 				if (emailAlerts && num == 1) {
 					// Don't bombarde with emails pulling in multiple results
@@ -149,7 +147,7 @@ public class EventServiceImpl implements EventService {
 				LOG.info("No new race results found");
 			}
 		}
-		return newResults;
+		return numFound++;
 	}
 
 	@Override
