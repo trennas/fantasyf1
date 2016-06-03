@@ -100,7 +100,8 @@ public class MainController {
 		result.setFastestLapDriver(componentService.findDriverByName(result
 				.getFastestLapDriver().getName()));
 		eventService.save(result);
-		leagueService.recalculateAllResults();
+		leagueService.deletePointsForRound(result.getRound());
+		leagueService.calculateResult(result);
 		final EventResult savedResult = eventService.findByRound(result
 				.getRound());
 		savedResult.setRemarks(result.getRemarks());

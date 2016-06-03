@@ -18,7 +18,7 @@ public interface EventService {
 
 	public int updateResults();
 
-	public boolean checkForNewResults(final boolean emailAlerts);
+	public List<EventResult> checkForNewResults(final boolean emailAlerts);
 
 	public List<EventResult> getSeasonResults();
 }

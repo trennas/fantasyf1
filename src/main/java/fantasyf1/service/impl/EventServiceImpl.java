@@ -1,5 +1,6 @@
 package fantasyf1.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class EventServiceImpl implements EventService {
 			applyCorrections(result);
 			eventRepo.deleteByRound(round);
 			eventRepo.save(result);
-			leagueService.recalculateAllResults();
+			leagueService.calculateResult(result);
 		}
 		return result;
 	}
@@ -77,7 +78,7 @@ public class EventServiceImpl implements EventService {
 		if (res != null) {
 			eventRepo.deleteByRound(round);
 			LOG.info("Deleted result round " + round);
-			leagueService.recalculateAllResults();
+			leagueService.deletePointsForRound(round);
 			return 1;
 		} else {
 			LOG.info("Result round " + round + " does not exist");
@@ -98,24 +99,24 @@ public class EventServiceImpl implements EventService {
 	public synchronized int updateResults() {
 		LOG.info("Updating results..");
 		timeOfLastResultCheck = 0;
-		if (checkForNewResults(true)) {
-			leagueService.recalculateAllResults();
-			return 1;
-		} else {
-			return 0;
+		List<EventResult> results = checkForNewResults(true);		
+		for(EventResult result : results) {
+			leagueService.calculateResult(result);
 		}
+		return results.size();		
 	}
 
 	@Override
-	public synchronized boolean checkForNewResults(final boolean emailAlerts) {
-		boolean newResults = false;
-		final Iterable<EventResult> itr = eventRepo.findAll();
-		final List<EventResult> results = IteratorUtils.toList(itr.iterator());
+	public synchronized List<EventResult> checkForNewResults(final boolean emailAlerts) {
+		List<EventResult> newResults = new ArrayList<>();
+		final List<EventResult> results = IteratorUtils.toList(eventRepo.findAll().iterator());
 		Collections.sort(results);
 		if (System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
-			timeOfLastResultCheck = System.currentTimeMillis();
-			LOG.info("Checking for new race results...");
-			if (results.size() > 0) {
+			timeOfLastResultCheck = System.currentTimeMillis();			
+
+			// Start by checking for race results for existing result where only qual is complete.
+			if (!results.isEmpty() && !results.get(results.size()-1).isRaceComplete()) {
+				LOG.info("Checking for race result from previously qualifying only result...");
 				final EventResult result = results.get(results.size() - 1);
 				if (!result.isRaceComplete()) {
 					final EventResult newResult = liveRepo.fetchEventResult(result.getRound());
@@ -124,11 +125,13 @@ public class EventServiceImpl implements EventService {
 						eventRepo.delete(result);
 						eventRepo.save(newResult);
 						mailService.sendNewResultsMail(newResult);
-						newResults = true;
+						newResults.add(result);
 					}
 				}
 			}
-
+			
+			// Now check for brand new results
+			LOG.info("Checking for new race results...");
 			EventResult result = liveRepo.fetchEventResult(results.size() + 1);
 			if (result != null) {
 				int num = 0;
@@ -138,14 +141,13 @@ public class EventServiceImpl implements EventService {
 					applyCorrections(result);
 					results.add(result);
 					eventRepo.save(result);
+					newResults.add(result);
 					result = liveRepo.fetchEventResult(result.getRound() + 1);
 				}
 				if (emailAlerts && num == 1) {
 					// Don't bombarde with emails pulling in multiple results
-					mailService
-							.sendNewResultsMail(results.get(results.size() - 1));
+					mailService.sendNewResultsMail(results.get(results.size() - 1));
 				}
-				newResults = true;
 			} else {
 				LOG.info("No new race results found");
 			}

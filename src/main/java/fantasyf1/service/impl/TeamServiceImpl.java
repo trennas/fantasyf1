@@ -75,6 +75,11 @@ public class TeamServiceImpl implements TeamService {
 	public void saveTeamNoValidation(final Team team) {
 		teamRepo.save(team);
 	}
+	
+	@Override
+	public void saveTeamsNoValidation(final List<Team> teams) {
+		teamRepo.save(teams);
+	}
 
 	@Override
 	public void saveTeam(final Team team) throws ValidationException {
@@ -262,6 +267,11 @@ public class TeamServiceImpl implements TeamService {
 	@Override
 	public TheoreticalTeam findTheoreticalTeamByName(final String name) {
 		return utils.get(theoreticalTeamRepo.findByName(name), name);
+	}
+	
+	@Override
+	public TheoreticalTeam getBestTheoreticalTeam() {
+		return utils.get(theoreticalTeamRepo.findByName(bestTheoreticalTeamName), bestTheoreticalTeamName);
 	}
 
 	@Override
