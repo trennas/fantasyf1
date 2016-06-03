@@ -54,7 +54,7 @@ public class EventServiceImpl implements EventService {
 			applyCorrections(result);
 			eventRepo.deleteByRound(round);
 			eventRepo.save(result);
-			leagueService.deletePointsForRound(result.getRound(), true);
+			leagueService.deletePointsForRound(result, true);
 			leagueService.calculateResult(result);
 		}
 		return result;
@@ -78,7 +78,7 @@ public class EventServiceImpl implements EventService {
 		if (res != null) {
 			eventRepo.deleteByRound(round);
 			LOG.info("Deleted result round " + round);
-			leagueService.deletePointsForRound(round, true);
+			leagueService.deletePointsForRound(res, true);
 			return 1;
 		} else {
 			LOG.info("Result round " + round + " does not exist");
@@ -112,16 +112,19 @@ public class EventServiceImpl implements EventService {
 			LOG.info("Checking for new race results...");
 			
 			// Start by checking for race results for existing result where only qual is complete.
-			if (!results.isEmpty() && !results.get(results.size()-1).isRaceComplete()) {								
-				final EventResult newResult = liveRepo.fetchEventResult(results.get(results.size()-1).getRound());
-				if (newResult.isRaceComplete()) {
-					applyCorrections(newResult);
-					eventRepo.delete(results.get(results.size()-1));
-					eventRepo.save(newResult);
-					leagueService.deletePointsForRound(newResult.getRound(), false);
-					leagueService.calculateResult(newResult);
-					mailService.sendNewResultsMail(newResult);
-					numFound++;
+			if (!results.isEmpty()) {
+				final EventResult prevResult = results.get(results.size() - 1);
+				if(!prevResult.isRaceComplete()) {
+					final EventResult newResult = liveRepo.fetchEventResult(prevResult.getRound());
+					if (newResult.isRaceComplete()) {
+						applyCorrections(newResult);
+						eventRepo.delete(prevResult);
+						eventRepo.save(newResult);
+						leagueService.deletePointsForRound(prevResult, false);
+						leagueService.calculateResult(newResult);
+						mailService.sendNewResultsMail(newResult);
+						numFound++;
+					}
 				}
 			}
 			

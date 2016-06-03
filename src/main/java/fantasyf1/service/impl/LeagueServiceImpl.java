@@ -114,23 +114,28 @@ public class LeagueServiceImpl implements LeagueService {
 	
 	@Override
 	@Transactional
-	public synchronized void deletePointsForRound(int round, boolean recalculateBestTheoreticalTeam) {
+	public synchronized void deletePointsForRound(EventResult result, boolean recalculateBestTheoreticalTeam) {
 		final List<Driver> drivers = componentService.findDriversByStandin(false);
 		final List<Car> cars = componentService.findAllCars();
 		final List<Engine> engines = componentService.findAllEngines();
 		final List<Team> teams = teamService.findAll();
 		
-		for(PointScorer scorer : drivers) {
-			resetRoundForPointScorer(scorer, round);
+		for(Driver driver : drivers) {
+			resetRoundForPointScorer(driver, result.getRound());
+			if(result.getFastestLapDriver() != null && 
+			   result.getFastestLapDriver().getId().equals(driver.getId())) {
+				driver.setFastestLaps(driver.getFastestLaps() - 1);
+				break;
+			}			
 		}
 		for(PointScorer scorer : cars) {
-			resetRoundForPointScorer(scorer, round);
+			resetRoundForPointScorer(scorer, result.getRound());
 		}
 		for(PointScorer scorer : engines) {
-			resetRoundForPointScorer(scorer, round);
+			resetRoundForPointScorer(scorer, result.getRound());
 		}
 		for(PointScorer scorer : teams) {
-			resetRoundForPointScorer(scorer, round);
+			resetRoundForPointScorer(scorer, result.getRound());
 		}
 
 		componentService.saveDrivers(drivers, true);
@@ -146,6 +151,7 @@ public class LeagueServiceImpl implements LeagueService {
 	private void resetRoundForPointScorer(PointScorer scorer, int round) {
 		if(scorer.getPointsPerEvent().containsKey(round)) {
 			scorer.setTotalPoints(scorer.getTotalPoints() - scorer.getPointsPerEvent().get(round));
+			scorer.getPointsPerEvent().put(round, 0);
 		}
 	}
 
