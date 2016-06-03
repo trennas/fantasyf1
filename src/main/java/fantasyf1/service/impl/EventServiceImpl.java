@@ -116,17 +116,14 @@ public class EventServiceImpl implements EventService {
 
 			// Start by checking for race results for existing result where only qual is complete.
 			if (!results.isEmpty() && !results.get(results.size()-1).isRaceComplete()) {
-				LOG.info("Checking for race result from previously qualifying only result...");
-				final EventResult result = results.get(results.size() - 1);
-				if (!result.isRaceComplete()) {
-					final EventResult newResult = liveRepo.fetchEventResult(result.getRound());
-					if (newResult.isRaceComplete()) {
-						applyCorrections(newResult);
-						eventRepo.delete(result);
-						eventRepo.save(newResult);
-						mailService.sendNewResultsMail(newResult);
-						newResults.add(result);
-					}
+				LOG.info("Checking for race result from previously qualifying only result...");				
+				final EventResult newResult = liveRepo.fetchEventResult(results.get(results.size()-1).getRound());
+				if (newResult.isRaceComplete()) {
+					applyCorrections(newResult);
+					eventRepo.delete(results.get(results.size()-1));
+					eventRepo.save(newResult);
+					mailService.sendNewResultsMail(newResult);
+					newResults.add(newResult);
 				}
 			}
 			
