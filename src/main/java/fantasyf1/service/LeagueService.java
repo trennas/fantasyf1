@@ -9,8 +9,6 @@ import fantasyf1.domain.Team;
 
 public interface LeagueService {
 	public List<Team> calculateLeagueStandings();
-
-	public void recalculateAllResults();
 	
 	public void calculateResult(EventResult result);
 

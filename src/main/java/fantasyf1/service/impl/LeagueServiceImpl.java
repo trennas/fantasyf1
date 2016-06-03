@@ -47,16 +47,16 @@ public class LeagueServiceImpl implements LeagueService {
 	private String bestTheoreticalTeamName;
 
 	@Autowired
-	TeamService teamService;
+	private TeamService teamService;
 
 	@Autowired
-	Rules rules;
+	private Rules rules;
 
 	@Autowired
-	ComponentService componentService;
+	private ComponentService componentService;
 
 	@Autowired
-	EventService eventService;
+	private EventService eventService;
 
 	@Override
 	public List<Team> calculateLeagueStandings() {
@@ -120,30 +120,17 @@ public class LeagueServiceImpl implements LeagueService {
 		final List<Engine> engines = componentService.findAllEngines();
 		final List<Team> teams = teamService.findAll();
 		
-		boolean changed = false;
 		for(PointScorer scorer : drivers) {
-			if(resetRoundForPointScorer(scorer, round)) {
-				changed = true;
-			}			
+			resetRoundForPointScorer(scorer, round);
 		}
 		for(PointScorer scorer : cars) {
-			if(resetRoundForPointScorer(scorer, round)) {
-				changed = true;
-			}
+			resetRoundForPointScorer(scorer, round);
 		}
 		for(PointScorer scorer : engines) {
-			if(resetRoundForPointScorer(scorer, round)) {
-				changed = true;
-			}
+			resetRoundForPointScorer(scorer, round);
 		}
 		for(PointScorer scorer : teams) {
-			if(resetRoundForPointScorer(scorer, round)) {
-				changed = true;
-			}
-		}
-		
-		if(changed) {
-			calculateBestTheoreticalTeam(drivers, cars, engines);
+			resetRoundForPointScorer(scorer, round);
 		}
 		
 		componentService.saveDrivers(drivers, true);
@@ -152,12 +139,9 @@ public class LeagueServiceImpl implements LeagueService {
 		teamService.saveTeamsNoValidation(teams);
 	}
 	
-	private boolean resetRoundForPointScorer(PointScorer scorer, int round) {
+	private void resetRoundForPointScorer(PointScorer scorer, int round) {
 		if(scorer.getPointsPerEvent().containsKey(round)) {
 			scorer.setTotalPoints(scorer.getTotalPoints() - scorer.getPointsPerEvent().get(round));
-			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -225,8 +209,9 @@ public class LeagueServiceImpl implements LeagueService {
 					}
 				}
 				add(numCarsParticipated, pos.getCarName(), 1);
-		    }
+		    }		    
 	    }
+	    calculateBestTheoreticalTeamForRound(result, drivers, cars, engines);
 	    componentService.saveDrivers(drivers, true);
 	    componentService.saveCars(cars, true);
 	    componentService.saveEngines(engines, true);
@@ -245,8 +230,7 @@ public class LeagueServiceImpl implements LeagueService {
 			team.getPointsPerEvent().put(result.getRound(), points);
 			team.setTotalPoints(team.getTotalPoints() + points);
 			teamService.saveTeamNoValidation(team);
-		}
-		calculateBestTheoreticalTeamForRound(result, drivers, cars, engines);
+		}		
 	}
 	
 	private Driver getDriver(Position pos, Map<Integer, Driver> driverMap, Map<Integer, Driver> standinDriverMap, EventResult result, final Session session) {
@@ -332,6 +316,20 @@ public class LeagueServiceImpl implements LeagueService {
 			bestOverallTeam.setName(bestTheoreticalTeamName);
 		} else {
 			bestOverallTeam = res;
+		}
+		
+		if(!result.isRaceComplete()) {
+			TheoreticalTeam bestOverallTeamBak = bestOverallTeam.copy();
+			bestOverallTeamBak.setName(Integer.toString(result.getRound()));
+			teamService.saveTheoreticalTeam(bestOverallTeamBak);
+		} else {
+			TheoreticalTeam bestOverallTeamBak = teamService.findTheoreticalTeamByName(Integer.toString(result.getRound()));
+			if(bestOverallTeamBak != null) {
+				teamService.deleteTheoreticalTeam(bestOverallTeamBak);
+				teamService.deleteTheoreticalTeam(bestOverallTeam);
+				bestOverallTeamBak.setName(bestOverallTeam.getName());
+				bestOverallTeam = bestOverallTeamBak;
+			}
 		}
 
 		long roundHighScore = 0;
