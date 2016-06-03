@@ -242,7 +242,31 @@ public class LeagueServiceImplTest {
 		// Race 1, Qual and race complete
 		controller.updateResults();
 
-		assertTrue(controller.event(1).isRaceComplete());
+		checkRound1Results();
+
+		// Race 2, Qual and race complete
+		controller.updateResults();
+		checkRound2Results();
+
+		// Race 3, Kvyat swapped with Verstappen
+		controller.updateResults();
+		checkFinalResults();
+
+		// Refresh everything, should all stay the same
+		controller.refreshAllResults();
+		checkFinalResults();
+		
+		// Delete the last result
+		controller.deleteEvent(3);
+		checkRound2Results();
+		
+		// Delete the last result
+		controller.deleteEvent(2);
+		checkRound1Results();
+    }
+    
+    private void checkRound1Results() {
+    	assertTrue(controller.event(1).isRaceComplete());
 
 		assertEquals(1, controller.driver(3).getFastestLaps());
 		assertEquals(0, controller.driver(55).getFastestLaps());
@@ -266,10 +290,10 @@ public class LeagueServiceImplTest {
 		assertTrue(containsDriver(94, controller.getBestTheoreticalTeam().getDrivers()));
 		assertEquals("Mercedes", controller.getBestTheoreticalTeam().getCar().getName());
 		assertEquals("Honda", controller.getBestTheoreticalTeam().getEngine().getName());
-
-		// Race 2, Qual and race complete
-		controller.updateResults();
-		assertEquals(4, controller.event(2).getRemarks().size());
+    }
+    
+    private void checkRound2Results() {
+    	assertEquals(4, controller.event(2).getRemarks().size());
     	assertEquals("Fernando Alonso did not participate in qualifying", controller.event(2).getRemarks().get(0));
     	assertEquals("Fernando Alonso did not participate in the race", controller.event(2).getRemarks().get(1));
     	assertEquals("Fernando Alonso scores qualifying points from stand-in driver Stoffel Vandoorne", controller.event(2).getRemarks().get(2));
@@ -312,14 +336,6 @@ public class LeagueServiceImplTest {
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
 		assertEquals("McLaren", controller.getBestTheoreticalTeam().getCar().getName());
 		assertEquals("Ferrari", controller.getBestTheoreticalTeam().getEngine().getName());
-
-		// Race 3, Kvyat swapped with Verstappen
-		controller.updateResults();
-		checkFinalResults();
-
-		// Refresh everything, should all stay the same
-		controller.refreshAllResults();
-		checkFinalResults();
     }
 
     private void checkFinalResults() {

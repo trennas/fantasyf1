@@ -253,10 +253,7 @@ public class TeamServiceImpl implements TeamService {
 
 	@Override
 	public void resetBestTheoreticalTeam() {
-		final List<TheoreticalTeam> teams = IteratorUtils.toList(theoreticalTeamRepo.findByName(bestTheoreticalTeamName).iterator());
-		if(teams.size() == 1) {
-			theoreticalTeamRepo.delete(teams.get(0));
-		}
+		theoreticalTeamRepo.deleteAll();
 	}
 
 	@Override

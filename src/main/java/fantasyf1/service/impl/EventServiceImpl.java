@@ -54,7 +54,7 @@ public class EventServiceImpl implements EventService {
 			applyCorrections(result);
 			eventRepo.deleteByRound(round);
 			eventRepo.save(result);
-			leagueService.deletePointsForRound(result.getRound());
+			leagueService.deletePointsForRound(result.getRound(), true);
 			leagueService.calculateResult(result);
 		}
 		return result;
@@ -78,7 +78,7 @@ public class EventServiceImpl implements EventService {
 		if (res != null) {
 			eventRepo.deleteByRound(round);
 			LOG.info("Deleted result round " + round);
-			leagueService.deletePointsForRound(round);
+			leagueService.deletePointsForRound(round, true);
 			return 1;
 		} else {
 			LOG.info("Result round " + round + " does not exist");
@@ -118,7 +118,7 @@ public class EventServiceImpl implements EventService {
 					applyCorrections(newResult);
 					eventRepo.delete(results.get(results.size()-1));
 					eventRepo.save(newResult);
-					leagueService.deletePointsForRound(newResult.getRound());
+					leagueService.deletePointsForRound(newResult.getRound(), false);
 					leagueService.calculateResult(newResult);
 					mailService.sendNewResultsMail(newResult);
 					numFound++;

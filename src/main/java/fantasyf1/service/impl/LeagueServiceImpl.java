@@ -114,7 +114,7 @@ public class LeagueServiceImpl implements LeagueService {
 	
 	@Override
 	@Transactional
-	public synchronized void deletePointsForRound(int round) {
+	public synchronized void deletePointsForRound(int round, boolean recalculateBestTheoreticalTeam) {
 		final List<Driver> drivers = componentService.findDriversByStandin(false);
 		final List<Car> cars = componentService.findAllCars();
 		final List<Engine> engines = componentService.findAllEngines();
@@ -132,11 +132,15 @@ public class LeagueServiceImpl implements LeagueService {
 		for(PointScorer scorer : teams) {
 			resetRoundForPointScorer(scorer, round);
 		}
-		
+
 		componentService.saveDrivers(drivers, true);
 		componentService.saveCars(cars, true);
 		componentService.saveEngines(engines, true);
 		teamService.saveTeamsNoValidation(teams);
+		
+		if(recalculateBestTheoreticalTeam) {
+			calculateBestTheoreticalTeam(drivers, cars,  engines);
+		}
 	}
 	
 	private void resetRoundForPointScorer(PointScorer scorer, int round) {

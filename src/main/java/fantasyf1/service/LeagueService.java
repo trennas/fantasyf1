@@ -18,7 +18,7 @@ public interface LeagueService {
 
 	public Date getSeasonStartDate();
 	
-	public void deletePointsForRound(int round);
+	public void deletePointsForRound(int round, boolean recalculateBestTheoreticalTeam);
 	
 	public void resetAllScores();
 }
