@@ -127,8 +127,11 @@ public class LeagueServiceImpl implements LeagueService {
 				driver.setFastestLaps(driver.getFastestLaps() - 1);
 			}			
 		}
-		for(PointScorer scorer : cars) {
-			resetRoundForPointScorer(scorer, result.getRound());
+		for(Car car : cars) {
+			resetRoundForPointScorer(car, result.getRound());
+			if(result.getFinishingBonuses().contains(car.getId())) {
+				car.setBothCarsFinishBonuses(car.getBothCarsFinishBonuses() - 1);
+			}
 		}
 		for(PointScorer scorer : engines) {
 			resetRoundForPointScorer(scorer, result.getRound());
@@ -215,6 +218,7 @@ public class LeagueServiceImpl implements LeagueService {
 						add(car.getPointsPerEvent(), result.getRound(), rules.getBothCarsFinishedBonus());						
 						car.setTotalPoints(car.getTotalPoints() + rules.getBothCarsFinishedBonus());
 						car.setBothCarsFinishBonuses(car.getBothCarsFinishBonuses() + 1);
+						result.getFinishingBonuses().add(car.getId());
 					}
 				}
 				add(numCarsParticipated, pos.getCarName(), 1);

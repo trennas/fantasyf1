@@ -52,10 +52,10 @@ public class EventServiceImpl implements EventService {
 		final EventResult result = liveRepo.fetchEventResult(round);
 		if (result != null) {
 			applyCorrections(result);
-			eventRepo.deleteByRound(round);
-			eventRepo.save(result);
+			eventRepo.deleteByRound(round);			
 			leagueService.deletePointsForRound(result, true);
 			leagueService.calculateResult(result);
+			eventRepo.save(result);
 		}
 		return result;
 	}
@@ -118,10 +118,10 @@ public class EventServiceImpl implements EventService {
 					final EventResult newResult = liveRepo.fetchEventResult(prevResult.getRound());
 					if (newResult.isRaceComplete()) {
 						applyCorrections(newResult);
-						eventRepo.delete(prevResult);
-						eventRepo.save(newResult);
+						eventRepo.delete(prevResult);						
 						leagueService.deletePointsForRound(prevResult, false);
 						leagueService.calculateResult(newResult);
+						eventRepo.save(newResult);
 						mailService.sendNewResultsMail(newResult);
 						numFound++;
 					}
@@ -136,9 +136,9 @@ public class EventServiceImpl implements EventService {
 				while (result != null) {
 					num++;
 					applyCorrections(result);
-					results.add(result);
-					eventRepo.save(result);
+					results.add(result);					
 					leagueService.calculateResult(result);
+					eventRepo.save(result);
 					numFound++;
 					result = liveRepo.fetchEventResult(result.getRound() + 1);					
 				}
