@@ -150,7 +150,7 @@ public class LeagueServiceImpl implements LeagueService {
 	private void resetRoundForPointScorer(PointScorer scorer, int round) {
 		if(scorer.getPointsPerEvent().containsKey(round)) {
 			scorer.setTotalPoints(scorer.getTotalPoints() - scorer.getPointsPerEvent().get(round));
-			scorer.getPointsPerEvent().put(round, 0);
+			scorer.getPointsPerEvent().remove(round);
 		}
 	}
 
