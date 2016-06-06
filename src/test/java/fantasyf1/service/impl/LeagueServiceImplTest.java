@@ -211,6 +211,33 @@ public class LeagueServiceImplTest {
 
 		mockServer.expect(requestTo(url4 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
+		
+		mockServer.expect(requestTo(url2 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(qual2Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url2 + "/results.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(race2Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fastestLap2Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url3 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(qual3Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url3 + "/results.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(race3Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url3 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fastestLap3Xml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(qualNullXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/results.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(url4 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
+			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
 		// Race 1, Qual complete but race not complete
 		controller.updateResults();
@@ -263,6 +290,10 @@ public class LeagueServiceImplTest {
 		// Delete the last result
 		controller.deleteEvent(2);
 		checkRound1Results();
+		
+		// Should get all new results
+		controller.updateResults();
+		checkFinalResults();
     }
     
     private void checkRound1Results() {
@@ -331,11 +362,13 @@ public class LeagueServiceImplTest {
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeamForRound(2).getDrivers()));
 		assertEquals("Ferrari", controller.getBestTheoreticalTeamForRound(2).getCar().getName());
 		assertEquals("Honda", controller.getBestTheoreticalTeamForRound(2).getEngine().getName());
+		
 		assertTrue(containsDriver(5, controller.getBestTheoreticalTeam().getDrivers()));
 		assertTrue(containsDriver(55, controller.getBestTheoreticalTeam().getDrivers()));
 		assertTrue(containsDriver(8, controller.getBestTheoreticalTeam().getDrivers()));
 		assertEquals("McLaren", controller.getBestTheoreticalTeam().getCar().getName());
 		assertEquals("Ferrari", controller.getBestTheoreticalTeam().getEngine().getName());
+		assertEquals(new Long(3070), controller.getBestTheoreticalTeam().getPoints());
     }
 
     private void checkFinalResults() {
