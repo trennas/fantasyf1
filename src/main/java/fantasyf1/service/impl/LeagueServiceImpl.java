@@ -125,7 +125,6 @@ public class LeagueServiceImpl implements LeagueService {
 			if(result.getFastestLapDriver() != null && 
 			   result.getFastestLapDriver().getId().equals(driver.getId())) {
 				driver.setFastestLaps(driver.getFastestLaps() - 1);
-				break;
 			}			
 		}
 		for(PointScorer scorer : cars) {
