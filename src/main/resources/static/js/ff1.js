@@ -316,6 +316,16 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.getCarById = function(id) {
+        $http.get('carById?id=' + id).then(
+            function successCallback(response) {
+            	return response;
+            },
+            function errorCallback(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
     $scope.getEngine = function(name) {
         $http.get('engine?name=' + name)
             .success(function(response) {

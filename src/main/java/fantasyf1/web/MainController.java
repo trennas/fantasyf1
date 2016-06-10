@@ -230,6 +230,12 @@ public class MainController {
 	public Car car(final String name) {
 		return componentService.findCarByName(name);
 	}
+	
+	@RequestMapping({ "/carById", "/{subpage}/carById" })
+	@ResponseBody
+	public Car car(final Integer id) {
+		return componentService.findCarById(id);
+	}
 
 	@RequestMapping({ "/engine", "/{subpage}/engine" })
 	@ResponseBody

@@ -20,6 +20,8 @@ public interface ComponentService {
 	
 	public void saveDrivers(List<Driver> drivers, final boolean merge);
 
+	public Car findCarById(final Integer id);
+	
 	public Car findCarByName(final String name);
 
 	public List<Car> findCarsByEngine(final Engine engine);

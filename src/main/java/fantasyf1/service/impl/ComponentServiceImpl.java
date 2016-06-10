@@ -100,6 +100,11 @@ public class ComponentServiceImpl implements ComponentService {
 	}
 
 	@Override
+	public Car findCarById(final Integer id) {
+		return utils.get(carRepo.findById(id), Integer.toString(id));
+	}
+
+	@Override
 	public Car findCarByName(final String name) {
 		return utils.get(carRepo.findByName(name), name);
 	}
