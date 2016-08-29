@@ -47,6 +47,19 @@ public class CreateData {
     static {
     	StoffelVandoorneStandIns.put(2, 14); // Round 2 (Bahrain) for Alonso (14)
     }
+    
+    private static final Map<Integer, Integer> EstebanOconStandIns = new HashMap<>();
+    static {
+    	EstebanOconStandIns.put(13, 88); // From round 13 (Belgium) for Harianto (88)
+    	EstebanOconStandIns.put(14, 88);
+    	EstebanOconStandIns.put(15, 88);
+    	EstebanOconStandIns.put(16, 88);
+    	EstebanOconStandIns.put(17, 88);
+    	EstebanOconStandIns.put(18, 88);
+    	EstebanOconStandIns.put(19, 88);
+    	EstebanOconStandIns.put(20, 88);
+    	EstebanOconStandIns.put(21, 88);
+    }
 
 	@Bean
 	public int create2016Data() {
@@ -103,7 +116,9 @@ public class CreateData {
 		
 		// Stand-in drivers
 		driverRepo.save(new Driver("Stoffel Vandoorne", 47, carRepo.findByName("McLaren").get(0), 0, StoffelVandoorneStandIns));
+		driverRepo.save(new Driver("Esteban Ocon", 31, carRepo.findByName("Manor Marussia").get(0), 0, EstebanOconStandIns));
 
+		
 		try {
 			List<Driver> drivers = new ArrayList<>();
 			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
