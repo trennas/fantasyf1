@@ -22,7 +22,7 @@ apply from: "$rootDir/gradle/generated.gradle"
 
 war {
     baseName = 'f1'
-    version = '0.0.1-SNAPSHOT'
+    version = '2.0.0'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -57,12 +57,16 @@ dependencies {
 eclipse {
     classpath {
          containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
     }
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.7'
+}
+
+task afterEclipseImport {
+	dependsOn genJaxb
 }
 
 task stage(type: Copy, dependsOn: [clean, genJaxb, build]) {
