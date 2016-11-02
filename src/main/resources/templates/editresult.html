@@ -111,7 +111,7 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr ng-repeat="remark in event.remarks">
+	      <tr ng-repeat="remark in event.remarks track by $index">
 	        <td><input type="text" class="form-control" ng-model="remark" ng-blur="updateRemark($index, remark);"/></td>
 	        <td><button type="button" class="btn btn-danger" ng-click="deleteRemark($index);">Delete</button></td>
 	      </tr>	      

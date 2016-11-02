@@ -184,7 +184,7 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr ng-repeat="remark in event.remarks">
+				      <tr ng-repeat="remark in event.remarks track by $index">
 				        <td>{{remark}}</td>
 				      </tr>
 				    </tbody>
