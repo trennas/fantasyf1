@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fantasyf1.domain.Correction;
 import fantasyf1.domain.EventResult;
-import fantasyf1.repository.CorrectionRepository;
 import fantasyf1.repository.EventResultRepository;
 import fantasyf1.repository.LiveResultsRepository;
 import fantasyf1.service.EventService;
@@ -29,9 +27,6 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	LiveResultsRepository liveRepo;
-
-	@Autowired
-	CorrectionRepository correctionRepo;
 
 	@Autowired
 	LeagueService leagueService;
@@ -51,7 +46,6 @@ public class EventServiceImpl implements EventService {
 		LOG.info("Manually invoked refresh result round " + round + "...");
 		final EventResult result = liveRepo.fetchEventResult(round);
 		if (result != null) {
-			applyCorrections(result);
 			eventRepo.deleteByRound(round);			
 			leagueService.deletePointsForRound(result, true);
 			leagueService.calculateResult(result);
@@ -117,7 +111,6 @@ public class EventServiceImpl implements EventService {
 				if(!prevResult.isRaceComplete()) {
 					final EventResult newResult = liveRepo.fetchEventResult(prevResult.getRound());
 					if (newResult.isRaceComplete()) {
-						applyCorrections(newResult);
 						eventRepo.delete(prevResult);						
 						leagueService.deletePointsForRound(prevResult, false);
 						leagueService.calculateResult(newResult);
@@ -135,7 +128,6 @@ public class EventServiceImpl implements EventService {
 				LOG.info("Found new live race results... updating");
 				while (result != null) {
 					num++;
-					applyCorrections(result);
 					results.add(result);					
 					leagueService.calculateResult(result);
 					eventRepo.save(result);
@@ -159,26 +151,5 @@ public class EventServiceImpl implements EventService {
 		final List<EventResult> results = IteratorUtils.toList(itr.iterator());
 		Collections.sort(results);
 		return results;
-	}
-
-	private void applyCorrections(final EventResult result) {
-		final List<Correction> corrections = correctionRepo.findByRound(result
-				.getRound());
-		if (corrections.size() > 0) {
-			LOG.info("Applying corrections to event: " + result.getVenue());
-			for (final Correction correction : corrections) {
-				result.getQualifyingOrder().put(correction.getDriver(),
-						correction.getPositions().get(0));
-				result.getRaceOrder().put(correction.getDriver(),
-						correction.getPositions().get(1));
-				final List<String> remarks = result.getRemarks();
-				for (final String remark : correction.getRemarks()) {
-					if (!remarks.remove(remark)) {
-						remarks.add(remark);
-					}
-				}
-				eventRepo.save(result);
-			}
-		}
 	}
 }

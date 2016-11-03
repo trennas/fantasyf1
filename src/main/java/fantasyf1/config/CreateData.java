@@ -17,7 +17,6 @@ import fantasyf1.domain.Driver;
 import fantasyf1.domain.Engine;
 import fantasyf1.domain.Team;
 import fantasyf1.repository.CarRepository;
-import fantasyf1.repository.CorrectionRepository;
 import fantasyf1.repository.DriverRepository;
 import fantasyf1.repository.EngineRepository;
 import fantasyf1.service.TeamService;
@@ -30,15 +29,13 @@ public class CreateData {
 	private static final Logger LOG = Logger.getLogger(CreateData.class);
 
 	@Autowired
-	DriverRepository driverRepo;
+	private DriverRepository driverRepo;
 	@Autowired
-	CarRepository carRepo;
+	private CarRepository carRepo;
 	@Autowired
-	EngineRepository engineRepo;
+	private EngineRepository engineRepo;
 	@Autowired
-	CorrectionRepository correctionRepo;
-	@Autowired
-	TeamService teamService;
+	private TeamService teamService;
 
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
