@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,9 +115,9 @@ public class MainController {
 	@ResponseBody
 	public EventResult createEvent() {
 		final EventResult result = new EventResult();
-		final Map<String, Position> order = new HashMap<String, Position>();
+		final Map<String, Position> order = new HashMap<>();
 		final List<Driver> drivers = componentService.findAllDrivers();
-		final List<String> remarks = new ArrayList<String>();
+		final Set<String> remarks = new HashSet<>();
 		remarks.add("This result was manually created");
 		Collections.sort(drivers);
 		for (final Driver driver : drivers) {
@@ -271,7 +273,7 @@ public class MainController {
 	private LinkedHashMap<String, Position> sortPositions(
 			final Map<String, Position> map) {
 		final Iterator<String> itr = map.keySet().iterator();
-		final Map<Integer, String> positionSortedDrivers = new HashMap<Integer, String>();
+		final Map<Integer, String> positionSortedDrivers = new HashMap<>();
 		int last = 0;
 		while (itr.hasNext()) {
 			final String driverName = itr.next();
@@ -282,7 +284,7 @@ public class MainController {
 			positionSortedDrivers.put(position, driverName);
 		}
 
-		final LinkedHashMap<String, Position> output = new LinkedHashMap<String, Position>();
+		final LinkedHashMap<String, Position> output = new LinkedHashMap<>();
 		for (int i = 1; i <= last; i++) {
 			final String driverName = positionSortedDrivers.get(i);
 			output.put(driverName, map.get(driverName));
@@ -392,7 +394,7 @@ public class MainController {
 	private Team maskPreSeasonTeam(final Team team) {
 		if (!isAdmin()) {
 			if (!seasonStarted()) {
-				team.setDrivers(new ArrayList<Driver>());
+				team.setDrivers(new ArrayList<>());
 				for(int i = 0; i < numDriversPerTeam; i++) {
 					team.getDrivers().add(new Driver());
 				}

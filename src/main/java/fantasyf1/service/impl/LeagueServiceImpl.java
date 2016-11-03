@@ -251,7 +251,7 @@ public class LeagueServiceImpl implements LeagueService {
 		if (driver == null && (standinDriverMap.containsKey(pos.getDriverNumber()) &&
 				standinDriverMap.get(pos.getDriverNumber()).getStandinRoundsDrivers().containsKey(result.getRound()))) {
 			driver = driverMap.get(standinDriverMap.get(pos.getDriverNumber()).getStandinRoundsDrivers().get(result.getRound()));
-			result.getRemarks().add(driverMap.get(standinDriverMap.get(pos.getDriverNumber()).getStandinRoundsDrivers().get(result.getRound())).getName() + " scores " + session + " points from stand-in driver " + standinDriverMap.get(pos.getDriverNumber()).getName());
+			result.addRemark(driverMap.get(standinDriverMap.get(pos.getDriverNumber()).getStandinRoundsDrivers().get(result.getRound())).getName() + " scores " + session + " points from stand-in driver " + standinDriverMap.get(pos.getDriverNumber()).getName());
 		}
 		return driver;
 	}
