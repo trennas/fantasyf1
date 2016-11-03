@@ -325,10 +325,10 @@ public class LeagueServiceImplTest {
     
     private void checkRound2Results() {
     	assertEquals(4, controller.event(2).getRemarks().size());
-    	assertEquals("Fernando Alonso did not participate in qualifying", controller.event(2).getRemarks().get(0));
-    	assertEquals("Fernando Alonso did not participate in the race", controller.event(2).getRemarks().get(1));
-    	assertEquals("Fernando Alonso scores qualifying points from stand-in driver Stoffel Vandoorne", controller.event(2).getRemarks().get(2));
-    	assertEquals("Fernando Alonso scores race points from stand-in driver Stoffel Vandoorne", controller.event(2).getRemarks().get(3));
+    	assertTrue(controller.event(2).getRemarks().contains("Fernando Alonso did not participate in qualifying"));
+    	assertTrue(controller.event(2).getRemarks().contains("Fernando Alonso did not participate in the race"));
+    	assertTrue(controller.event(2).getRemarks().contains("Fernando Alonso scores qualifying points from stand-in driver Stoffel Vandoorne"));
+    	assertTrue(controller.event(2).getRemarks().contains("Fernando Alonso scores race points from stand-in driver Stoffel Vandoorne"));
 
     	assertTrue(controller.event(1).isRaceComplete());
 		assertTrue(controller.event(2).isRaceComplete());
