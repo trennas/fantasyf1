@@ -12,8 +12,10 @@ public final class Rules {
 	private int budget;
 	@Value("${num-drivers-per-team}")
 	private String numDriversPerTeam;
-	private final Integer fastestLapBonus = 50;
-	private final Integer bothCarsFinishedBonus = 50;
+	@Value("${fastest-lap-bonus}")
+	private Integer fastestLapBonus;
+	@Value("${both-cars-finish-bonus}")
+	private Integer bothCarsFinishedBonus;
 
 	@Value("#{${driver-qual-points}}")
 	private Map<Integer, Integer> driverQualPoints;
