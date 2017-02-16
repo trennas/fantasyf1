@@ -376,16 +376,19 @@ public class MainController {
 	}
 
 	@RequestMapping("/components/alldriverpoints")
+	@ResponseBody
 	public Map<String, Long> getAllDriverPoints() {
 		return componentService.getAllDriverPoints();
 	}
 
 	@RequestMapping("/components/allcarpoints")
+	@ResponseBody
 	public Map<String, Long> getAllCarPoints() {
 		return componentService.getAllCarPoints();
 	}
 
 	@RequestMapping("/components/allenginepoints")
+	@ResponseBody
 	public Map<String, Long> getAllEnginePoints() {
 		return componentService.getAllEnginePoints();
 	}

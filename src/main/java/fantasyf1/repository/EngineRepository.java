@@ -8,4 +8,5 @@ import fantasyf1.domain.Engine;
 
 public interface EngineRepository extends CrudRepository<Engine, String> {
 	List<Engine> findByName(final String name);
+	List<Engine> findAllByOrderByTotalPointsDesc(); 
 }

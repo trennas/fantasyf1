@@ -1,7 +1,6 @@
 package fantasyf1.service.impl;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,21 +35,21 @@ public class ComponentServiceImpl implements ComponentService {
 	
 	@Override
 	public Map<String, Long> getAllDriverPoints() {
-		return getAllPoints(driverRepo.findAll());
+		return getAllPoints(driverRepo.findAllByOrderByTotalPointsDesc());
 	}
 
 	@Override
 	public Map<String, Long> getAllCarPoints() {
-		return getAllPoints(carRepo.findAll());	
+		return getAllPoints(carRepo.findAllByOrderByTotalPointsDesc());	
 	}
 
 	@Override
 	public Map<String, Long> getAllEnginePoints() {
-		return getAllPoints(engineRepo.findAll());
+		return getAllPoints(engineRepo.findAllByOrderByTotalPointsDesc());
 	}
 	
 	private Map<String, Long> getAllPoints(Iterable<? extends PointScorer> itr) {
-		final Map<String, Long> components = new HashMap<>();		
+		final Map<String, Long> components = new LinkedHashMap<>();		
 		itr.forEach(component -> components.put(component.getName(), component.getTotalPoints()));
 		return components;
 	}
