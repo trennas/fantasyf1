@@ -44,8 +44,8 @@ public class CreateData {
 	public int create2016Data() {
 		LOG.info("Creating 2017 League Data...");
 		engineRepo.save(new Engine("Mercedes", 30));
-		engineRepo.save(new Engine("Ferrari", 20));
-		engineRepo.save(new Engine("Renault", 13));
+		engineRepo.save(new Engine("Renault", 19));
+		engineRepo.save(new Engine("Ferrari", 15));
 		engineRepo.save(new Engine("Honda", 5));
 
 		carRepo.save(new Car("Mercedes", 34, engineRepo.findByName("Mercedes").get(0)));
@@ -54,7 +54,7 @@ public class CreateData {
 		carRepo.save(new Car("Force India", 15, engineRepo.findByName("Mercedes").get(0)));
 		carRepo.save(new Car("Williams", 14, engineRepo.findByName("Mercedes").get(0)));
 		carRepo.save(new Car("McLaren", 12, engineRepo.findByName("Honda").get(0)));
-		carRepo.save(new Car("Toro Rosso", 11, engineRepo.findByName("Ferrari").get(0)));
+		carRepo.save(new Car("Toro Rosso", 11, engineRepo.findByName("Renault").get(0)));
 		carRepo.save(new Car("Haas F1 Team", 10, engineRepo.findByName("Ferrari").get(0)));
 		carRepo.save(new Car("Renault", 9, engineRepo.findByName("Renault").get(0)));		
 		carRepo.save(new Car("Sauber", 8, engineRepo.findByName("Ferrari").get(0)));
