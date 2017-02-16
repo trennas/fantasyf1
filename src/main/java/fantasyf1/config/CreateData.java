@@ -49,15 +49,15 @@ public class CreateData {
 		engineRepo.save(new Engine("Honda", 8));
 
 		carRepo.save(new Car("Mercedes", 35, engineRepo.findByName("Mercedes").get(0)));
-		carRepo.save(new Car("Ferrari", 30, engineRepo.findByName("Ferrari").get(0)));
-		carRepo.save(new Car("Williams", 27, engineRepo.findByName("Mercedes").get(0)));
-		carRepo.save(new Car("Red Bull", 25, engineRepo.findByName("Renault").get(0)));
+		carRepo.save(new Car("Red Bull", 30, engineRepo.findByName("Renault").get(0)));
+		carRepo.save(new Car("Ferrari", 25, engineRepo.findByName("Ferrari").get(0)));
 		carRepo.save(new Car("Force India", 23, engineRepo.findByName("Mercedes").get(0)));
-		carRepo.save(new Car("Renault", 21, engineRepo.findByName("Renault").get(0)));
-		carRepo.save(new Car("Toro Rosso", 19, engineRepo.findByName("Ferrari").get(0)));
-		carRepo.save(new Car("Sauber", 17, engineRepo.findByName("Ferrari").get(0)));
+		carRepo.save(new Car("Williams", 27, engineRepo.findByName("Mercedes").get(0)));
 		carRepo.save(new Car("McLaren", 16, engineRepo.findByName("Honda").get(0)));
+		carRepo.save(new Car("Toro Rosso", 19, engineRepo.findByName("Ferrari").get(0)));
 		carRepo.save(new Car("Haas F1 Team", 15, engineRepo.findByName("Ferrari").get(0)));
+		carRepo.save(new Car("Renault", 21, engineRepo.findByName("Renault").get(0)));		
+		carRepo.save(new Car("Sauber", 17, engineRepo.findByName("Ferrari").get(0)));
 
 		driverRepo.save(new Driver("Lewis Hamilton", 44, carRepo.findByName("Mercedes").get(0), 40));
 		driverRepo.save(new Driver("Valtteri Bottas", 77, carRepo.findByName("Mercedes").get(0), 36));
