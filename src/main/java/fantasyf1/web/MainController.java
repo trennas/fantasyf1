@@ -375,6 +375,21 @@ public class MainController {
 		return leagueService.getRules();
 	}
 
+	@RequestMapping("/components/alldriverpoints")
+	public Map<String, Long> getAllDriverPoints() {
+		return componentService.getAllDriverPoints();
+	}
+
+	@RequestMapping("/components/allcarpoints")
+	public Map<String, Long> getAllCarPoints() {
+		return componentService.getAllCarPoints();
+	}
+
+	@RequestMapping("/components/allenginepoints")
+	public Map<String, Long> getAllEnginePoints() {
+		return componentService.getAllEnginePoints();
+	}
+
 	private String jsonMessage(final String message) {
 		return "{\"message\":\"" + message + "\"}";
 	}
