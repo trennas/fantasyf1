@@ -34,7 +34,7 @@ import fantasyf1.web.MainController;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FantasyF1Application.class)
 @WebAppConfiguration
-@ActiveProfiles({"test", "create"})
+@ActiveProfiles({"test"})
 public class LeagueServiceImplTest {
 	private MockRestServiceServer mockServer;
 

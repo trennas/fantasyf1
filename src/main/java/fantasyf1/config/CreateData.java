@@ -23,7 +23,7 @@ import fantasyf1.service.TeamService;
 import fantasyf1.service.impl.ValidationException;
 
 @Configuration
-@Profile({"create", "test"})
+@Profile("create")
 public class CreateData {
 
 	private static final Logger LOG = Logger.getLogger(CreateData.class);
