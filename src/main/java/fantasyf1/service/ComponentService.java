@@ -1,12 +1,19 @@
 package fantasyf1.service;
 
 import java.util.List;
+import java.util.Map;
 
 import fantasyf1.domain.Car;
 import fantasyf1.domain.Driver;
 import fantasyf1.domain.Engine;
 
 public interface ComponentService {
+	public Map<String, Long> getAllDriverPoints();
+	
+	public Map<String, Long> getAllCarPoints();
+	
+	public Map<String, Long> getAllEnginePoints();
+	
 	public Driver findDriverByName(final String name);
 
 	public Driver findDriverByNumber(final int number);
