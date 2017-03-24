@@ -41,7 +41,7 @@ public class CreateData {
 	private String myAccountRole;
 
 	@Bean
-	public int create2016Data() {
+	public int createData() {
 		LOG.info("Creating 2017 League Data...");
 		engineRepo.save(new Engine("Mercedes", 30));
 		engineRepo.save(new Engine("Renault", 19));
