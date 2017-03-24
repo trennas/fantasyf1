@@ -41,7 +41,7 @@ public class CreateData {
 	private String myAccountRole;
 
 	@Bean
-	public int createData() {
+	public int createF1Data() {
 		LOG.info("Creating 2017 League Data...");
 		engineRepo.save(new Engine("Mercedes", 30));
 		engineRepo.save(new Engine("Renault", 19));
@@ -89,17 +89,17 @@ public class CreateData {
 		driverRepo.save(new Driver("Marcus Ericsson", 9, carRepo.findByName("Sauber").get(0), 6));
 		driverRepo.save(new Driver("Pascal Wehrlein", 94, carRepo.findByName("Sauber").get(0), 5));
 
-//		try {
-//			List<Driver> drivers = new ArrayList<>();
-//			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
-//			drivers.add(driverRepo.findByName("Daniil Kvyat").get(0));
-//			drivers.add(driverRepo.findByName("Fernando Alonso").get(0));
-//			Team team = new Team("Brawlers Lifters", "Brawler", "alan.bates2@baesystems.com", "welcome1", drivers,
-//					carRepo.findByName("Sauber").get(0), engineRepo.findByName("Honda").get(0));
-//			teamService.saveTeam(team);
-//		} catch (final ValidationException e) {
-//			LOG.info("Team Invalid: " + e.getMessage());
-//		}
+		try {
+			List<Driver> drivers = new ArrayList<>();
+			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+			drivers.add(driverRepo.findByName("Kevin Magnussen").get(0));
+			drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
+			Team team = new Team("Millimetres_Per_Sec_Type'last", "Mike Trenaman", "mike.trenaman@gmail.com", "welcome1", drivers,
+					carRepo.findByName("Mercedes").get(0), engineRepo.findByName("Ferrari").get(0));
+			teamService.saveTeam(team);
+		} catch (final ValidationException e) {
+			LOG.info("Team Invalid: " + e.getMessage());
+		}
 
 		LOG.info("Complete.");
 		return 0;
