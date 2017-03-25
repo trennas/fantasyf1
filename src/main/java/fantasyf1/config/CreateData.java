@@ -39,7 +39,12 @@ public class CreateData {
 
 	@Value("${auth.myaccount-role}")
 	private String myAccountRole;
-
+	
+	private static final Map<Integer, Integer> AntonioGiovinazziStandIns = new HashMap<>();
+    static {
+    	AntonioGiovinazziStandIns.put(1, 94); // Round 1 (Australia) for Alonso (94)
+    }
+    
 	@Bean
 	public int createF1Data() {
 		LOG.info("Creating 2017 League Data...");
@@ -88,6 +93,8 @@ public class CreateData {
 
 		driverRepo.save(new Driver("Marcus Ericsson", 9, carRepo.findByName("Sauber").get(0), 6));
 		driverRepo.save(new Driver("Pascal Wehrlein", 94, carRepo.findByName("Sauber").get(0), 5));
+		
+		driverRepo.save(new Driver("Antonio Giovinazzi", 36, carRepo.findByName("Sauber").get(0), 0, AntonioGiovinazziStandIns));
 
 		try {
 			List<Driver> drivers = new ArrayList<>();
