@@ -205,7 +205,7 @@ public class MainController {
 	}
 
 	private List<Driver> drivers(final boolean includeStandin) {
-		List<Driver> drivers;
+		final List<Driver> drivers;
 		if (includeStandin) {
 			drivers = componentService.findAllDrivers();
 		} else {
