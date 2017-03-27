@@ -360,7 +360,7 @@ function($scope, $http, $location) {
     $scope.getStandinDrivers = function() {
         $http.get('standindrivers')
             .success(function(response) {
-                $scope.drivers = response;
+                $scope.standinDrivers = response;
             })
             .error(function(response, status) {
                 alert("Status: " + status);

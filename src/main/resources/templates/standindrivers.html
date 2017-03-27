@@ -4,7 +4,7 @@
 <body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header"/>	
 	
-	<div class="panel panel-primary" ng-init="getStandinDrivers();getCars();">
+	<div class="panel panel-primary" ng-init="getStandinDrivers();getDrivers();getCars();">
 	<div class="panel-heading text-center">Components</div>	
 	<div class="panel-body">
 		<div class="panel panel-info">
@@ -19,7 +19,7 @@
 					<th>Rounds</th>
 					<th>Action</th>
 				</tr>
-				<tr ng-repeat="driver in drivers">
+				<tr ng-repeat="driver in standinDrivers">
 					<td><input type="text" class="form-control" ng-model="driver.name"/></td>
 					<td><input type="number" class="form-control" ng-model="driver.number"/></td>
 					<td>
@@ -47,26 +47,24 @@
 						  </ul>
 						</div>
 					</td>
-					<td >
+					<td>
 							<div class="dropdown">
 							  <button class="btn btn-default dropdown-toggle" type="button" id="standinRoundsDriversDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							    {{driver.standinRoundsDrivers}}
-							    <span class="caret"></span>
+							    Standin Rounds
 							  </button>
-							  <ul class="dropdown-menu" aria-labelledby="carDropdown">
+							  <ul class="dropdown-menu" aria-labelledby="standinRoundsDropdown">
 							  <table class="table table-striped table-responsive">
 							    <thead>
 							      <tr>
-							        <th>Car</th>
-							        <th>Engine</th>
-							        <th>Price</th>
+							        <th>Round</th>
+							        <th>Standing In For</th>
 							      </tr>
 							    </thead>
 							    <tbody>
-							      <tr ng-repeat="car in cars | orderBy:'-price'">
+							      <tr ng-repeat="mainDriver in drivers | orderBy:'-price'">
 							        <td>
 							        	<b>
-								        	<a href="#" class="a-unstyled" ng-click="team.car = car;">{{car.name}}</a>
+								        	<a href="#" class="a-unstyled" ng-click="team.car = car;">{{driver.name}}</a>
 								        	<span ng-if="team.car.name==car.name">&nbsp;<span class="glyphicon glyphicon-hand-left"></span></span>
 								        </b>					        	
 							        </td>
