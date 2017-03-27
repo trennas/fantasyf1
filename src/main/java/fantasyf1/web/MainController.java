@@ -83,6 +83,11 @@ public class MainController {
 		return "components";
 	}
 
+	@RequestMapping("/standindriverseditor")
+	public String standinDriversEditor() {
+		return "standindrivers";
+	}
+
 	@RequestMapping("/addresult")
 	public String addResult(final Integer round) {
 		return "addresult";
@@ -192,24 +197,36 @@ public class MainController {
 		return 1;
 	}
 
+	@RequestMapping({ "/standindrivers", "/{subpage}/standindrivers" })
+	@ResponseBody
+	public List<Driver> standinDrivers() {
+		return drivers(DriversToInclude.Standins);
+	}
+
 	@RequestMapping({ "/drivers", "/{subpage}/drivers" })
 	@ResponseBody
 	public List<Driver> drivers() {
-		return drivers(false);
+		return drivers(DriversToInclude.NonStandins);
 	}
 
 	@RequestMapping({ "/alldrivers", "/{subpage}/alldrivers" })
 	@ResponseBody
 	public List<Driver> allDrivers() {
-		return drivers(true);
+		return drivers(DriversToInclude.All);
+	}
+	
+	private enum DriversToInclude {
+		All, Standins, NonStandins;
 	}
 
-	private List<Driver> drivers(final boolean includeStandin) {
+	private List<Driver> drivers(final DriversToInclude includeStandin) {
 		final List<Driver> drivers;
-		if (includeStandin) {
+		if (includeStandin == DriversToInclude.All) {
 			drivers = componentService.findAllDrivers();
-		} else {
+		} else if (includeStandin == DriversToInclude.NonStandins) {
 			drivers = componentService.findDriversByStandin(false);
+		} else {
+			drivers = componentService.findDriversByStandin(true);
 		}
 		Collections.sort(drivers);
 		return drivers;

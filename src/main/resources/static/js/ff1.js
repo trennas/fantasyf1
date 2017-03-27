@@ -357,6 +357,16 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.getStandinDrivers = function() {
+        $http.get('standindrivers')
+            .success(function(response) {
+                $scope.drivers = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
     $scope.getAllDrivers = function() {
         $http.get('alldrivers')
             .success(function(response) {

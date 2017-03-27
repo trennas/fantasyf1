@@ -4,7 +4,7 @@
 <body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header"/>	
 	
-	<div class="panel panel-primary" ng-init="getDrivers();">
+	<div class="panel panel-primary" ng-init="getStandinDrivers();">
 	<div class="panel-heading text-center">Components</div>	
 	<div class="panel-body">
 		<div class="panel panel-info">
@@ -15,7 +15,7 @@
 				<tr>
 					<th>Name</th>
 					<th>Number</th>
-					<th>Car</th>>
+					<th>Car</th>
 					<th>Action</th>
 				</tr>
 				<tr ng-repeat="driver in drivers">
