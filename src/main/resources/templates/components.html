@@ -16,7 +16,6 @@
 					<th>Name</th>
 					<th>Number</th>
 					<th>Car</th>
-					<th>Stand In</th>
 					<th>Price</th>
 					<th>Action</th>
 				</tr>
@@ -48,7 +47,6 @@
 						  </ul>
 						</div>
 					</td>
-					<td><select class="form-control" ng-model="driver.standin" ng-options="o.v as o.n for o in [{ n: 'No', v: false }, { n: 'Yes', v: true }]"></select></td>
 					<td><input type="number" class="form-control" ng-model="driver.price"/></td>
 					<td><button type="button" class="btn btn-danger" ng-click="deleteDriver($index);">Delete</button></td>
 				</tr>				

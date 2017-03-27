@@ -144,7 +144,7 @@ function($scope, $http, $location) {
     };
     
     $scope.addDriver = function() {
-        $scope.drivers.push({});
+        $scope.drivers.push({standin : false});
     };
     $scope.deleteDriver = function(index) {
         $scope.drivers.splice(index, 1);
