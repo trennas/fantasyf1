@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 @Configuration
-@Profile("postgres")
+//@Profile("postgres")
 public class HerokuHttpsEnforcement {
 	@Bean
     public Filter httpsEnforcerFilter(){
@@ -36,15 +38,19 @@ public class HerokuHttpsEnforcement {
 	    public void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException {
 	    	final HttpServletRequest request = (HttpServletRequest) servletRequest;
 	    	final HttpServletResponse response = (HttpServletResponse) servletResponse;
-	        if (request.getHeader(X_FORWARDED_PROTO) != null) {
-	            if (request.getHeader(X_FORWARDED_PROTO).indexOf("https") != 0) {
-	                response.sendRedirect("https://" + request.getServerName() + request.getPathInfo());
+	        if (true || request.getHeader(X_FORWARDED_PROTO) != null) {
+	            if ("POST".equals(request.getMethod()) || (request.getHeader(X_FORWARDED_PROTO) != null && request.getHeader(X_FORWARDED_PROTO).indexOf("https") != 0)) {	            	
+	            	String httpsRedirectUri = request.getRequestURL().toString().replace("http://", "https://");
+	            	if (request.getQueryString() != null && !request.getQueryString().isEmpty()) {
+	            		httpsRedirectUri = httpsRedirectUri + "?" + request.getQueryString();
+	            	}	            	
+	                response.sendRedirect(httpsRedirectUri);
 	                return;
 	            }
 	        }
 	        filterChain.doFilter(request, response);
 	    }
-
+	    
 	    @Override
 	    public void destroy() {
 	    }
