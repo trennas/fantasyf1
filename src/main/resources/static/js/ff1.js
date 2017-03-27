@@ -39,24 +39,32 @@ function($scope, $http, $location) {
     	$scope.getCars();
     	$scope.getEngines();
     };
-    
-    $scope.saveComponents = function() {
-        $('#spinner').show();
-        
+
+    $scope.saveDrivers = function() {
+        $('#driversSpinner').show();
+        $http.post('savedrivers', $scope.drivers)
+            .success(function(response) {            	
+                $scope.driversStatus = "Drivers Saved.";
+                    $('#driversSpinner').hide();                
+        });
+    };    
+    $scope.saveCars = function() {
+        $('#carsSpinner').show();
+        $http.post('savecars', $scope.cars)
+            .success(function(response) {            	
+                $scope.carsStatus = "Cars Saved.";
+                    $('#carsSpinner').hide();                
+        });
+    };    
+    $scope.saveEngines = function() {
+        $('#enginesSpinner').show();       
         $http.post('saveengines', $scope.engines)
-        .success(function(response) {
-        	$http.post('savecars', $scope.cars)
-            .success(function(response) {
-            	$http.post('savedrivers', $scope.drivers)
-                .success(function(response) {
-                	$scope.getComponents();
-                	$scope.status = "Components Updated.";
-                    $('#spinner').hide();
-                });
-            });
+            .success(function(response) {            	
+                $scope.enginesStatus = "Engines Saved.";
+                    $('#enginesSpinner').hide();
         });
     };
-    
+
     $scope.getBestTheoreticalTeam = function() {        
         $http.get('besttheoreticalteam')
             .success(function(response) {

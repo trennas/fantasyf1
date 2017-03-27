@@ -55,6 +55,9 @@
 			</tbody>			
 		</table>
 		<button type="button" class="btn btn-danger" ng-click="addDriver();">Add</button>
+		<button type="button" class="btn btn-success" ng-click="saveDrivers();">Save</button>
+		<div id="driversSpinner" style="display: none;" class="spinner-loader pull-right">Updating...</div>
+	    {{driversStatus}}
 		</div>
 		</div>
 		
@@ -102,6 +105,9 @@
 			</tbody>			
 		</table>
 		<button type="button" class="btn btn-danger" ng-click="addCar();">Add</button>
+		<button type="button" class="btn btn-success" ng-click="saveCars();">Save</button>
+		<div id="carsSpinner" style="display: none;" class="spinner-loader pull-right">Updating...</div>
+	    {{carsStatus}}
 		</div>
 		</div>
 		
@@ -123,14 +129,13 @@
 			</tbody>			
 		</table>
 		<button type="button" class="btn btn-danger" ng-click="addEngine();">Add</button>
+		<button type="button" class="btn btn-success" ng-click="saveEngines();">Save</button>
+		<div id="enginesSpinner" style="display: none;" class="spinner-loader pull-right">Updating...</div>
+	    {{enginesStatus}}
 		</div>
 		</div>
 	</div>
 	</div>
-	<button type="button" class="btn btn-success" ng-click="saveComponents();">Save</button>
-	<div id="spinner" class="spinner-loader pull-right">Updating...</div>
-    {{status}}
-	  
   <div th:replace="footer :: footer" />
 </body>
 </html>
