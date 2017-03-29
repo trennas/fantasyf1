@@ -1,9 +1,16 @@
 package fantasyf1.repository.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +19,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ergast.mrd._1.MRDataType;
+import com.ergast.mrd._1.RaceType;
 import com.ergast.mrd._1.ResultType;
 
 import fantasyf1.domain.Car;
 import fantasyf1.domain.Driver;
 import fantasyf1.domain.EventResult;
+import fantasyf1.domain.RaceInformation;
+import fantasyf1.domain.SeasonInformation;
 import fantasyf1.domain.Position;
 import fantasyf1.repository.LiveResultsRepository;
 import fantasyf1.service.ComponentService;
@@ -169,6 +179,44 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 		}
 
 		return null;
+	}
+
+	@Override
+	public SeasonInformation getSeasonInformation() {
+		final String seasonUrl = ergastBaseUrl + season + "/";
+		final MRDataType races;
+
+		try {			
+			races = restTemplate.getForObject(seasonUrl, MRDataType.class);
+		} catch (final Exception e) {
+			LOG.error("Unable to contact results service at " + seasonUrl, e);
+			return null;
+		}
+		
+		if(!races.getRaceTable().getRace().isEmpty()) {
+			final SeasonInformation seasonInfo = new SeasonInformation(season);
+			for(final RaceType race : races.getRaceTable().getRace()) {
+				final RaceInformation raceInfo = new RaceInformation();
+				raceInfo.setGrandPrixName(race.getRaceName());
+				raceInfo.setCircuitName(race.getCircuit().getCircuitName());
+				raceInfo.setCountry(race.getCircuit().getLocation().getCountry());
+				raceInfo.setLocation(race.getCircuit().getLocation().getLocality().get(0));
+	
+				XMLGregorianCalendar xmlCal = race.getDate();
+				Date utilDate = xmlCal.toGregorianCalendar().getTime();
+				final LocalDate localDate = LocalDateTime.ofInstant(utilDate.toInstant(), ZoneId.systemDefault()).toLocalDate();
+				raceInfo.setDate(localDate);
+				
+				xmlCal = race.getDate();
+				utilDate = xmlCal.toGregorianCalendar().getTime();
+				final LocalTime localTime = LocalDateTime.ofInstant(utilDate.toInstant(), ZoneId.systemDefault()).toLocalTime();
+				raceInfo.setTime(localTime);
+				seasonInfo.getRaces().put(race.getRound().intValue(), raceInfo);
+			}
+			return seasonInfo;
+		} else {
+			return null;
+		}
 	}
 
 	private Driver findDriver(final ResultType res,

@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fantasyf1.domain.EventResult;
+import fantasyf1.domain.RaceInformation;
+import fantasyf1.domain.SeasonInformation;
 import fantasyf1.repository.EventResultRepository;
 import fantasyf1.repository.LiveResultsRepository;
+import fantasyf1.service.ComponentService;
 import fantasyf1.service.EventService;
 import fantasyf1.service.LeagueService;
 import fantasyf1.service.MailService;
@@ -23,23 +26,41 @@ public class EventServiceImpl implements EventService {
 	private static final Logger LOG = Logger.getLogger(EventServiceImpl.class);
 
 	@Autowired
-	EventResultRepository eventRepo;
+	private EventResultRepository eventRepo;
 
 	@Autowired
-	LiveResultsRepository liveRepo;
+	private LiveResultsRepository liveRepo;
 
 	@Autowired
-	LeagueService leagueService;
+	private LeagueService leagueService;
 
 	@Autowired
-	MailService mailService;
+	private MailService mailService;
 
 	@Autowired
-	ServiceUtils utils;
+	private ServiceUtils utils;
+	
+	@Autowired
+	private ComponentService componentService;
 
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
+	
+	@Override
+	public RaceInformation getNextRace() {
+		SeasonInformation seasonInformation = componentService.getSeasonInformation();
+		if(seasonInformation == null ) {
+			seasonInformation = liveRepo.getSeasonInformation();
+			if(seasonInformation != null) {
+				componentService.setSeasonInformation(seasonInformation);
+			} else {
+				throw new Ff1Exception("Unable to get season information");
+			}
+		}
+		int nextRound = IteratorUtils.toList(eventRepo.findAll().iterator()).size() + 1;		
+		return componentService.getSeasonInformation().getRaces().get(nextRound);
+	}
 
 	@Override
 	public EventResult refreshEvent(final int round) {

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,19 @@ import fantasyf1.domain.Car;
 import fantasyf1.domain.Driver;
 import fantasyf1.domain.Engine;
 import fantasyf1.domain.PointScorer;
+import fantasyf1.domain.SeasonInformation;
 import fantasyf1.repository.CarRepository;
 import fantasyf1.repository.DriverRepository;
 import fantasyf1.repository.EngineRepository;
+import fantasyf1.repository.SeasonInformationRepository;
 import fantasyf1.service.ComponentService;
+import lombok.NonNull;
 
 @Service
 public class ComponentServiceImpl implements ComponentService {
+	@Value("${season}")
+	private String season;
+
 	@Autowired
 	private DriverRepository driverRepo;
 
@@ -29,6 +36,9 @@ public class ComponentServiceImpl implements ComponentService {
 
 	@Autowired
 	private EngineRepository engineRepo;
+
+	@Autowired
+	private SeasonInformationRepository seasonRepo;
 
 	@Autowired
 	private ServiceUtils utils;
@@ -171,5 +181,20 @@ public class ComponentServiceImpl implements ComponentService {
 	@Override
 	public void saveEngine(final Engine engine) {
 		engineRepo.save(engine);
+	}
+
+	@Override
+	public SeasonInformation getSeasonInformation() {
+		final List<SeasonInformation> seasonInformationList = seasonRepo.findByYear(season);
+		if(seasonInformationList.size() == 1) {
+			return seasonInformationList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public void setSeasonInformation(final @NonNull SeasonInformation seasonInformation) {
+		seasonRepo.save(seasonInformation);
 	}
 }

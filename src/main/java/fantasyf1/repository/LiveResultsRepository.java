@@ -1,7 +1,9 @@
 package fantasyf1.repository;
 
 import fantasyf1.domain.EventResult;
+import fantasyf1.domain.SeasonInformation;
 
 public interface LiveResultsRepository {
-	public EventResult fetchEventResult(final int round);
+	EventResult fetchEventResult(final int round);
+	SeasonInformation getSeasonInformation();
 }

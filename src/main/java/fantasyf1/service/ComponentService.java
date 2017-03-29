@@ -6,6 +6,7 @@ import java.util.Map;
 import fantasyf1.domain.Car;
 import fantasyf1.domain.Driver;
 import fantasyf1.domain.Engine;
+import fantasyf1.domain.SeasonInformation;
 
 public interface ComponentService {
 	public Map<String, Long> getAllDriverPoints();
@@ -25,7 +26,7 @@ public interface ComponentService {
 	public List<Driver> findDriversByCarAndStandin(final Car car,
 			final boolean standIn);
 	
-	public void saveDrivers(List<Driver> drivers, final boolean merge);
+	public void saveDrivers(final List<Driver> drivers, final boolean merge);
 
 	public Car findCarById(final Integer id);
 	
@@ -39,15 +40,19 @@ public interface ComponentService {
 
 	public List<Car> findAllCars();
 	
-	public void saveCars(List<Car> cars, final boolean merge);
+	public void saveCars(final List<Car> cars, final boolean merge);
 
 	public List<Engine> findAllEngines();
 	
-	public void saveEngines(List<Engine> engines, final boolean merge);
+	public void saveEngines(final List<Engine> engines, final boolean merge);
 
 	public void saveDriver(final Driver driver);
 
 	public void saveCar(final Car car);
 
 	public void saveEngine(final Engine engine);
+	
+	public SeasonInformation getSeasonInformation();
+	
+	public void setSeasonInformation(final SeasonInformation seasonInformation);
 }
