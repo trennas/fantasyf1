@@ -59,6 +59,12 @@ public class MailServiceImpl implements MailService {
 					+ e.getMessage());
 		}
 	}
+	
+	public void sendEndOfSeasonMail() {
+		if(newResultEmailAlerts) {
+			
+		}
+	}
 
 	private class F1MimeMessagePreparator implements MimeMessagePreparator {
 

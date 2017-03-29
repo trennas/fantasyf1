@@ -6,5 +6,6 @@ import fantasyf1.domain.EventResult;
 
 @Service
 public interface MailService {
-	public void sendNewResultsMail(final EventResult result);
+	void sendNewResultsMail(final EventResult result);
+	void sendEndOfSeasonMail();
 }

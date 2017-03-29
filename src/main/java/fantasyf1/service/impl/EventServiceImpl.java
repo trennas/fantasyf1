@@ -52,14 +52,23 @@ public class EventServiceImpl implements EventService {
 		SeasonInformation seasonInformation = componentService.getSeasonInformation();
 		if(seasonInformation == null ) {
 			seasonInformation = liveRepo.getSeasonInformation();
-			if(seasonInformation != null) {
+			if(seasonInformation != null && !seasonInformation.getRaces().isEmpty()) {
 				componentService.setSeasonInformation(seasonInformation);
 			} else {
 				throw new Ff1Exception("Unable to get season information");
 			}
 		}
-		int nextRound = IteratorUtils.toList(eventRepo.findAll().iterator()).size() + 1;		
-		return componentService.getSeasonInformation().getRaces().get(nextRound);
+		
+		int nextRound = IteratorUtils.toList(eventRepo.findAll().iterator()).size() + 1;
+		if (seasonInformation.getRaces().containsKey(nextRound)) {
+			return seasonInformation.getRaces().get(nextRound);
+		} else {
+			if(!seasonInformation.getComplete()) {
+				seasonInformation.setComplete(true);
+				mailService.sendEndOfSeasonMail();
+			}			
+			throw new Ff1Exception("The season has ended!");
+		}
 	}
 
 	@Override
@@ -159,6 +168,7 @@ public class EventServiceImpl implements EventService {
 					// Don't bombarde with emails pulling in multiple results
 					mailService.sendNewResultsMail(results.get(results.size() - 1));
 				}
+				getNextRace();
 			} else {
 				LOG.info("No new race results found");
 			}

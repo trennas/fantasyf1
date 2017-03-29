@@ -17,9 +17,11 @@ public class SeasonInformation {
 	private String year;
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Map<Integer, RaceInformation> races;
+	private Boolean complete;
 	
 	public SeasonInformation(final String year) {
 		this.year = year;
+		this.complete = false;
 		races = new HashMap<>();
 	}
 }
