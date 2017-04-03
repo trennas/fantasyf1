@@ -1,10 +1,7 @@
 package fantasyf1.domain;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
+import java.util.Date;
 import javax.persistence.Embeddable;
-
 import lombok.Data;
 
 @Data
@@ -14,6 +11,5 @@ public class RaceInformation {
 	private String circuitName;
 	private String country;
 	private String location;
-	private LocalDate date;
-	private LocalTime time;
+	private Date dateTime;
 }

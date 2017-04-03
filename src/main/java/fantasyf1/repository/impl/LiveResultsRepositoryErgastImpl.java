@@ -203,16 +203,10 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				raceInfo.setCircuitName(race.getCircuit().getCircuitName());
 				raceInfo.setCountry(race.getCircuit().getLocation().getCountry());
 				raceInfo.setLocation(race.getCircuit().getLocation().getLocality().get(0));
-	
-				XMLGregorianCalendar xmlCal = race.getDate();
-				Date utilDate = xmlCal.toGregorianCalendar().getTime();
-				final LocalDate localDate = LocalDateTime.ofInstant(utilDate.toInstant(), ZoneId.systemDefault()).toLocalDate();
-				raceInfo.setDate(localDate);
 				
-				xmlCal = race.getTime();
-				utilDate = xmlCal.toGregorianCalendar().getTime();
-				final LocalTime localTime = LocalDateTime.ofInstant(utilDate.toInstant(), ZoneId.systemDefault()).toLocalTime();
-				raceInfo.setTime(localTime);
+				race.getDate().setHour(race.getTime().getHour());
+				raceInfo.setDateTime(race.getDate().toGregorianCalendar().getTime());
+
 				seasonInfo.getRaces().put(race.getRound().intValue(), raceInfo);
 			}
 			return seasonInfo;
