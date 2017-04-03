@@ -188,12 +188,14 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 		try {			
 			races = restTemplate.getForObject(seasonUrl, MRDataType.class);
+			LOG.info("Retrieved season information from ErgastAPI");
 		} catch (final Exception e) {
 			LOG.error("Unable to contact results service at " + seasonUrl, e);
 			return null;
 		}
 		
 		if(!races.getRaceTable().getRace().isEmpty()) {
+			LOG.info("Found " + races.getRaceTable().getRace().size() + " races this season.");
 			final SeasonInformation seasonInfo = new SeasonInformation(season);
 			for(final RaceType race : races.getRaceTable().getRace()) {
 				final RaceInformation raceInfo = new RaceInformation();
@@ -215,6 +217,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 			}
 			return seasonInfo;
 		} else {
+			LOG.error("Found no races in season data from ErgastAPI");
 			return null;
 		}
 	}
