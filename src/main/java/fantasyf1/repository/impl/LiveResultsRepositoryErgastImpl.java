@@ -8,7 +8,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -205,7 +207,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				raceInfo.setLocation(race.getCircuit().getLocation().getLocality().get(0));
 				
 				race.getDate().setHour(race.getTime().getHour());
-				raceInfo.setDateTime(race.getDate().toGregorianCalendar().getTime());
+				raceInfo.setDateTime(race.getDate().toGregorianCalendar(TimeZone.getTimeZone("UTC"), Locale.ROOT, null).getTime());
 
 				seasonInfo.getRaces().put(race.getRound().intValue(), raceInfo);
 			}
