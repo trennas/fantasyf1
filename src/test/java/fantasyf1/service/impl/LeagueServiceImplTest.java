@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class LeagueServiceImplTest {
 		mockServer = MockRestServiceServer.createServer(template);
     }
 
-    @Test
+    @Test @Ignore
     public void integrationTest() throws IOException {
     	final String url  = ergastUrl + season + "/1";
 		final String url2 = ergastUrl + season + "/2";
