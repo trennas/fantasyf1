@@ -34,6 +34,16 @@ function($scope, $http, $location) {
                 alert("Status: " + status);                
             });
     };
+
+    $scope.getRaceCalendar = function() {
+    	$http.get('racecalendar')
+        .success(function(response) {
+            $scope.raceCalendar = response;        
+        })
+        .error(function(response, status) {
+            alert("Unable to get next race: " + status);                
+        }); 
+    };
     
     $scope.getNextRace = function() {
     	$http.get('nextrace')

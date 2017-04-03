@@ -30,6 +30,7 @@ import fantasyf1.domain.EventResult;
 import fantasyf1.domain.Position;
 import fantasyf1.domain.RaceInformation;
 import fantasyf1.domain.Rules;
+import fantasyf1.domain.SeasonInformation;
 import fantasyf1.domain.Team;
 import fantasyf1.domain.TheoreticalTeam;
 import fantasyf1.service.ComponentService;
@@ -303,6 +304,17 @@ public class MainController {
 	@ResponseBody
 	public RaceInformation nextRace() {
 		return eventService.getNextRace();
+	}
+
+	@RequestMapping({"/racecalendar", "/{subpage}/racecalendar"})
+	@ResponseBody
+	public Map<Integer, RaceInformation> raceCalendar() {
+		return componentService.getSeasonInformation().getRaces();
+	}
+	
+	@RequestMapping("/calendar")
+	public String calendar() {
+		return "calendar";
 	}
 
 	@RequestMapping({ "/seasonstartdate", "/{subpage}/seasonstartdate" })

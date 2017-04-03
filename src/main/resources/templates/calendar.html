@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: head" />
+<body ng-app="ff1App" ng-controller="controller">		
+	<div th:replace="header :: header"/>	
+	
+	<div class="panel panel-primary" ng-init="getRaceCalendar();">
+	<div class="panel-heading text-center">Race Calendar</div>
+	<div class="panel-body">
+	
+	<div class="row"></div>	
+		<div class="panel panel-info">
+		<div class="panel-heading text-center">Races</div>	
+		<div class="panel-body">
+		<table class="table table-striped">
+	    <thead>
+	      <tr>
+	      	<th class="text-center">Round</th>
+	      	<th class="text-center">Grand Prix Name</th>
+	      	<th class="text-center">Circuit Name</th>
+	      	<th class="text-center">Country</th>
+	      	<th class="text-center">Location</th>
+	      	<th class="text-center">Date</th>
+	      </tr>
+	    </thead>
+	    <tbody>	      
+	      <tr ng-repeat="(round, race) in raceCalendar">
+	      	<td class="text-center">{{round}}</td>
+	      	<td class="text-center">{{race.grandPrixName}}</td>
+	      	<td class="text-center">{{race.circuitName}}</td>
+	      	<td class="text-center">{{race.location}}</td>
+	      	<td class="text-center">{{race.dateTime|date:'dd MMMM \'at\' HH:mm'}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	  </div>
+	  </div>	
+  </div>
+  </div>
+  
+  <div th:replace="footer :: footer" />
+</body>
+</html>
