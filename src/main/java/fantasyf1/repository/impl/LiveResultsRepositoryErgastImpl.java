@@ -209,7 +209,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				final LocalDate localDate = LocalDateTime.ofInstant(utilDate.toInstant(), ZoneId.systemDefault()).toLocalDate();
 				raceInfo.setDate(localDate);
 				
-				xmlCal = race.getDate();
+				xmlCal = race.getTime();
 				utilDate = xmlCal.toGregorianCalendar().getTime();
 				final LocalTime localTime = LocalDateTime.ofInstant(utilDate.toInstant(), ZoneId.systemDefault()).toLocalTime();
 				raceInfo.setTime(localTime);
