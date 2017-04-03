@@ -18,13 +18,13 @@ import lombok.extern.log4j.Log4j;
 @Configuration
 @Log4j
 public class LiveResultsConfig {
-	@Value("${proxy-url}")
+	@Value("${proxy-url:}")
 	private String proxyUrl;
-	@Value("${proxy-port}")
+	@Value("${proxy-port:}")
 	private Integer proxyPort;
-	@Value("${proxy-user}")
+	@Value("${proxy-user:}")
 	private String proxyUser;
-	@Value("${proxy-pass}")
+	@Value("${proxy-pass:}")
 	private String proxyPass;
 
 	@Bean
