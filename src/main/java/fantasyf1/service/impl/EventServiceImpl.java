@@ -173,7 +173,7 @@ public class EventServiceImpl implements EventService {
 				LOG.info("No new race results found");
 			}
 		}
-		return numFound++;
+		return numFound;
 	}
 
 	@Override
