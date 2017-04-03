@@ -183,7 +183,7 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 
 	@Override
 	public SeasonInformation getSeasonInformation() {
-		final String seasonUrl = ergastBaseUrl + season + "/";
+		final String seasonUrl = ergastBaseUrl + season;
 		final MRDataType races;
 
 		try {			
