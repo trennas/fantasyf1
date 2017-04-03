@@ -46,6 +46,7 @@ dependencies {
     compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity3:2.1.1.RELEASE')
     compile('org.apache.commons:commons-collections4:4.0')
     compile('commons-io:commons-io:2.4')
+    compile('org.apache.httpcomponents:httpclient:4.5.3')
     runtime('com.h2database:h2')
     runtime('postgresql:postgresql:9.1-901-1.jdbc4')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
