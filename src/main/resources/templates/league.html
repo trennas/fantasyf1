@@ -11,7 +11,7 @@
 	<div class="panel-heading text-center">League Table</div>	
 	<div class="panel-body">
 		<h4 sec:authorize="!hasRole(@environment.getProperty('auth.admin-role'))" class="text-info text-center" ng-if="!seasonStarted">Team components will be shown once the registration cut-off has passed ({{seasonStartDate|date:'mediumDate'}})</h4>
-		<h4 class="text-info text-center" ng-if="nextRace">Next Race: {{nextRace.grandPrixName}} on {{nextRace.date|date:'mediumDate'}} at {{nextRace.time|date:'time'}}</h4>
+		<h4 class="text-info text-center" ng-if="nextRace">Next Race: {{nextRace.grandPrixName}} on {{nextRace.date.dayOfMonth}} {{nextRace.date.month}}</h4>
 		<table class="table table-striped">
 	    <thead>
 	      <tr>
