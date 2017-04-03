@@ -9,9 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class SeasonInformation {
 	@Id
 	private String year;
