@@ -147,6 +147,8 @@ public class EventServiceImpl implements EventService {
 						leagueService.calculateResult(newResult);
 						eventRepo.save(newResult);
 						mailService.sendNewResultsMail(newResult);
+						results.remove(results.size() - 1);
+						results.add(newResult);
 						numFound++;
 					}
 				}
