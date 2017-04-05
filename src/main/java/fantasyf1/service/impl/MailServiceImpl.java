@@ -79,6 +79,18 @@ public class MailServiceImpl implements MailService {
 		}
 	}
 
+	private String ordinal(int i) {
+	    final String[] sufixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+	    switch (i % 100) {
+	    case 11:
+	    case 12:
+	    case 13:
+	        return i + "th";
+	    default:
+	        return i + sufixes[i % 10];
+	    }
+	}
+
 	private class F1NewResultMimeMessagePreparator implements MimeMessagePreparator {
 
 		private final EventResult result;
@@ -102,7 +114,7 @@ public class MailServiceImpl implements MailService {
 
 			String message = newResultEmail.replaceAll("#venue#", result.getVenue());
 			message = message.replaceAll("#teamname#", team.getName());
-			message = message.replaceAll("#position#", Integer.toString(position));
+			message = message.replaceAll("#position#", ordinal(position));
 			message = message.replaceAll("#session#", result.isRaceComplete() ? "Race" : "Qualifying");
 			message = message.replaceAll("#website#", websiteUrl);
 			mimeMessage.setContent(message, "text/html; charset=utf-8");
@@ -125,7 +137,7 @@ public class MailServiceImpl implements MailService {
 
 			String message = endOfSeasonMessage.replaceAll("#winnercongratulations#", position == 1 ? "Congratulations, <b>you have won</b> the fantasy f1 league this year!" : "");
 			message = message.replaceAll("#podiumcongratulations#", position == 2 || position == 3 ? "Congratulations for finishing <b>on the podium</b> this year!" : "");
-			message = message.replaceAll("#position#", Integer.toString(position));
+			message = message.replaceAll("#position#", ordinal(position));
 			message = message.replaceAll("#website#", websiteUrl);
 			mimeMessage.setContent(message, "text/html; charset=utf-8");
 		}
