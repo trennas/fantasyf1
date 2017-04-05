@@ -45,19 +45,21 @@ public class MailServiceImpl implements MailService {
 	private String endOfSeasonMessage;
 
 	@Override
-	public void sendNewResultsMail(final EventResult result) {
+	public void sendNewResultsMail(final EventResult result, final List<Team> teams) {
 		try {
 			if (newResultEmailAlerts
 					&& (qualifyingResultEmailAlerts || result.isRaceComplete())) {
-				final F1NewResultMimeMessagePreparator mimePrep = new F1NewResultMimeMessagePreparator(
-						result, teamService.findAll());
-				mailSender.send(mimePrep);
+				for(int i = 0; i < teams.size(); i++) {
+					final Team team = teams.get(i);
+					final F1NewResultMimeMessagePreparator mimePrep = new F1NewResultMimeMessagePreparator(i+1,	result, team);
+					mailSender.send(mimePrep);
+				}				
 				LOG.info("Sent new"
 						+ (result.isRaceComplete() ? " Race " : " Qualifying ")
-						+ "results email for " + result.getVenue());
+						+ "result emails for " + result.getVenue());
 			}
 		} catch (final Exception e) {
-			LOG.error("Error sending mail.", e);
+			LOG.error("Error sending new result emails.", e);
 		}
 	}
 	
@@ -73,37 +75,34 @@ public class MailServiceImpl implements MailService {
 				LOG.info("Sent end of season emails.");
 			}
 		} catch (final Exception e) {
-			LOG.error("Error end of season mails", e);
+			LOG.error("Error end of season emails", e);
 		}
 	}
 
 	private class F1NewResultMimeMessagePreparator implements MimeMessagePreparator {
 
 		private final EventResult result;
-		private final List<Team> teams;
+		private final Team team;
+		private final Integer position;
 
-		public F1NewResultMimeMessagePreparator(final EventResult result,
-				final List<Team> teams) {
+		public F1NewResultMimeMessagePreparator(final Integer position, final EventResult result,
+				final Team team) {
 			this.result = result;
-			this.teams = teams;
+			this.team = team;
+			this.position = position;
 		}
 
 		@Override
 		public void prepare(final MimeMessage mimeMessage) throws Exception {
-			final List<Address> addresses = new ArrayList<>();
-			for (final Team team : teams) {
-				addresses.add(new InternetAddress(team.getEmail()));
-			}
-
-			final Address[] addressArray = new Address[addresses.size()];
-
-			mimeMessage.addRecipients(Message.RecipientType.BCC,
-					addresses.toArray(addressArray));
+			mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(team.getEmail()));
+			
 			mimeMessage.setSubject("Fantasy F1 - " + result.getVenue()
 					+ (result.isRaceComplete() ? " Race " : " Qualifying ")
 					+ "Results");
 
 			String message = newResultEmail.replaceAll("#venue#", result.getVenue());
+			message = message.replaceAll("#teamname#", team.getName());
+			message = message.replaceAll("#position#", Integer.toString(position));
 			message = message.replaceAll("#session#", result.isRaceComplete() ? "Race" : "Qualifying");
 			message = message.replaceAll("#website#", websiteUrl);
 			mimeMessage.setContent(message, "text/html; charset=utf-8");

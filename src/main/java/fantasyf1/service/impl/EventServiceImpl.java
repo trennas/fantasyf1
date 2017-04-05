@@ -151,7 +151,7 @@ public class EventServiceImpl implements EventService {
 						leagueService.deletePointsForRound(prevResult, false);
 						leagueService.calculateResult(newResult);
 						eventRepo.save(newResult);
-						mailService.sendNewResultsMail(newResult);
+						mailService.sendNewResultsMail(newResult, leagueService.calculateLeagueStandings());
 						results.remove(results.size() - 1);
 						results.add(newResult);
 						numFound++;
@@ -174,7 +174,7 @@ public class EventServiceImpl implements EventService {
 				}
 				if (emailAlerts && num == 1) {
 					// Don't bombarde with emails pulling in multiple results
-					mailService.sendNewResultsMail(results.get(results.size() - 1));
+					mailService.sendNewResultsMail(results.get(results.size() - 1), leagueService.calculateLeagueStandings());
 				}
 			} else {
 				LOG.info("No new race results found");
