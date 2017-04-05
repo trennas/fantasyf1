@@ -194,7 +194,7 @@ public class ComponentServiceImpl implements ComponentService {
 	}
 
 	@Override
-	public void setSeasonInformation(final @NonNull SeasonInformation seasonInformation) {
+	public void setSeasonInformation(@NonNull final SeasonInformation seasonInformation) {
 		seasonRepo.save(seasonInformation);
 	}
 }
