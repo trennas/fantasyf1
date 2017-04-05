@@ -117,6 +117,11 @@ public class EventServiceImpl implements EventService {
 		eventRepo.deleteAll();
 		timeOfLastResultCheck = 0;
 		leagueService.resetAllScores();
+		
+		final SeasonInformation seasonInformation = liveRepo.getSeasonInformation();
+		if(seasonInformation != null) {
+			componentService.setSeasonInformation(seasonInformation);
+		}
 		checkForNewResults(false);		
 	}
 
