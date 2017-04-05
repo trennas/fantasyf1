@@ -67,7 +67,7 @@ public class EventServiceImpl implements EventService {
 				seasonInformation.setComplete(true);
 				mailService.sendEndOfSeasonMail();
 			}			
-			throw new Ff1Exception("The season has ended!");
+			return null;
 		}
 	}
 
