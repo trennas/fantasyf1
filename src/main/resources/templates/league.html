@@ -7,7 +7,7 @@
 	<div th:replace="header :: header" />
 	<div id="leagueSpinner" class="spinner-loader pull-right">Loading...</div>
 	
-	<h4 class="text-info text-center" ng-if="nextRace &amp; seasonStarted">Next Race: {{nextRace.grandPrixName}} on {{nextRace.dateTime|date:'dd MMMM \'at\' HH:mm'}}</h4>
+	<h4 class="text-center" ng-if="nextRace"><kbd>Next Race is the {{nextRace.grandPrixName}} on {{nextRace.dateTime|date:'dd MMMM \'at\' HH:mm'}}</kbd></h4>
 	<!--div sec:authorize="isAuthenticated()">Authorities: <span sec:authentication="principal.authorities">authorities</span></div-->
 	<div class="panel panel-primary" ng-init="getLeagueTable();">	
 	<div class="panel-heading text-center">League Table</div>	
