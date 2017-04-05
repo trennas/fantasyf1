@@ -188,7 +188,7 @@ public class EventServiceImpl implements EventService {
 				&& results.get(results.size()-1).isRaceComplete()
 				&& !seasonInformation.getComplete()) {
 					seasonInformation.setComplete(true);
-					mailService.sendEndOfSeasonMail();
+					mailService.sendEndOfSeasonMail(leagueService.calculateLeagueStandings());
 					componentService.setSeasonInformation(seasonInformation);
 					LOG.info("The season has ended!");
 			}
