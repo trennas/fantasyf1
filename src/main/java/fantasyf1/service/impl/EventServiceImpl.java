@@ -49,8 +49,18 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public RaceInformation getNextRace() {
+		final SeasonInformation seasonInformation = fetchSeasonInformation();		
+		int nextRound = IteratorUtils.toList(eventRepo.findAll().iterator()).size() + 1;
+		if (seasonInformation != null && seasonInformation.getRaces().containsKey(nextRound)) {
+			return seasonInformation.getRaces().get(nextRound);
+		} else {		
+			return null;
+		}
+	}
+	
+	private SeasonInformation fetchSeasonInformation() {
 		SeasonInformation seasonInformation = componentService.getSeasonInformation();
-		if(seasonInformation == null ) {
+		if(seasonInformation == null) {
 			seasonInformation = liveRepo.getSeasonInformation();
 			if(seasonInformation != null && !seasonInformation.getRaces().isEmpty()) {
 				componentService.setSeasonInformation(seasonInformation);
@@ -59,17 +69,7 @@ public class EventServiceImpl implements EventService {
 				return null;
 			}
 		}
-		
-		int nextRound = IteratorUtils.toList(eventRepo.findAll().iterator()).size() + 1;
-		if (seasonInformation.getRaces().containsKey(nextRound)) {
-			return seasonInformation.getRaces().get(nextRound);
-		} else {
-			if(!seasonInformation.getComplete()) {
-				seasonInformation.setComplete(true);
-				mailService.sendEndOfSeasonMail();
-			}			
-			return null;
-		}
+		return seasonInformation;
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class EventServiceImpl implements EventService {
 					}
 				}
 			}
-			
+
 			// Now check for brand new results			
 			EventResult result = liveRepo.fetchEventResult(results.size() + 1);
 			if (result != null) {
@@ -176,9 +176,21 @@ public class EventServiceImpl implements EventService {
 					// Don't bombarde with emails pulling in multiple results
 					mailService.sendNewResultsMail(results.get(results.size() - 1));
 				}
-				getNextRace();
 			} else {
 				LOG.info("No new race results found");
+			}
+		}
+
+		if(numFound > 0) {
+			final SeasonInformation seasonInformation = fetchSeasonInformation();
+			if(seasonInformation != null
+				&& results.size() == seasonInformation.getRaces().size()
+				&& results.get(results.size()-1).isRaceComplete()
+				&& !seasonInformation.getComplete()) {
+					seasonInformation.setComplete(true);
+					mailService.sendEndOfSeasonMail();
+					componentService.setSeasonInformation(seasonInformation);
+					LOG.info("The season has ended!");
 			}
 		}
 		return numFound;
