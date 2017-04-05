@@ -56,10 +56,11 @@ public class BestTeamTest {
 		mockServer = MockRestServiceServer.createServer(template);
     }
 
-    @Test @Ignore
+    @Test
     public void bestTeamTest() throws IOException {
     	final String url  = ergastUrl + season + "/1";
     	final String url2 = ergastUrl + season + "/2";
+		final String seasonDataUrl  = ergastUrl + season;
 
     	StringWriter sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual-null.xml").getInputStream(), sw);
@@ -77,6 +78,9 @@ public class BestTeamTest {
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("bestteamfastestlap.xml").getInputStream(), sw);
 		final String fastestLapXml = sw.toString();
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("season-data.xml").getInputStream(), sw);
+		final String seasonDataXml = sw.toString();
 
 		// Race 1 Qual Complete, Race Complete
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
@@ -96,6 +100,9 @@ public class BestTeamTest {
 
 		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
+
+		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
 
 		controller.updateResults();
     }

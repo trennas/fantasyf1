@@ -56,12 +56,13 @@ public class LeagueServiceImplTest {
 		mockServer = MockRestServiceServer.createServer(template);
     }
 
-    @Test @Ignore
+    @Test
     public void integrationTest() throws IOException {
     	final String url  = ergastUrl + season + "/1";
 		final String url2 = ergastUrl + season + "/2";
 		final String url3 = ergastUrl + season + "/3";
 		final String url4 = ergastUrl + season + "/4";
+		final String seasonDataUrl  = ergastUrl + season;
 
     	StringWriter sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual-null.xml").getInputStream(), sw);
@@ -99,6 +100,10 @@ public class LeagueServiceImplTest {
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("fastestlap3.xml").getInputStream(), sw);
 		final String fastestLap3Xml = sw.toString();
+		
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("season-data.xml").getInputStream(), sw);
+		final String seasonDataXml = sw.toString();
 
 		// Race 1 Qual Complete, Race Not Complete
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
@@ -119,6 +124,9 @@ public class LeagueServiceImplTest {
 		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
+		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
+		
 		// Race 1 Qual Complete, Race Complete
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 		.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
@@ -174,9 +182,12 @@ public class LeagueServiceImplTest {
 			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url4 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
+			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));		
 
 		// Recalculate all results
+		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
+		
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 		.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
