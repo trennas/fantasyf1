@@ -55,7 +55,8 @@ public class EventServiceImpl implements EventService {
 			if(seasonInformation != null && !seasonInformation.getRaces().isEmpty()) {
 				componentService.setSeasonInformation(seasonInformation);
 			} else {
-				throw new Ff1Exception("Unable to get season information");
+				LOG.error("Unable to get season information from Live Repo");
+				return null;
 			}
 		}
 		
