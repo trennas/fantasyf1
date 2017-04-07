@@ -55,7 +55,7 @@
 				    		<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
 				              <li><a href="#">Add</a></li>
 				              <li class="divider"></li>
-				              <li ng-repeat="(round, mainDriverz) in driver.standinRoundsDrivers"><a href="#" data-toggle="modal" data-target="standinRoundsModal">{{mainDriverz}} at {{round}}</a></li>
+				              <li ng-repeat="(round, mainDriverz) in driver.standinRoundsDrivers"><a href="#" data-toggle="modal" data-target="#standinRoundsModal" ng-click="standInDriver = mainDriverz; standInRound = raceCalendar[round]">{{mainDriverz}} at {{round}}</a></li>
 				            </ul>
 				        </div>
 					</td>
@@ -80,7 +80,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>				
 				<div class="panel panel-info">
-					<div class="panel-heading text-center">Standing in for {{mainDriverz}} at {{round}}</div>	
+					<div class="panel-heading text-center">Standing in for {{standInDriver}} at {{standInRound.grandPrixName}}</div>	
 					<div class="panel-body">
 	                    <ul class="dropdown-menu">
 	                        <li ng-repeat="(raceround, race) in raceCalendar"><a href="#" ng-click="round = raceround">{{race.grandPrixName}}</a></li>
