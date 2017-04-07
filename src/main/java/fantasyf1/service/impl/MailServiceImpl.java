@@ -138,6 +138,7 @@ public class MailServiceImpl implements MailService {
 			String message = endOfSeasonMessage.replaceAll("#winnercongratulations#", position == 1 ? "Congratulations, <b>you have won</b> the fantasy f1 league this year!" : "");
 			message = message.replaceAll("#podiumcongratulations#", position == 2 || position == 3 ? "Congratulations for finishing <b>on the podium</b> this year!" : "");
 			message = message.replaceAll("#position#", ordinal(position));
+			message = message.replaceAll("#teamname#", team.getName());
 			message = message.replaceAll("#website#", websiteUrl);
 			mimeMessage.setContent(message, "text/html; charset=utf-8");
 		}
