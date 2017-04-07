@@ -3,6 +3,7 @@ package fantasyf1.service;
 import java.util.List;
 
 import fantasyf1.domain.EventResult;
+import fantasyf1.domain.RaceInformation;
 
 public interface EventService {
 
@@ -19,6 +20,8 @@ public interface EventService {
 	public int updateResults();
 
 	public int checkForNewResults(final boolean emailAlerts);
+	
+	public RaceInformation getNextRace();
 
 	public List<EventResult> getSeasonResults();
 }

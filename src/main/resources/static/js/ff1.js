@@ -24,14 +24,35 @@ function($scope, $http, $location) {
         $('#raceSpinner').show();
         $http.get('teams')
             .success(function(response) {
-                $scope.teams = response;                
+                $scope.teams = response;
+                $scope.getNextRace();
                 $scope.getBestTheoreticalTeam();
                 $scope.getEvents();                
             })
             .error(function(response, status) {
                 $('#leagueSpinner').hide();
                 alert("Status: " + status);                
-            });        
+            });
+    };
+
+    $scope.getRaceCalendar = function() {
+    	$http.get('racecalendar')
+        .success(function(response) {
+            $scope.raceCalendar = response;        
+        })
+        .error(function(response, status) {
+            alert("Unable to get next race: " + status);                
+        }); 
+    };
+    
+    $scope.getNextRace = function() {
+    	$http.get('nextrace')
+        .success(function(response) {
+            $scope.nextRace = response;        
+        })
+        .error(function(response, status) {
+            alert("Unable to get next race: " + status);                
+        }); 
     };
     
     $scope.getComponents = function() {

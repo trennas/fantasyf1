@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fantasyf1.domain.EventResult;
+import fantasyf1.domain.RaceInformation;
+import fantasyf1.domain.SeasonInformation;
 import fantasyf1.repository.EventResultRepository;
 import fantasyf1.repository.LiveResultsRepository;
+import fantasyf1.service.ComponentService;
 import fantasyf1.service.EventService;
 import fantasyf1.service.LeagueService;
 import fantasyf1.service.MailService;
@@ -23,23 +26,51 @@ public class EventServiceImpl implements EventService {
 	private static final Logger LOG = Logger.getLogger(EventServiceImpl.class);
 
 	@Autowired
-	EventResultRepository eventRepo;
+	private EventResultRepository eventRepo;
 
 	@Autowired
-	LiveResultsRepository liveRepo;
+	private LiveResultsRepository liveRepo;
 
 	@Autowired
-	LeagueService leagueService;
+	private LeagueService leagueService;
 
 	@Autowired
-	MailService mailService;
+	private MailService mailService;
 
 	@Autowired
-	ServiceUtils utils;
+	private ServiceUtils utils;
+	
+	@Autowired
+	private ComponentService componentService;
 
 	@Value("${results-refresh-interval}")
 	private long resultRefreshInterval;
 	private long timeOfLastResultCheck = 0;
+	
+	@Override
+	public RaceInformation getNextRace() {
+		final SeasonInformation seasonInformation = fetchSeasonInformation();		
+		int nextRound = IteratorUtils.toList(eventRepo.findAll().iterator()).size() + 1;
+		if (seasonInformation != null && seasonInformation.getRaces().containsKey(nextRound)) {
+			return seasonInformation.getRaces().get(nextRound);
+		} else {		
+			return null;
+		}
+	}
+	
+	private SeasonInformation fetchSeasonInformation() {
+		SeasonInformation seasonInformation = componentService.getSeasonInformation();
+		if(seasonInformation == null) {
+			seasonInformation = liveRepo.getSeasonInformation();
+			if(seasonInformation != null && !seasonInformation.getRaces().isEmpty()) {
+				componentService.setSeasonInformation(seasonInformation);
+			} else {
+				LOG.error("Unable to get season information from Live Repo");
+				return null;
+			}
+		}
+		return seasonInformation;
+	}
 
 	@Override
 	public EventResult refreshEvent(final int round) {
@@ -86,6 +117,11 @@ public class EventServiceImpl implements EventService {
 		eventRepo.deleteAll();
 		timeOfLastResultCheck = 0;
 		leagueService.resetAllScores();
+		
+		final SeasonInformation seasonInformation = liveRepo.getSeasonInformation();
+		if(seasonInformation != null) {
+			componentService.setSeasonInformation(seasonInformation);
+		}
 		checkForNewResults(false);		
 	}
 
@@ -99,9 +135,11 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public synchronized int checkForNewResults(final boolean emailAlerts) {
 		int numFound = 0;
+		boolean sendEndOfSeasonMail = false;
 		final List<EventResult> results = IteratorUtils.toList(eventRepo.findAll().iterator());
 		Collections.sort(results);
-		if (System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
+		final SeasonInformation seasonInformation = fetchSeasonInformation();
+		if (seasonInformation != null && System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
 			timeOfLastResultCheck = System.currentTimeMillis();			
 			LOG.info("Checking for new race results...");
 			
@@ -114,13 +152,19 @@ public class EventServiceImpl implements EventService {
 						eventRepo.delete(prevResult);						
 						leagueService.deletePointsForRound(prevResult, false);
 						leagueService.calculateResult(newResult);
-						eventRepo.save(newResult);
-						mailService.sendNewResultsMail(newResult);
+						eventRepo.save(newResult);						
+						results.remove(results.size() - 1);
+						results.add(newResult);
 						numFound++;
+						if(results.size() == seasonInformation.getRaces().size()) {
+							sendEndOfSeasonMail = true;
+						} else {
+							mailService.sendNewResultsMail(newResult, leagueService.calculateLeagueStandings());
+						}
 					}
 				}
 			}
-			
+
 			// Now check for brand new results			
 			EventResult result = liveRepo.fetchEventResult(results.size() + 1);
 			if (result != null) {
@@ -134,15 +178,24 @@ public class EventServiceImpl implements EventService {
 					numFound++;
 					result = liveRepo.fetchEventResult(result.getRound() + 1);					
 				}
-				if (emailAlerts && num == 1) {
-					// Don't bombarde with emails pulling in multiple results
-					mailService.sendNewResultsMail(results.get(results.size() - 1));
+				if(results.size() == seasonInformation.getRaces().size() && results.get(results.size()-1).isRaceComplete()) {
+					sendEndOfSeasonMail = true;
+				} else if (emailAlerts && num == 1) {
+					// Don't bombarde with emails if pulling in multiple results.
+					mailService.sendNewResultsMail(results.get(results.size()-1), leagueService.calculateLeagueStandings());
 				}
 			} else {
 				LOG.info("No new race results found");
 			}
+			
+			if(sendEndOfSeasonMail && !seasonInformation.getComplete()) {
+				mailService.sendEndOfSeasonMail(leagueService.calculateLeagueStandings());
+				seasonInformation.setComplete(true);
+				componentService.setSeasonInformation(seasonInformation);
+				LOG.info("The season has ended!");
+			}
 		}
-		return numFound++;
+		return numFound;
 	}
 
 	@Override

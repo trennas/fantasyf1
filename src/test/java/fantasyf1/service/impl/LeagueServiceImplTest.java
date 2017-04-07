@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class LeagueServiceImplTest {
 		final String url2 = ergastUrl + season + "/2";
 		final String url3 = ergastUrl + season + "/3";
 		final String url4 = ergastUrl + season + "/4";
+		final String seasonDataUrl  = ergastUrl + season;
 
     	StringWriter sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("qual-null.xml").getInputStream(), sw);
@@ -98,8 +100,15 @@ public class LeagueServiceImplTest {
 		sw = new StringWriter();
 		IOUtils.copy(new ClassPathResource("fastestlap3.xml").getInputStream(), sw);
 		final String fastestLap3Xml = sw.toString();
+		
+		sw = new StringWriter();
+		IOUtils.copy(new ClassPathResource("season-data.xml").getInputStream(), sw);
+		final String seasonDataXml = sw.toString();
 
 		// Race 1 Qual Complete, Race Not Complete
+		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
+		
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 				.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
@@ -173,9 +182,12 @@ public class LeagueServiceImplTest {
 			.andRespond(withSuccess(raceNullXml, MediaType.APPLICATION_XML));
 
 		mockServer.expect(requestTo(url4 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
-			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
+			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));		
 
 		// Recalculate all results
+		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
+		
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 		.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 

@@ -37,71 +37,109 @@ public class MailServiceImpl implements MailService {
 
 	@Value("${qualifying-result-email-alerts}")
 	private boolean qualifyingResultEmailAlerts;
+	
+	@Value("${new-result-email}")
+	private String newResultEmail;
+	
+	@Value("${end-of-season-email}")
+	private String endOfSeasonMessage;
 
 	@Override
-	public void sendNewResultsMail(final EventResult result) {
+	public void sendNewResultsMail(final EventResult result, final List<Team> teams) {
 		try {
 			if (newResultEmailAlerts
 					&& (qualifyingResultEmailAlerts || result.isRaceComplete())) {
-				final F1MimeMessagePreparator mimePrep = new F1MimeMessagePreparator(
-						result, teamService.findAll());
-				// F1MimeMessagePreparator mimePrep = new
-				// F1MimeMessagePreparator(result,
-				// teamRepo.findByEmail("mike.trenaman@gmail.com").iterator());
-
-				mailSender.send(mimePrep);
+				for(int i = 0; i < teams.size(); i++) {
+					final Team team = teams.get(i);
+					final F1NewResultMimeMessagePreparator mimePrep = new F1NewResultMimeMessagePreparator(i+1,	result, team);
+					mailSender.send(mimePrep);
+				}				
 				LOG.info("Sent new"
 						+ (result.isRaceComplete() ? " Race " : " Qualifying ")
-						+ "results email for " + result.getVenue());
+						+ "result emails for " + result.getVenue());
 			}
 		} catch (final Exception e) {
-			LOG.error("Error sending mail. " + e.getClass().getName() + ": "
-					+ e.getMessage());
+			LOG.error("Error sending new result emails.", e);
+		}
+	}
+	
+	@Override
+	public void sendEndOfSeasonMail(final List<Team> teams) {
+		try {
+			if (newResultEmailAlerts) {
+				for (int i = 0; i < teams.size(); i++) {
+					final Team team = teams.get(i);
+					final F1EndOfSeasonMimeMessagePreparator mimePrep = new F1EndOfSeasonMimeMessagePreparator(i+1, team);
+					mailSender.send(mimePrep);
+				}
+				LOG.info("Sent end of season emails.");
+			}
+		} catch (final Exception e) {
+			LOG.error("Error end of season emails", e);
 		}
 	}
 
-	private class F1MimeMessagePreparator implements MimeMessagePreparator {
+	private String ordinal(int i) {
+	    final String[] sufixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+	    switch (i % 100) {
+	    case 11:
+	    case 12:
+	    case 13:
+	        return i + "th";
+	    default:
+	        return i + sufixes[i % 10];
+	    }
+	}
+
+	private class F1NewResultMimeMessagePreparator implements MimeMessagePreparator {
 
 		private final EventResult result;
-		private final List<Team> teams;
+		private final Team team;
+		private final Integer position;
 
-		public F1MimeMessagePreparator(final EventResult result,
-				final List<Team> teams) {
+		public F1NewResultMimeMessagePreparator(final Integer position, final EventResult result,
+				final Team team) {
 			this.result = result;
-			this.teams = teams;
+			this.team = team;
+			this.position = position;
 		}
 
 		@Override
 		public void prepare(final MimeMessage mimeMessage) throws Exception {
-			final List<Address> addresses = new ArrayList<>();
-			for (final Team team : teams) {
-				addresses.add(new InternetAddress(team.getEmail()));
-			}
-
-			final Address[] addressArray = new Address[addresses.size()];
-
-			mimeMessage.addRecipients(Message.RecipientType.BCC,
-					addresses.toArray(addressArray));
+			mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(team.getEmail()));
+			
 			mimeMessage.setSubject("Fantasy F1 - " + result.getVenue()
 					+ (result.isRaceComplete() ? " Race " : " Qualifying ")
 					+ "Results");
 
-			final String message = "<font face=\"arial\"><h4>Results From The "
-					+ result.getVenue()
-					+ "</h4>"
-					+ "<p>"
-					+ (result.isRaceComplete() ? "Race " : "Qualifying ")
-					+ "Results from the "
-					+ result.getVenue()
-					+ " have been received "
-					+ "and scores have been updated.</p>"
-					+ "<p>Visit the Fantasy F1 Webpage to check the latest scores: -</p><br/>"
-					+ "<a href=\"" + websiteUrl + "\">" + websiteUrl
-					+ "</a></font>";
+			String message = newResultEmail.replaceAll("#venue#", result.getVenue());
+			message = message.replaceAll("#teamname#", team.getName());
+			message = message.replaceAll("#position#", ordinal(position));
+			message = message.replaceAll("#session#", result.isRaceComplete() ? "Race" : "Qualifying");
+			message = message.replaceAll("#website#", websiteUrl);
+			mimeMessage.setContent(message, "text/html; charset=utf-8");
+		}
+	}
+	
+	private class F1EndOfSeasonMimeMessagePreparator implements MimeMessagePreparator {
+		private final Team team;
+		private final Integer position;
 
-			final String htmlMessage = "<!DOCTYPE html><html><head/><body>"
-					+ message + "</body></html>";
-			mimeMessage.setContent(htmlMessage, "text/html; charset=utf-8");
+		public F1EndOfSeasonMimeMessagePreparator(final Integer position, final Team team) {
+			this.team = team;
+			this.position = position;
+		}
+
+		@Override
+		public void prepare(final MimeMessage mimeMessage) throws Exception {
+			mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(team.getEmail()));
+			mimeMessage.setSubject("Fantasy F1 - The Season Is Over!");
+
+			String message = endOfSeasonMessage.replaceAll("#winnercongratulations#", position == 1 ? "Congratulations, <b>you have won</b> the fantasy f1 league this year!" : "");
+			message = message.replaceAll("#podiumcongratulations#", position == 2 || position == 3 ? "Congratulations for finishing <b>on the podium</b> this year!" : "");
+			message = message.replaceAll("#position#", ordinal(position));
+			message = message.replaceAll("#website#", websiteUrl);
+			mimeMessage.setContent(message, "text/html; charset=utf-8");
 		}
 	}
 }

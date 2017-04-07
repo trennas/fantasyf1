@@ -104,6 +104,14 @@ public class CreateData {
 			Team team = new Team("Millimetres_Per_Sec_Type'last", "Mike Trenaman", "mike.trenaman@gmail.com", "welcome1", drivers,
 					carRepo.findByName("Toro Rosso").get(0), engineRepo.findByName("Honda").get(0));
 			teamService.saveTeam(team);
+			
+			drivers = new ArrayList<>();
+			drivers.add(driverRepo.findByName("Kimi Raikkonen").get(0));
+			drivers.add(driverRepo.findByName("Daniel Ricciardo").get(0));
+			drivers.add(driverRepo.findByName("Jolyon Palmer").get(0));
+			team = new Team("Cheesy thorns", "James Tester", "james.tester@gmail.com", "welcome1", drivers,
+					carRepo.findByName("Force India").get(0), engineRepo.findByName("Honda").get(0));
+			teamService.saveTeam(team);
 		} catch (final ValidationException e) {
 			LOG.info("Team Invalid: " + e.getMessage());
 		}
