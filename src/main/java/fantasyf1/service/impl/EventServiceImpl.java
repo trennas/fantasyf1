@@ -135,9 +135,11 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public synchronized int checkForNewResults(final boolean emailAlerts) {
 		int numFound = 0;
+		boolean sendEndOfSeasonMail = false;
 		final List<EventResult> results = IteratorUtils.toList(eventRepo.findAll().iterator());
 		Collections.sort(results);
-		if (System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
+		final SeasonInformation seasonInformation = fetchSeasonInformation();
+		if (seasonInformation != null && System.currentTimeMillis() - timeOfLastResultCheck > resultRefreshInterval) {
 			timeOfLastResultCheck = System.currentTimeMillis();			
 			LOG.info("Checking for new race results...");
 			
@@ -150,11 +152,15 @@ public class EventServiceImpl implements EventService {
 						eventRepo.delete(prevResult);						
 						leagueService.deletePointsForRound(prevResult, false);
 						leagueService.calculateResult(newResult);
-						eventRepo.save(newResult);
-						mailService.sendNewResultsMail(newResult, leagueService.calculateLeagueStandings());
+						eventRepo.save(newResult);						
 						results.remove(results.size() - 1);
 						results.add(newResult);
 						numFound++;
+						if(results.size() == seasonInformation.getRaces().size()) {
+							sendEndOfSeasonMail = true;
+						} else {
+							mailService.sendNewResultsMail(newResult, leagueService.calculateLeagueStandings());
+						}
 					}
 				}
 			}
@@ -172,25 +178,21 @@ public class EventServiceImpl implements EventService {
 					numFound++;
 					result = liveRepo.fetchEventResult(result.getRound() + 1);					
 				}
-				if (emailAlerts && num == 1) {
-					// Don't bombarde with emails pulling in multiple results
+				if(results.size() == seasonInformation.getRaces().size() && !results.get(results.size() - 1).isRaceComplete()) {
+					sendEndOfSeasonMail = true;
+				} else if (emailAlerts && num == 1) {
+					// Don't bombarde with emails if pulling in multiple results.
 					mailService.sendNewResultsMail(results.get(results.size() - 1), leagueService.calculateLeagueStandings());
 				}
 			} else {
 				LOG.info("No new race results found");
 			}
-		}
-
-		if(numFound > 0) {
-			final SeasonInformation seasonInformation = fetchSeasonInformation();
-			if(seasonInformation != null
-				&& results.size() == seasonInformation.getRaces().size()
-				&& results.get(results.size()-1).isRaceComplete()
-				&& !seasonInformation.getComplete()) {
-					seasonInformation.setComplete(true);
-					mailService.sendEndOfSeasonMail(leagueService.calculateLeagueStandings());
-					componentService.setSeasonInformation(seasonInformation);
-					LOG.info("The season has ended!");
+			
+			if(sendEndOfSeasonMail && !seasonInformation.getComplete()) {
+				mailService.sendEndOfSeasonMail(leagueService.calculateLeagueStandings());
+				seasonInformation.setComplete(true);
+				componentService.setSeasonInformation(seasonInformation);
+				LOG.info("The season has ended!");
 			}
 		}
 		return numFound;

@@ -83,6 +83,9 @@ public class BestTeamTest {
 		final String seasonDataXml = sw.toString();
 
 		// Race 1 Qual Complete, Race Complete
+		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
+		
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 		.andRespond(withSuccess(qualXml, MediaType.APPLICATION_XML));
 
@@ -100,9 +103,6 @@ public class BestTeamTest {
 
 		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLapXml, MediaType.APPLICATION_XML));
-
-		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
 
 		controller.updateResults();
     }

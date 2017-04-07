@@ -106,6 +106,9 @@ public class LeagueServiceImplTest {
 		final String seasonDataXml = sw.toString();
 
 		// Race 1 Qual Complete, Race Not Complete
+		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
+		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
+		
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 				.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
 
@@ -124,9 +127,6 @@ public class LeagueServiceImplTest {
 		mockServer.expect(requestTo(url2 + "/fastest/1/drivers.xml")).andExpect(method(HttpMethod.GET))
 			.andRespond(withSuccess(fastestLap1Xml, MediaType.APPLICATION_XML));
 
-		mockServer.expect(requestTo(seasonDataUrl)).andExpect(method(HttpMethod.GET))
-		.andRespond(withSuccess(seasonDataXml, MediaType.APPLICATION_XML));
-		
 		// Race 1 Qual Complete, Race Complete
 		mockServer.expect(requestTo(url + "/qualifying.xml")).andExpect(method(HttpMethod.GET))
 		.andRespond(withSuccess(qual1Xml, MediaType.APPLICATION_XML));
