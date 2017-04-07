@@ -56,7 +56,7 @@ function($scope, $http, $location) {
     };
     
     $scope.getComponents = function() {
-    	$scope.getAllDrivers();
+    	$scope.getMainDrivers();
     	$scope.getCars();
     	$scope.getEngines();
     };
@@ -390,6 +390,16 @@ function($scope, $http, $location) {
     
     $scope.getAllDrivers = function() {
         $http.get('alldrivers')
+            .success(function(response) {
+                $scope.drivers = response;
+            })
+            .error(function(response, status) {
+                alert("Status: " + status);
+            });
+    };
+    
+    $scope.getMainDrivers = function() {
+        $http.get('drivers')
             .success(function(response) {
                 $scope.drivers = response;
             })

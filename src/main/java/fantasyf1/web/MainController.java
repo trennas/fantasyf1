@@ -30,7 +30,6 @@ import fantasyf1.domain.EventResult;
 import fantasyf1.domain.Position;
 import fantasyf1.domain.RaceInformation;
 import fantasyf1.domain.Rules;
-import fantasyf1.domain.SeasonInformation;
 import fantasyf1.domain.Team;
 import fantasyf1.domain.TheoreticalTeam;
 import fantasyf1.service.ComponentService;
