@@ -157,7 +157,7 @@ public class EventServiceImpl implements EventService {
 						numFound++;
 						if(results.size() == seasonInformation.getRaces().size()) {
 							sendEndOfSeasonMail = true;
-						} else {
+						} else if (emailAlerts) {
 							mailService.sendNewResultsMail(newResult, leagueService.calculateLeagueStandings());
 						}
 					}
@@ -187,7 +187,7 @@ public class EventServiceImpl implements EventService {
 				LOG.info("No new race results found");
 			}
 			
-			if(sendEndOfSeasonMail && !seasonInformation.getComplete()) {
+			if(sendEndOfSeasonMail && emailAlerts && !seasonInformation.getComplete()) {
 				mailService.sendEndOfSeasonMail(leagueService.calculateLeagueStandings());
 				seasonInformation.setComplete(true);
 				componentService.setSeasonInformation(seasonInformation);
