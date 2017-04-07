@@ -115,108 +115,102 @@ public class CreateTestData {
 		driverRepo.save(new Driver("Stoffel Vandoorne", 47, carRepo.findByName("McLaren").get(0), 0, StoffelVandoorneStandIns));
 		driverRepo.save(new Driver("Esteban Ocon", 31, carRepo.findByName("Manor Marussia").get(0), 0, EstebanOconStandIns));
 
-		
-		try {
-			List<Driver> drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
-			drivers.add(driverRepo.findByName("Daniil Kvyat").get(0));
-			drivers.add(driverRepo.findByName("Fernando Alonso").get(0));
-			Team team = new Team("Brawlers Lifters", "Brawler", "alan.bates2@baesystems.com", "welcome1", drivers,
-					carRepo.findByName("Sauber").get(0), engineRepo.findByName("Honda").get(0));
-			teamService.saveTeam(team);
+		List<Driver> drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+		drivers.add(driverRepo.findByName("Daniil Kvyat").get(0));
+		drivers.add(driverRepo.findByName("Fernando Alonso").get(0));
+		Team team = new Team("Brawlers Lifters", "Brawler", "alan.bates2@baesystems.com", "welcome1", drivers,
+				carRepo.findByName("Sauber").get(0), engineRepo.findByName("Honda").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
-			drivers.add(driverRepo.findByName("Marcus Ericsson").get(0));
-			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
-			team = new Team("Millimetres_Per_Sec_Type'last", "Mike Trenaman", "mike.trenaman@gmail.com", "welcome1",
-					drivers, carRepo.findByName("Ferrari").get(0),
-					engineRepo.findByName("Honda").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+		drivers.add(driverRepo.findByName("Marcus Ericsson").get(0));
+		drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
+		team = new Team("Millimetres_Per_Sec_Type'last", "Mike Trenaman", "mike.trenaman@gmail.com", "welcome1",
+				drivers, carRepo.findByName("Ferrari").get(0),
+				engineRepo.findByName("Honda").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
-			drivers.add(driverRepo.findByName("Jenson Button").get(0));
-			drivers.add(driverRepo.findByName("Valtteri Bottas").get(0));
-			team = new Team("Aiden", "Brendan", "brendan.poole@gmail.com", "welcome1", drivers,
-					carRepo.findByName("Toro Rosso").get(0), engineRepo.findByName("Honda").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+		drivers.add(driverRepo.findByName("Jenson Button").get(0));
+		drivers.add(driverRepo.findByName("Valtteri Bottas").get(0));
+		team = new Team("Aiden", "Brendan", "brendan.poole@gmail.com", "welcome1", drivers,
+				carRepo.findByName("Toro Rosso").get(0), engineRepo.findByName("Honda").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
-			drivers.add(driverRepo.findByName("Valtteri Bottas").get(0));
-			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
-			team = new Team("questus scire caseum", "coma_g", "FF1-winner@bc108.f9.co.uk", "welcome1", drivers,
-					carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Honda").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+		drivers.add(driverRepo.findByName("Valtteri Bottas").get(0));
+		drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
+		team = new Team("questus scire caseum", "coma_g", "FF1-winner@bc108.f9.co.uk", "welcome1", drivers,
+				carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Honda").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
-			drivers.add(driverRepo.findByName("Felipe Nasr").get(0));
-			drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
-			team = new Team("Jane haas the winning formula", "Jane Trenaman", "jane.trenaman@yahoo.co.uk", "welcome1", drivers,
-					carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Mercedes").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+		drivers.add(driverRepo.findByName("Felipe Nasr").get(0));
+		drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
+		team = new Team("Jane haas the winning formula", "Jane Trenaman", "jane.trenaman@yahoo.co.uk", "welcome1", drivers,
+				carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Mercedes").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
-			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
-			drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
-			team = new Team("Second is the first loser", "Schmooze", "andrew.rousell@baesystems.com", "welcome1", drivers,
-					carRepo.findByName("Manor Marussia").get(0), engineRepo.findByName("Ferrari").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+		drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
+		drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
+		team = new Team("Second is the first loser", "Schmooze", "andrew.rousell@baesystems.com", "welcome1", drivers,
+				carRepo.findByName("Manor Marussia").get(0), engineRepo.findByName("Ferrari").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
-			drivers.add(driverRepo.findByName("Marcus Ericsson").get(0));
-			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
-			team = new Team("Gunboat Verity", "Jez Newby", "jeremy.s.newby@gmail.com", "welcome1", drivers,
-					carRepo.findByName("McLaren").get(0), engineRepo.findByName("Mercedes").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+		drivers.add(driverRepo.findByName("Marcus Ericsson").get(0));
+		drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
+		team = new Team("Gunboat Verity", "Jez Newby", "jeremy.s.newby@gmail.com", "welcome1", drivers,
+				carRepo.findByName("McLaren").get(0), engineRepo.findByName("Mercedes").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
-			drivers.add(driverRepo.findByName("Kevin Magnussen").get(0));
-			drivers.add(driverRepo.findByName("Carlos Sainz").get(0));
-			team = new Team("Rosberger & Fries", "Paul Butcher", "paul_butcher_1@yahoo.co.uk", "welcome1", drivers,
-					carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Renault").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+		drivers.add(driverRepo.findByName("Kevin Magnussen").get(0));
+		drivers.add(driverRepo.findByName("Carlos Sainz").get(0));
+		team = new Team("Rosberger & Fries", "Paul Butcher", "paul_butcher_1@yahoo.co.uk", "welcome1", drivers,
+				carRepo.findByName("Haas F1 Team").get(0), engineRepo.findByName("Renault").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
-			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
-			drivers.add(driverRepo.findByName("Fernando Alonso").get(0));
-			team = new Team("Arrowmaker", "Pete Garratt", "peter@garratt.org.uk", "welcome1", drivers,
-					carRepo.findByName("McLaren").get(0), engineRepo.findByName("Ferrari").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+		drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
+		drivers.add(driverRepo.findByName("Fernando Alonso").get(0));
+		team = new Team("Arrowmaker", "Pete Garratt", "peter@garratt.org.uk", "welcome1", drivers,
+				carRepo.findByName("McLaren").get(0), engineRepo.findByName("Ferrari").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
-			drivers.add(driverRepo.findByName("Max Verstappen").get(0));
-			drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
-			team = new Team("Quid est (XLVIII)DCCCLXXIX", "Mrs Brawler", "annabel.bates@gmail.com", "welcome1", drivers,
-					carRepo.findByName("Toro Rosso").get(0), engineRepo.findByName("Renault").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+		drivers.add(driverRepo.findByName("Max Verstappen").get(0));
+		drivers.add(driverRepo.findByName("Pascal Wehrlein").get(0));
+		team = new Team("Quid est (XLVIII)DCCCLXXIX", "Mrs Brawler", "annabel.bates@gmail.com", "welcome1", drivers,
+				carRepo.findByName("Toro Rosso").get(0), engineRepo.findByName("Renault").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
-			drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
-			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
-			team = new Team("Ruby's Racers", "Coma_F", "coma_f@bc108.f9.co.uk", "welcome1", drivers,
-					carRepo.findByName("Manor Marussia").get(0), engineRepo.findByName("Honda").get(0));
-			teamService.saveTeam(team);
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+		drivers.add(driverRepo.findByName("Sebastian Vettel").get(0));
+		drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
+		team = new Team("Ruby's Racers", "Coma_F", "coma_f@bc108.f9.co.uk", "welcome1", drivers,
+				carRepo.findByName("Manor Marussia").get(0), engineRepo.findByName("Honda").get(0));
+		teamService.saveTeamNoValidation(team);
 
-			drivers = new ArrayList<>();
-			drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
-			drivers.add(driverRepo.findByName("Marcus Ericsson").get(0));
-			drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
-			team = new Team("Not so fishy fliers", "Dave McCune", "david.mccune@baesystems.com", "welcome1", drivers,
-					carRepo.findByName("Mercedes").get(0), engineRepo.findByName("Honda").get(0));
-			teamService.saveTeam(team);
-
-		} catch (final ValidationException e) {
-			LOG.info("Team Invalid: " + e.getMessage());
-		}
+		drivers = new ArrayList<>();
+		drivers.add(driverRepo.findByName("Nico Rosberg").get(0));
+		drivers.add(driverRepo.findByName("Marcus Ericsson").get(0));
+		drivers.add(driverRepo.findByName("Romain Grosjean").get(0));
+		team = new Team("Not so fishy fliers", "Dave McCune", "david.mccune@baesystems.com", "welcome1", drivers,
+				carRepo.findByName("Mercedes").get(0), engineRepo.findByName("Honda").get(0));
+		teamService.saveTeamNoValidation(team);		
 
 		LOG.info("Complete.");
 		return 0;
