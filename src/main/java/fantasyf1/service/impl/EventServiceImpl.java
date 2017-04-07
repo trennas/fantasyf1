@@ -132,8 +132,7 @@ public class EventServiceImpl implements EventService {
 		return checkForNewResults(true);		
 	}
 
-	@Override
-	public synchronized int checkForNewResults(final boolean emailAlerts) {
+	private synchronized int checkForNewResults(final boolean emailAlerts) {
 		int numFound = 0;
 		boolean sendEndOfSeasonMail = false;
 		final List<EventResult> results = IteratorUtils.toList(eventRepo.findAll().iterator());

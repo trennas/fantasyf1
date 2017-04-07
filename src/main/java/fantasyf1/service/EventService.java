@@ -18,8 +18,6 @@ public interface EventService {
 	public void refreshAllEvents();
 
 	public int updateResults();
-
-	public int checkForNewResults(final boolean emailAlerts);
 	
 	public RaceInformation getNextRace();
 
