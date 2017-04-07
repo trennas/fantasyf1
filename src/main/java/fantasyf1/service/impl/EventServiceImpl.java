@@ -178,11 +178,11 @@ public class EventServiceImpl implements EventService {
 					numFound++;
 					result = liveRepo.fetchEventResult(result.getRound() + 1);					
 				}
-				if(results.size() == seasonInformation.getRaces().size() && !results.get(results.size() - 1).isRaceComplete()) {
+				if(results.size() == seasonInformation.getRaces().size() && results.get(results.size()-1).isRaceComplete()) {
 					sendEndOfSeasonMail = true;
 				} else if (emailAlerts && num == 1) {
 					// Don't bombarde with emails if pulling in multiple results.
-					mailService.sendNewResultsMail(results.get(results.size() - 1), leagueService.calculateLeagueStandings());
+					mailService.sendNewResultsMail(results.get(results.size()-1), leagueService.calculateLeagueStandings());
 				}
 			} else {
 				LOG.info("No new race results found");
