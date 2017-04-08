@@ -43,6 +43,7 @@ public class CreateData {
 	private static final Map<Integer, Integer> AntonioGiovinazziStandIns = new HashMap<>();
     static {
     	AntonioGiovinazziStandIns.put(1, 94); // Round 1 (Australia) for Wehrlein (94)
+    	AntonioGiovinazziStandIns.put(2, 94); // Round 2 (China) for Wehrlein (94)
     }
     
 	@Bean
