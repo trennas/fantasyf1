@@ -49,8 +49,16 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public RaceInformation getNextRace() {
-		final SeasonInformation seasonInformation = fetchSeasonInformation();		
-		int nextRound = IteratorUtils.toList(eventRepo.findAll().iterator()).size() + 1;
+		final SeasonInformation seasonInformation = fetchSeasonInformation();
+		final List<EventResult> events = IteratorUtils.toList(eventRepo.findAll().iterator());
+		
+		int nextRound;
+		if(events.size() > 0 && !events.get(events.size()-1).isRaceComplete()) {
+			nextRound = events.size();
+		} else {
+			nextRound = events.size() + 1;
+		}
+
 		if (seasonInformation != null && seasonInformation.getRaces().containsKey(nextRound)) {
 			return seasonInformation.getRaces().get(nextRound);
 		} else {		
