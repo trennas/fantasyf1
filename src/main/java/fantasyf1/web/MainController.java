@@ -89,7 +89,7 @@ public class MainController {
 		return "standindrivers";
 	}
 	
-	@RequestMapping(value = {"/savestandindriver", "/{subpage}/savestandindriver"}, method = RequestMethod.POST)
+	@RequestMapping(value = "/standindriverseditor/savestandindriver", method = RequestMethod.POST)
 	@ResponseBody
 	public void saveStandinDriver(@RequestBody final Driver standinDriver) {
 		componentService.saveStandinDriver(standinDriver);
@@ -153,7 +153,7 @@ public class MainController {
 		return eventService.refreshEvent(round);
 	}
 
-	@RequestMapping({"/refreshAllResults", "/{subpage}/refreshAllResults"})
+	@RequestMapping("/refreshAllResults")
 	@ResponseBody
 	public Boolean refreshAllResults() {
 		eventService.refreshAllEvents();
@@ -204,13 +204,13 @@ public class MainController {
 		return 1;
 	}
 
-	@RequestMapping(value = {"/deletedriver", "/{subpage}/deletedriver"}, method = RequestMethod.POST)
+	@RequestMapping(value = "/standindriverseditor/deletedriver", method = RequestMethod.POST)
 	@ResponseBody
 	public void deleteDriver(@RequestBody final Driver driver) {
 		componentService.deleteDriver(driver);
 	}
 
-	@RequestMapping({ "/standindrivers", "/{subpage}/standindrivers" })
+	@RequestMapping("/standindriverseditor/standindrivers")
 	@ResponseBody
 	public List<Driver> standinDrivers() {
 		return drivers(DriversToInclude.Standins);
