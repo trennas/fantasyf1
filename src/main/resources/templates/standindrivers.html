@@ -51,7 +51,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<button type="button" class="btn btn-danger" ng-click="addStandinDriver();">Add</button>		
+		<button type="button" class="btn btn-danger" ng-click="addStandinDriver();getStandinDrivers();">Add</button>		
 		<div id="driversSpinner" style="display: none;" class="spinner-loader pull-right">Updating...</div>
 	    {{driversStatus}}
 		</div>
@@ -64,7 +64,7 @@
 			<tbody>
 				<tr>
 					<th>Round</th>
-					<th>Driver</th>
+					<th>Standing In for</th>
 					<th>Action</th>
 				</tr>
 				<tr ng-repeat="(roundNum, driverNum) in standInDriver.standinRoundsDrivers">
@@ -93,7 +93,7 @@
 				</tr>
 			</tbody>			
 		</table>
-		<button type="button" class="btn btn-success" ng-click="saveStandinDriver();">Save</button>
+		<button type="button" class="btn btn-success" ng-click="saveStandinDriver();getStandinDrivers();">Save</button>
 		<div id="spinner" class="spinner-loader pull-right">Updating...</div>
 		{{status}}
 		</div>
