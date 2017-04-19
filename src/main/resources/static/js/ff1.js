@@ -183,7 +183,7 @@ function($scope, $http, $location) {
         $scope.drivers.push({standin : false});
     };
     $scope.addStandinDriver = function() {
-        $scope.drivers.push({standin : true, price : 0});
+        $scope.standinDrivers.push({standin : true, price : 0});
     };
     $scope.deleteDriver = function(index) {
         $scope.drivers.splice(index, 1);
