@@ -444,6 +444,10 @@ function($scope, $http, $location) {
             });
     };
 
+    $scope.addStandinDriverRound = function(round, driverNum) {
+    	$scope.standInDriver.standinRoundsDrivers[round] = driverNum;
+    }
+
     $scope.deleteSingleDriver = function(driver) {
     	$('#spinner').show();
         $http.post('deletedriver', driver)

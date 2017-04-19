@@ -78,14 +78,17 @@
 					<td>
 						<div class="form-group">
 						  <label for="raceSelect">Race:</label>						  
-						  <select class="form-control" id="raceSelect" ng-model="selectedRace" ng-options="race.grandPrixName for (raceId, race) in raceCalendar track by raceId"></select>
+						  <select class="form-control" id="raceSelect" ng-model="selectedRace" ng-options="raceId as race.grandPrixName for (raceId, race) in raceCalendar track by raceId"></select>
 						</div>
 					</td>
 					<td>
 						<div class="form-group">
 						  <label for="driverSelect">Driver:</label>						  
-						  <select class="form-control" id="driverSelect" ng-model="selectedDriver" ng-options="name for (number, name) in driverNameMap track by number"></select>
+						  <select class="form-control" id="driverSelect" ng-model="selectedDriver" ng-options="number as name for (number, name) in driverNameMap track by number"></select>
 						</div>
+					</td>
+					<td>
+						<button type="button" class="btn btn-success" ng-click="addStandinDriverRound(selectedRace, selectedDriver);">Add</button>						
 					</td>
 				</tr>
 			</tbody>			
