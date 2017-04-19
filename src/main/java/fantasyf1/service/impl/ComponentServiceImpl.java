@@ -83,6 +83,11 @@ public class ComponentServiceImpl implements ComponentService {
 	}
 	
 	@Override
+	public void deleteDriver(final Driver driver) {
+		driverRepo.delete(driver);
+	}
+	
+	@Override
 	public void saveStandinDriver(final Driver standinDriver) {
 		standinDriver.setStandin(true);
 		standinDriver.setPrice(0);

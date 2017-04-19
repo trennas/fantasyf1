@@ -444,6 +444,19 @@ function($scope, $http, $location) {
             });
     };
 
+    $scope.deleteSingleDriver = function(driver) {
+    	$('#spinner').show();
+        $http.post('deletedriver', driver)
+            .success(function(response) {
+                $scope.status = "Success";                
+                $('#spinner').hide();
+            })
+            .error(function(response, status) {
+                $('#spinner').hide();
+                alert("Status: " + status);
+            });
+    };
+
     $scope.getCars = function() {
         $http.get('cars')
             .success(function(response) {

@@ -18,7 +18,9 @@ public interface ComponentService {
 	public Driver findDriverByName(final String name);
 
 	public Driver findDriverByNumber(final int number);
-	
+
+	public void deleteDriver(final Driver driver);
+
 	public void saveStandinDriver(final Driver standinDriver);
 
 	public List<Driver> findDriversByStandin(final boolean standIn);

@@ -204,6 +204,12 @@ public class MainController {
 		return 1;
 	}
 
+	@RequestMapping(value = {"/deletedriver", "/{subpage}/deletedriver"}, method = RequestMethod.POST)
+	@ResponseBody
+	public void deleteDriver(@RequestBody final Driver driver) {
+		componentService.deleteDriver(driver);
+	}
+
 	@RequestMapping({ "/standindrivers", "/{subpage}/standindrivers" })
 	@ResponseBody
 	public List<Driver> standinDrivers() {
