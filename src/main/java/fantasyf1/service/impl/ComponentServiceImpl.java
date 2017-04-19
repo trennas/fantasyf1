@@ -96,7 +96,7 @@ public class ComponentServiceImpl implements ComponentService {
 	
 	@Override
 	public Map<Integer, String> getDriverNameMap() {
-		final Iterator<Driver> itr = driverRepo.findAll().iterator();
+		final Iterator<Driver> itr = driverRepo.findByStandin(false).iterator();
 		final Map<Integer, String> driverMap = new HashMap<>();
 		while(itr.hasNext()) {
 			final Driver driver = itr.next();
