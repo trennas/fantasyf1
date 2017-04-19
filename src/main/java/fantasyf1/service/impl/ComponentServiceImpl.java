@@ -119,7 +119,7 @@ public class ComponentServiceImpl implements ComponentService {
 	@Override
 	public void saveDrivers(List<Driver> drivers, final boolean merge) {
 		if(!merge) {
-			removeDeleted(findAllDrivers(), drivers, driverRepo);
+			removeDeleted(findDriversByStandin(false), drivers, driverRepo);
 		}
 		driverRepo.save(drivers);
 	}
