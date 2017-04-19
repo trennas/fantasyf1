@@ -4,10 +4,10 @@
 <body ng-app="ff1App" ng-controller="controller">		
 	<div th:replace="header :: header"/>	
 	
-	<div class="panel panel-primary" ng-init="getStandinDrivers();getMainDrivers();getCars();getRaceCalendar();">
+	<div class="panel panel-primary" ng-init="getStandinDrivers();getDriverNames();getMainDrivers();getCars();getRaceCalendar();">
 	<div class="panel-heading text-center">Stand In Drivers</div>	
 	<div class="panel-body">
-		<div class="panel panel-info">
+		<div class="panel panel-info col-xs-6">
 		<div class="panel-heading text-center">Drivers</div>	
 		<div class="panel-body">
 		<table class="table table-striped">
@@ -16,7 +16,6 @@
 					<th>Name</th>
 					<th>Number</th>
 					<th>Car</th>
-					<th>Rounds</th>
 					<th>Action</th>
 				</tr>
 				<tr ng-repeat="driver in standinDrivers">
@@ -47,56 +46,59 @@
 						  </ul>
 						</div>
 					</td>
-					<td>
-						<div class="dropdown">
-				            <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#">
-				                Standin Rounds <span class="caret"></span>
-				            </a>
-				    		<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-				              <li><a href="#">Add</a></li>
-				              <li class="divider"></li>
-				              <li ng-repeat="(round, mainDriverz) in driver.standinRoundsDrivers"><a href="#" data-toggle="modal" data-target="#standinRoundsModal" ng-click="standInDriver = mainDriverz; standInRound = raceCalendar[round]">{{mainDriverz}} at {{round}}</a></li>
-				            </ul>
-				        </div>
-					</td>
-					<td><button type="button" class="btn btn-danger" ng-click="deleteDriver($index);">Delete</button></td>
+					<td><button type="button" class="btn btn-warning" ng-click="storeStandinDriver(driver);">Edit Rounds</button>
+						<button type="button" class="btn btn-danger" ng-click="deleteDriver($index);">Delete</button></td>
 				</tr>
 			</tbody>
 		</table>
-		<button type="button" class="btn btn-danger" ng-click="addStandinDriver();">Add</button>
-		<button type="button" class="btn btn-success" ng-click="saveDrivers();">Save</button>
+		<button type="button" class="btn btn-danger" ng-click="addStandinDriver();">Add</button>		
 		<div id="driversSpinner" style="display: none;" class="spinner-loader pull-right">Updating...</div>
 	    {{driversStatus}}
 		</div>
 		</div>
-	</div>
-	</div>
-	
-	<!-- Standin Rounds Modal -->
-  <div class="modal fade" id="standinRoundsModal" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>				
-				<div class="panel panel-info">
-					<div class="panel-heading text-center">Standing in for {{standInDriver}} at {{standInRound.grandPrixName}}</div>	
-					<div class="panel-body">
-	                    <ul class="dropdown-menu">
-	                        <li ng-repeat="(raceround, race) in raceCalendar"><a href="#" ng-click="round = raceround">{{race.grandPrixName}}</a></li>
-	                        <li ng-repeat="mainDriver in drivers"><a href="#" ng-click="driver = driver.number">{{driver.name}}</a></li>
-	                    </ul>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default btn-primary btn-sm"
-					data-dismiss="modal">Close</button>
-			</div>
+
+		<div class="panel panel-info col-xs-6">
+		<div class="panel-heading text-center">Stand In Rounds</div>	
+		<div class="panel-body">
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<th>Round</th>
+					<th>Driver</th>
+					<th>Action</th>
+				</tr>
+				<tr ng-repeat="(roundNum, driverNum) in standInDriver.standinRoundsDrivers">
+					<td>{{raceCalendar[roundNum].grandPrixName}}</td>
+					<td>{{driverNameMap[driverNum]}}</td>
+					<td>
+						<button type="button" class="btn btn-danger" ng-click="deleteStandinDriverRound(roundNum);">Delete</button>						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+						  <label for="raceSelect">Race:</label>						  
+						  <select class="form-control" id="raceSelect" ng-model="selectedRace" ng-options="race.grandPrixName for (raceId, race) in raceCalendar track by raceId"></select>
+						</div>
+					</td>
+					<td>
+						<div class="form-group">
+						  <label for="driverSelect">Driver:</label>						  
+						  <select class="form-control" id="driverSelect" ng-model="selectedDriver" ng-options="name for (number, name) in driverNameMap track by number"></select>
+						</div>
+					</td>
+				</tr>
+			</tbody>			
+		</table>
+		<button type="button" class="btn btn-success" ng-click="saveStandinDriver();">Save</button>
+		<div id="spinner" class="spinner-loader pull-right">Updating...</div>
+		{{status}}
 		</div>
+		</div>		
+		
 	</div>
-  </div>
-  
+	</div>
+
   <div th:replace="footer :: footer" />
 </body>
 </html>

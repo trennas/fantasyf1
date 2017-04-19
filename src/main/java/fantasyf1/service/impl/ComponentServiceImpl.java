@@ -1,5 +1,7 @@
 package fantasyf1.service.impl;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +80,24 @@ public class ComponentServiceImpl implements ComponentService {
 	@Override
 	public List<Driver> findDriversByStandin(final boolean standIn) {
 		return driverRepo.findByStandin(standIn);
+	}
+	
+	@Override
+	public void saveStandinDriver(final Driver standinDriver) {
+		standinDriver.setStandin(true);
+		standinDriver.setPrice(0);
+		driverRepo.save(standinDriver);
+	}
+	
+	@Override
+	public Map<Integer, String> getDriverNameMap() {
+		final Iterator<Driver> itr = driverRepo.findAll().iterator();
+		final Map<Integer, String> driverMap = new HashMap<>();
+		while(itr.hasNext()) {
+			final Driver driver = itr.next();
+			driverMap.put(driver.getNumber(), driver.getName());
+		}
+		return driverMap;
 	}
 
 	@Override

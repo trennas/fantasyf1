@@ -88,6 +88,12 @@ public class MainController {
 	public String standinDriversEditor() {
 		return "standindrivers";
 	}
+	
+	@RequestMapping(value = {"/savestandindriver", "/{subpage}/savestandindriver"}, method = RequestMethod.POST)
+	@ResponseBody
+	public void saveStandinDriver(@RequestBody final Driver standinDriver) {
+		componentService.saveStandinDriver(standinDriver);
+	}
 
 	@RequestMapping("/addresult")
 	public String addResult(final Integer round) {
@@ -243,6 +249,12 @@ public class MainController {
 	@ResponseBody
 	public Driver driver(final String name) {
 		return componentService.findDriverByName(name);
+	}
+	
+	@RequestMapping({"/drivernamemap", "/{subpage}/drivernamemap"})
+	@ResponseBody
+	public Map<Integer, String> driverNameMap() {
+		return componentService.getDriverNameMap();
 	}
 
 	@RequestMapping({ "/car", "/{subpage}/car" })

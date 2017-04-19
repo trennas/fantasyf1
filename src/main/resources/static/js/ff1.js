@@ -55,10 +55,25 @@ function($scope, $http, $location) {
         }); 
     };
     
+    $scope.getDriverNames = function() {
+    	$http.get('drivernamemap')
+        .success(function(response) {
+            $scope.driverNameMap = response;        
+        })
+        .error(function(response, status) {
+            alert("Unable to get next race: " + status);                
+        }); 
+    };
+    
     $scope.getComponents = function() {
     	$scope.getMainDrivers();
     	$scope.getCars();
     	$scope.getEngines();
+    };
+    
+    $scope.storeStandin = function(roundNumber, driverNumber) {
+    	$scope.standInDriver = $scope.getDriver(driverNumber);
+    	$scope.standInRound = $scope.raceCalendar[roundNumber];
     };
 
     $scope.saveDrivers = function() {
@@ -408,6 +423,27 @@ function($scope, $http, $location) {
             });
     };
     
+    $scope.storeStandinDriver = function(driver) {
+    	$scope.standInDriver = driver;
+    }
+    
+    $scope.deleteStandinDriverRound = function(key) {
+    	delete $scope.standInDriver.standinRoundsDrivers[key];
+    }
+
+    $scope.saveStandinDriver = function() {
+    	$('#spinner').show();
+        $http.post('savestandindriver', $scope.standInDriver)
+            .success(function(response) {
+                $scope.status = "Success";
+                $('#spinner').hide();
+            })
+            .error(function(response, status) {
+                $('#spinner').hide();
+                alert("Status: " + status);
+            });
+    };
+
     $scope.getCars = function() {
         $http.get('cars')
             .success(function(response) {
@@ -416,8 +452,8 @@ function($scope, $http, $location) {
             .error(function(response, status) {
                 alert("Status: " + status);
             });
-    };
-    
+    };    
+
     $scope.getEngines = function() {
         $http.get('engines')
             .success(function(response) {
