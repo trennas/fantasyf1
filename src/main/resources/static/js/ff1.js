@@ -423,7 +423,7 @@ function($scope, $http, $location) {
             });
     };
     
-    $scope.storeStandinDriver = function(driver) {
+    $scope.editStandinDriverRounds = function(driver) {
     	$scope.standInDriver = driver;
     }
     
