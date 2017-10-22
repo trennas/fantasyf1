@@ -44,8 +44,25 @@ public class CreateData {
     static {
     	AntonioGiovinazziStandIns.put(1, 94); // Round 1 (Australia) for Wehrlein (94)
     	AntonioGiovinazziStandIns.put(2, 94); // Round 2 (China) for Wehrlein (94)
+    }    
+    private static final Map<Integer, Integer> JensonButtonStandIns = new HashMap<>();
+    static {
+    	JensonButtonStandIns.put(6, 14); // Monoco - Alonso
+    }    
+    private static final Map<Integer, Integer> DiRestaStandIns = new HashMap<>();
+    static {
+    	DiRestaStandIns.put(11, 19); // Hungary - Massa
+    }    
+    private static final Map<Integer, Integer> GaslyStandIns = new HashMap<>();
+    static {
+    	GaslyStandIns.put(15, 26); // Malaysia - Kvyat
+    	GaslyStandIns.put(16, 26); // Japan - Kvyat
+    }    
+    private static final Map<Integer, Integer> HartlyStandIns = new HashMap<>();
+    static {
+    	HartlyStandIns.put(17, 30); // USA - Palmer
     }
-    
+
 	@Bean
 	public int createF1Data() {
 		LOG.info("Creating 2017 League Data...");
@@ -96,6 +113,10 @@ public class CreateData {
 		driverRepo.save(new Driver("Pascal Wehrlein", 94, carRepo.findByName("Sauber").get(0), 5));
 		
 		driverRepo.save(new Driver("Antonio Giovinazzi", 36, carRepo.findByName("Sauber").get(0), 0, AntonioGiovinazziStandIns));
+		driverRepo.save(new Driver("Jenson Button", 22, carRepo.findByName("McLaren").get(0), 0, JensonButtonStandIns));
+		driverRepo.save(new Driver("Paul di Resta", 40, carRepo.findByName("Williams").get(0), 0, DiRestaStandIns));
+		driverRepo.save(new Driver("Pierre Gasly", 10, carRepo.findByName("Toro Rosso").get(0), 0, GaslyStandIns));
+		driverRepo.save(new Driver("Brendon Hartley", 39, carRepo.findByName("Toro Rosso").get(0), 0, HartlyStandIns));
 
 		try {
 			List<Driver> drivers = new ArrayList<>();
