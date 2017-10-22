@@ -1,0 +1,4 @@
+Set the following properties in dbvisulizer:
+
+ssl: true
+sslfactory: org.postgresql.ssl.NonValidatingFactory
