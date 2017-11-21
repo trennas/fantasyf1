@@ -1,5 +1,6 @@
 package fantasyf1;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -13,7 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class FantasyF1ApplicationTests {
 
-	@Test
+	@Test @Ignore
 	public void contextLoads() {
 	}
 
