@@ -57,10 +57,19 @@ public class CreateData {
     static {
     	GaslyStandIns.put(15, 26); // Malaysia - Kvyat
     	GaslyStandIns.put(16, 26); // Japan - Kvyat
+    	GaslyStandIns.put(18, 26); // Mexico - Kvyat
+    	GaslyStandIns.put(19, 26); // Brazil - Kvyat
+    	GaslyStandIns.put(20, 26); // Abu Dhabi - Kvyat
     }    
     private static final Map<Integer, Integer> HartlyStandIns = new HashMap<>();
     static {
     	HartlyStandIns.put(17, 30); // USA - Palmer
+    	HartlyStandIns.put(18, 30); // Mexico - Palmer
+    }
+    private static final Map<Integer, Integer> Hartly2StandIns = new HashMap<>();
+    static {
+    	HartlyStandIns.put(19, 30); // Brazil - Palmer
+    	HartlyStandIns.put(20, 30); // Abu Dhabi - Palmer
     }
 
 	@Bean
@@ -117,6 +126,7 @@ public class CreateData {
 		driverRepo.save(new Driver("Paul di Resta", 40, carRepo.findByName("Williams").get(0), 0, DiRestaStandIns));
 		driverRepo.save(new Driver("Pierre Gasly", 10, carRepo.findByName("Toro Rosso").get(0), 0, GaslyStandIns));
 		driverRepo.save(new Driver("Brendon Hartley", 39, carRepo.findByName("Toro Rosso").get(0), 0, HartlyStandIns));
+		driverRepo.save(new Driver("Brendon Hartley", 28, carRepo.findByName("Toro Rosso").get(0), 0, Hartly2StandIns));
 
 		try {
 			List<Driver> drivers = new ArrayList<>();
