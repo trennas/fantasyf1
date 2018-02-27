@@ -55,8 +55,8 @@ public class CreateData {
 		carRepo.save(new Car("Williams", 11, engineRepo.findByName("Mercedes").get(0)));
 		carRepo.save(new Car("Haas F1 Team", 9, engineRepo.findByName("Ferrari").get(0)));
 		carRepo.save(new Car("Renault", 9, engineRepo.findByName("Renault").get(0)));
-		carRepo.save(new Car("McLaren", 5, engineRepo.findByName("Honda").get(0)));
-		carRepo.save(new Car("Toro Rosso", 8, engineRepo.findByName("Renault").get(0)));
+		carRepo.save(new Car("McLaren", 8, engineRepo.findByName("Renault").get(0)));
+		carRepo.save(new Car("Toro Rosso", 8, engineRepo.findByName("Honda").get(0)));
 		carRepo.save(new Car("Sauber", 7, engineRepo.findByName("Ferrari").get(0)));
 
 		driverRepo.save(new Driver("Lewis Hamilton", 44, carRepo.findByName("Mercedes").get(0), 33));
