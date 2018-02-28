@@ -24,5 +24,6 @@ bin
 /buildSrc/build
 /build
 .idea/*
+out/*
 *.iml
 src/generated/java/
