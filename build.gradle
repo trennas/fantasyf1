@@ -42,7 +42,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-ws')
     compile('org.springframework.boot:spring-boot-starter-mail')
-    compile "org.projectlombok:lombok:1.16.2"
+    compile "org.projectlombok:lombok:1.16.20"
     compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity3:2.1.1.RELEASE')
     compile('org.apache.commons:commons-collections4:4.0')
     compile('commons-io:commons-io:2.4')
@@ -64,7 +64,7 @@ eclipse {
 
 idea{
     module {
-        sourceDirs += file('build/generated-sources')
+        sourceDirs += file('build/generated-sources/jaxb')
     }
 }
 
