@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="http://ergast.com/schemas/mrd-1.4.xsl"?>
+<MRData xmlns="http://ergast.com/mrd/1.4" series="f1" url="http://ergast.com/api/f1/2016" limit="30" offset="0" total="3">
+	<RaceTable season="2016">
+		<Race season="2016" round="1" url="https://en.wikipedia.org/wiki/2016_Australian_Grand_Prix">
+			<RaceName>Australian Grand Prix</RaceName>
+			<Circuit circuitId="albert_park" url="http://en.wikipedia.org/wiki/Melbourne_Grand_Prix_Circuit">
+				<CircuitName>Albert Park Grand Prix Circuit</CircuitName>
+				<Location lat="-37.8497" long="144.968">
+					<Locality>Melbourne</Locality>
+					<Country>Australia</Country>
+				</Location>
+			</Circuit>
+			<Date>2016-03-20</Date>
+			<Time>05:00:00Z</Time>
+		</Race>
+		<Race season="2016" round="2" url="https://en.wikipedia.org/wiki/2016_Bahrain_Grand_Prix">
+			<RaceName>Bahrain Grand Prix</RaceName>
+			<Circuit circuitId="bahrain" url="http://en.wikipedia.org/wiki/Bahrain_International_Circuit">
+				<CircuitName>Bahrain International Circuit</CircuitName>
+				<Location lat="26.0325" long="50.5106">
+					<Locality>Sakhir</Locality>
+					<Country>Bahrain</Country>
+				</Location>
+			</Circuit>
+			<Date>2016-04-03</Date>
+			<Time>15:00:00Z</Time>
+		</Race>
+		<Race season="2016" round="3" url="https://en.wikipedia.org/wiki/2016_Chinese_Grand_Prix">
+			<RaceName>Chinese Grand Prix</RaceName>
+			<Circuit circuitId="shanghai" url="http://en.wikipedia.org/wiki/Shanghai_International_Circuit">
+				<CircuitName>Shanghai International Circuit</CircuitName>
+				<Location lat="31.3389" long="121.22">
+					<Locality>Shanghai</Locality>
+					<Country>China</Country>
+				</Location>
+			</Circuit>
+			<Date>2016-04-17</Date>
+			<Time>06:00:00Z</Time>
+		</Race>
+	</RaceTable>
+</MRData>

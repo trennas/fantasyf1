@@ -1,19 +1,12 @@
 package fantasyf1.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.List;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
-
 import fantasyf1.FantasyF1Application;
-import fantasyf1.domain.MinimalTeamComponent;
 import fantasyf1.web.MainController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -56,7 +47,7 @@ public class BestTeamTest {
 		mockServer = MockRestServiceServer.createServer(template);
     }
 
-    @Test @Ignore
+    @Test
     public void bestTeamTest() throws IOException {
     	final String url  = ergastUrl + season + "/1";
     	final String url2 = ergastUrl + season + "/2";

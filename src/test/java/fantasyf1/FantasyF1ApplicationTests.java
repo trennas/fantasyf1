@@ -14,7 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class FantasyF1ApplicationTests {
 
-	@Test @Ignore
+	@Test
 	public void contextLoads() {
 	}
 
