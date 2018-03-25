@@ -89,6 +89,17 @@ public class CreateData {
 		driverRepo.save(new Driver("Marcus Ericsson", 9, carRepo.findByName("Sauber").get(0), 4));
 		driverRepo.save(new Driver("Charles Leclerc", 16, carRepo.findByName("Sauber").get(0), 3));
 
+		try {
+			List<Driver> drivers = new ArrayList<>();
+			drivers.add(driverRepo.findByName("Lewis Hamilton").get(0));
+			drivers.add(driverRepo.findByName("Max Verstappen").get(0));
+			drivers.add(driverRepo.findByName("Esteban Ocon").get(0));
+			Team team = new Team("Millimetres_Per_Sec_Type'last", "Mike Trenaman", "mike.trenaman@gmail.com", "welcome1", drivers,
+					carRepo.findByName("McLaren").get(0), engineRepo.findByName("Honda").get(0));
+			teamService.saveTeam(team);
+		} catch (final ValidationException e) {
+			LOG.info("Team Invalid: " + e.getMessage());
+		}
 		LOG.info("Complete.");
 		return 0;
 	}
