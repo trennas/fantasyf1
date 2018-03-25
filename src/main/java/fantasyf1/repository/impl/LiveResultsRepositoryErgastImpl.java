@@ -154,7 +154,9 @@ public class LiveResultsRepositoryErgastImpl implements LiveResultsRepository {
 				}
 
 				final Driver fastestLapDriver = componentService
-						.findDriverByNumber(3);
+						.findDriverByNumber(fastestLap.getDriverTable()
+								.getDriver().get(0).getPermanentNumber()
+								.intValue());
 				result.setFastestLapDriver(fastestLapDriver);
 				result.setRaceComplete(true);
 
